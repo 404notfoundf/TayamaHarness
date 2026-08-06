@@ -1,0 +1,13 @@
+{
+  "name": "huazai-harness-skills",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Harness Engineering 跨语言开发流水线技能包 — Java / Python / Go",
+  "repository": {
+    "type": "git",
+    "url": "https://gitcode.com/huazaiteam/huazai-harness-skills"
+  },
+  "license": "MIT",
+  "keywords": ["harness", "sdd", "tdd", "coding-standards", "engineering", "skills"],
+  "packageManager": "npm@10.9.4"
+}

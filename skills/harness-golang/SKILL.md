@@ -1,0 +1,18 @@
+---
+name: harness-golang
+description: Golang 语言规范包 — 编码规范、工程结构（SDD-TDD/开发流程/运行时可靠性共享自 harness-core）
+---
+
+# Harness Golang — Go 语言规范包
+
+本包为 Go 项目提供完整的 Harness 开发规范体系，基于：
+
+- **基线框架**: go-zero 1.9.x / Gin 1.10+
+- **运行时**: Go 1.22+
+- **测试框架**: go test + testify
+- **代码规范**: Go Code Review Comments + Uber Go Style + golangci-lint
+- **依赖管理**: go mod
+
+包含 rules（2 个语言特有 + 3 个通用来自 harness-core）和 skills（9 个），与 `apply-harness` 入口技能配合使用。
+
+> **辅助技能**: `/harness-me`（需求打磨）、`/diagnosing-bugs`（Bug 诊断）、`/handoff`（上下文交接）、`/arch-review`（架构体检）——在流水线各阶段按需调用。
