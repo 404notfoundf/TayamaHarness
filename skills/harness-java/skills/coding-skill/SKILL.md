@@ -90,6 +90,11 @@ description: 按已确认的需求卡与编码规范，小步实现可编译的 
 ### 依赖阻塞
 外部资源不可用 → 写 Mock/Stub 实现核心逻辑，在 change.md 登记"替换 Mock"任务，继续。
 
+### 领域术语冲突
+实现时发现代码中的术语与 `.harness/CONTEXT.md` 不一致，或使用了未定义的领域概念 → 调用 `domain-modeling` 技能：精化术语、更新 CONTEXT.md。
+
+术语敲定后**当场写**进 CONTEXT.md，不批量累积。
+
 ### 难以复现的 Bug
 如果遇到无法稳定复现的 Bug 或非确定性故障，建议运行 `/diagnosing-bugs` 进行 6 阶段诊断。
 诊断结果记录到 `.harness/changes/<id>/diagnosis.md`。

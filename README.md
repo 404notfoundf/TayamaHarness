@@ -27,7 +27,7 @@ npx skills@latest add huazaiteam/harness-skills
 AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录：
 - **Owner Agent** — 应用负责人智能体（灵魂，定义你是谁、怎么工作）
 - **Rules** — 5 条规则（SDD-TDD / 编码规范 / 工程结构 / 开发流程 / 运行时可靠性）
-- **Skills** — 9 个技能（6 流水线 + 3 辅助）
+- **Skills** — 14 个技能（6 流水线 + 3 通用辅助 + 3 场景辅助 + 2 新增）
 - **Changes** — 变更追踪模板
 - **Wiki** — 领域知识库模板
 - **CONTEXT.md** — 共享语言机制（AI 与人类间的术语表）
@@ -50,9 +50,12 @@ AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录�
 | `request-analysis` | ① 需求分析 | 规格构建、AC 可测试、边界 ≥3 |
 | `coding-skill` | ② 编码实现 | 先写失败测试 → 最小实现 → 重构，垂直切片不批量 |
 | `unit-test-write` | ③ 单测编写 | 每条 AC 一个测试，覆盖率 ≥80%，不测 happy path |
-| `expert-reviewer` | ④ 专家评审 | 0 个 🔴 才放行，逐项审查 8 个维度 |
+| `expert-reviewer` | ④ 专家评审 | 双轴评审（Spec + Standards），0 个 🔴 才放行 |
 | `unit-test-ci` | ⑤ CI 门禁 | 机械化执行，任一检查失败即红灯 |
 | `deploy-verify` | ⑥ 部署验证 | "CI 绿"≠"线上可用"，确认健康检查+链路+回滚 |
+| `domain-modeling` | 通用辅助 | 主动维护领域模型，术语敲定当场写 CONTEXT.md / ADR |
+| `research` | 通用辅助 | 对一手来源调研，结果落 wiki |
+| `resolving-merge-conflicts` | 通用辅助 | 解决 git merge/rebase 冲突，保留双方意图 |
 | `/diagnosing-bugs` | Bug 诊断 | 先建反馈循环再猜原因，6 阶段严谨流程 |
 | `/handoff` | 上下文交接 | 压缩对话上下文为交接文档，无缝续接 |
 | `/arch-review` | 架构体检 | 扫描浅模块，生成 Mermaid 报告，逐一打磨 |
@@ -87,12 +90,22 @@ huazai-harness-skills/
 │   └── sync-version.mjs           # 同步版本号
 ├── skills/
 │   ├── apply-harness/             # ★ 入口技能（/apply-harness）
-│   ├── harness-core/              # 核心骨架模板
+│   ├── harness-core/              # 核心骨架模板 + 通用技能
 │   │   ├── templates/
 │   │   │   ├── agents/owner.md    # Owner Agent 模板（参数化）
 │   │   │   ├── changes/_TEMPLATE/ # 变更卡/评审/验证模板
-│   │   │   ├── wiki/              # 领域知识库模板
-│   │   │   └── CONTEXT.md         # 共享语言机制模板
+│   │   │   ├── wiki/              # 领域知识库模板（含 ADR-FORMAT）
+│   │   │   ├── CONTEXT.md         # 领域语言词典模板
+│   │   │   └── CONTEXT-FORMAT.md  # CONTEXT.md 编写规范
+│   │   └── skills/                # 技能模板 + 跨语言通用技能
+│   │       ├── domain-modeling/   # 领域语言维护
+│   │       ├── research/          # 外部事实查证
+│   │       ├── resolving-merge-conflicts/ # 合并冲突解决
+│   │       ├── harness-me/        # ⚙ 模板化技能（被 apply-harness 渲染）
+│   │       ├── handoff/           # ⚙ 模板化技能
+│   │       ├── diagnosing-bugs/   # ⚙ 模板化技能
+│   │       ├── coding-skill/      # ⚙ 模板化技能
+│   │       └── unit-test-write/   # ⚙ 模板化技能
 │   ├── harness-java/              # Java 语言规范包
 │   │   ├── rules/                 # 5 条规则
 │   │   ├── skills/                # 9 个技能

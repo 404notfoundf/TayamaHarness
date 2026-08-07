@@ -89,7 +89,10 @@
 | 场景 | 技能 | 用途 |
 |------|------|------|
 | 需求模糊 / 方案打磨 | `/harness-me` | 一场灵魂拷问，帮你把模糊需求打磨到可落地 |
+| 领域术语冲突 / 模糊 | `domain-modeling` | 精化术语、写 CONTEXT.md、做 ADR（术语敲定当场写） |
+| 外部事实查证 | `research` | 对一手来源调研，结果落 wiki |
 | 编码时遇到难复现 Bug | `/diagnosing-bugs` | 6 阶段严谨诊断流程，先建反馈循环再猜原因 |
+| git merge/rebase 冲突 | `resolving-merge-conflicts` | 逐 hunk 解决，保留双方意图 |
 | 阶段切换 / 对话交接 | `/handoff` | 压缩上下文为交接文档，下一个对话无缝续接 |
 | 架构摩擦 / 设计审查 | `/arch-review` | 扫描浅模块，生成 Mermaid 报告，逐一打磨 |
 
