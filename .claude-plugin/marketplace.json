@@ -1,0 +1,27 @@
+{
+  "name": "huazai-harness",
+  "owner": {
+    "name": "Huazai Team",
+    "url": "https://gitcode.com/huazaiteam"
+  },
+  "description": "Harness Engineering 跨语言开发流水线技能包 — 开箱即用的 Java / Python / Go / Frontend 规范体系",
+  "plugins": [
+    {
+      "name": "huazai-harness-skills",
+      "source": "./",
+      "description": "Harness Engineering 跨语言开发流水线技能包 — 人类设计约束、AI 写代码、机器验证",
+      "category": "engineering",
+      "keywords": [
+        "harness",
+        "sdd",
+        "tdd",
+        "coding-standards",
+        "engineering",
+        "java",
+        "python",
+        "golang",
+        "frontend"
+      ]
+    }
+  ]
+}

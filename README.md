@@ -70,22 +70,55 @@ AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录�
 
 ```
 huazai-harness-skills/
-├── .claude-plugin/plugin.json        # 插件清单
+├── .claude-plugin/
+│   ├── plugin.json                # 插件清单
+│   └── marketplace.json           # 插件市场元数据
+├── docs/                          # 文档中心（📖 从这里开始学习）
+│   ├── README.md                  # 文档索引
+│   ├── harness-overview.md        # Harness Engineering 总览
+│   ├── owner-agent.md             # Owner Agent 概念
+│   ├── sdd-tdd.md                 # SDD-TDD 方法论
+│   ├── 6-stage-pipeline.md        # 6 阶段流水线
+│   ├── change-management.md       # 变更管理
+│   ├── skills/                    # 各技能文档
+│   └── languages/                 # 各语言规范文档
+├── scripts/
+│   ├── list-skills.sh             # 列出所有技能
+│   └── sync-version.mjs           # 同步版本号
 ├── skills/
-│   ├── apply-harness/                # ★ 入口技能（/apply-harness）
-│   ├── harness-core/                 # 核心骨架模板
+│   ├── apply-harness/             # ★ 入口技能（/apply-harness）
+│   ├── harness-core/              # 核心骨架模板
 │   │   ├── templates/
-│   │   │   ├── agents/owner.md       # Owner Agent 模板（参数化）
-│   │   │   ├── changes/_TEMPLATE/    # 变更卡/评审/验证模板
-│   │   │   ├── wiki/                 # 领域知识库模板
-│   │   │   └── CONTEXT.md            # 共享语言机制模板
-│   ├── harness-java/                 # Java 语言规范包
-│   │   ├── rules/                    # 5 条规则
-│   │   ├── skills/                   # 9 个技能
-│   ├── harness-python/               # Python 语言规范包（同上）
-│   └── harness-golang/               # Golang 语言规范包（同上）
-└── package.json
+│   │   │   ├── agents/owner.md    # Owner Agent 模板（参数化）
+│   │   │   ├── changes/_TEMPLATE/ # 变更卡/评审/验证模板
+│   │   │   ├── wiki/              # 领域知识库模板
+│   │   │   └── CONTEXT.md         # 共享语言机制模板
+│   ├── harness-java/              # Java 语言规范包
+│   │   ├── rules/                 # 5 条规则
+│   │   ├── skills/                # 9 个技能
+│   ├── harness-python/            # Python 语言规范包（同上）
+│   ├── harness-golang/            # Golang 语言规范包（同上）
+│   └── harness-front/             # Frontend 语言规范包（同上）
+├── CONTEXT.md                     # 项目共享上下文
+├── CHANGELOG.md                   # 变更日志
+├── LICENSE                        # MIT 许可证
+├── README.md                      # 本文件
+└── package.json                   # npm 包配置
 ```
+
+## 学习路径
+
+建议按以下顺序阅读文档：
+
+1. **[Harness Engineering 总览](docs/harness-overview.md)** — 了解核心概念和哲学
+2. **[Owner Agent](docs/owner-agent.md)** — 了解应用负责人智能体
+3. **[SDD-TDD 方法论](docs/sdd-tdd.md)** — 了解规格驱动 + 测试驱动开发
+4. **[6 阶段流水线](docs/6-stage-pipeline.md)** — 了解完整流水线
+5. **[变更管理](docs/change-management.md)** — 了解变更状态机
+6. **语言规范** — 选择你的语言：[Java](docs/languages/java.md) / [Python](docs/languages/python.md) / [Go](docs/languages/golang.md) / [Frontend](docs/languages/frontend.md)
+7. **各技能文档** — 在 `docs/skills/` 目录下
+
+> 📖 **完整文档中心**: [docs/README.md](docs/README.md)
 
 ## 许可证
 

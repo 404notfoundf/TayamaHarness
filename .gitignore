@@ -6,6 +6,9 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Large binary
+skills.docx
+
 # IDE
 .idea/
 .vscode/

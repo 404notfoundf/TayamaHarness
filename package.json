@@ -9,5 +9,10 @@
   },
   "license": "MIT",
   "keywords": ["harness", "sdd", "tdd", "coding-standards", "engineering", "skills"],
+  "scripts": {
+    "version": "node scripts/sync-version.mjs",
+    "check-plugin-version": "node scripts/sync-version.mjs --check",
+    "list-skills": "bash scripts/list-skills.sh"
+  },
   "packageManager": "npm@10.9.4"
 }
