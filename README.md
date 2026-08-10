@@ -4,7 +4,7 @@
 >
 > 参考 [mattpocock/skills](https://github.com/mattpocock/skills) 的 SKILL.md 体系开发
 
-一键安装：`npx skills@latest add huazai/harness-skills`
+一键安装（SSH，仓库在 gitcode.com 且为私有/需认证时用这个）：`npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git`
 
 ## 什么是 Harness Engineering？
 
@@ -18,7 +18,11 @@ Harness 是一个**人类设计约束、AI 写代码、机器验证**的开发�
 
 ```bash
 # 在任意项目根目录执行
-npx skills@latest add huazaiteam/harness-skills
+# 仓库在 gitcode.com。若仓库为私有，HTTPS 克隆会因无凭据失败，请用 SSH URL：
+npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
+
+# 若仓库已设为公开，也可用 HTTPS URL：
+# npx skills@latest add https://gitcode.com/huazaiteam/huazai-harness-skills.git
 
 # 在 AI 对话中键入
 /apply-harness
@@ -45,6 +49,7 @@ AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录�
 
 | 技能 | 阶段 | 一句话摘要 |
 |------|------|-----------|
+| `/install-skill` | 技能注册 | 将 `.harness/skills/` 下的技能注册到当前 AI 工具（19+ 主流工具），使斜杠命令立即可用 |
 | `/harness-me` | 需求打磨 | 一场"灵魂拷问"式对话，帮你把模糊需求打磨到可落地 |
 | `/harnessing` | 需求拷问引擎 | 一次只问一个问题，沿决策树推进，输出需求总结卡片 |
 | `request-analysis` | ① 需求分析 | 规格构建、AC 可测试、边界 ≥3 |
@@ -90,6 +95,7 @@ huazai-harness-skills/
 │   └── sync-version.mjs           # 同步版本号
 ├── skills/
 │   ├── apply-harness/             # ★ 入口技能（/apply-harness）
+│   ├── install-skill/             # ★ 技能注册（/install-skill）
 │   ├── harness-core/              # 核心骨架模板 + 通用技能
 │   │   ├── templates/
 │   │   │   ├── agents/owner.md    # Owner Agent 模板（参数化）

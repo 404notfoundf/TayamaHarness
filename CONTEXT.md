@@ -30,6 +30,7 @@ huazai-harness-skills/
 │   └── sync-version.mjs
 ├── skills/
 │   ├── apply-harness/       # 入口技能（/apply-harness）
+│   ├── install-skill/       # 技能注册（/install-skill）
 │   ├── harness-core/        # 核心骨架模板
 │   ├── harness-front/       # 前端语言规范包
 │   ├── harness-golang/      # Go 语言规范包
@@ -60,4 +61,5 @@ huazai-harness-skills/
 ---
 
 > **使用方式**: AI 在对话开始时优先读取此文件以快速建立上下文。
+> **技能注册**: 执行 `/apply-harness` 后，运行 `/install-skill` 将 `.harness/skills/` 下的技能注册到当前 AI 工具（支持 19+ 主流工具：reasonix / claude-code / cline / cursor / codex / qoder / trae / codebuddy / lingma / windsurf / copilot 等）可识别的技能目录，使 `/harnessing`、`/harness-me` 等斜杠命令可用。
 > 发现新术语或决策时，应同步更新此文件。

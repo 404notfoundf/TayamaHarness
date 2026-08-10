@@ -130,6 +130,21 @@ disable-model-invocation: true
     └── resolving-merge-conflicts/ # 解决 git merge/rebase 冲突
 ```
 
+### Step 5.5: 注册技能到当前 AI 工具
+
+> 将 `.harness/skills/` 下的技能注册到当前 AI 工具（reasonix / claude-code / codex）可识别的技能目录，使 `/harnessing`、`/harness-me` 等斜杠命令立即可用。
+
+**本步骤自动尝试注册**。若当前 AI 工具的技能目录可被检测到，技能将自动注册到该目录，Step 8 的输出卡片中 `/install-skill` 可跳过。若检测失败（无法确定工具类型），则跳过注册，提示用户在 Step 8 手动执行 `/install-skill`。
+
+调用 `install-skill` 技能（或直接执行其逻辑）：
+
+1. **检测当前工具**：按优先级检测 `.reasonix/` → `.claude/` → `.cline/` → `.cursor/` → `.codex/` → `.qoder/` → `.vscode/` → `.windsurf/` → `.continue/` → `.github/` → `.opencode/` → `.trae/` → `.codebuddy/` → `.lingma/` → `.codegeex/` → `.tabnine/` → `.cody/` 目录（或对应环境变量），确定技能安装目录
+2. **定位技能来源**：扫描 `.harness/skills/` 下所有含 `SKILL.md` 的技能目录
+3. **复制安装**：将每个技能目录完整复制到目标工具目录（保持 frontmatter `name` 不变）
+4. **输出摘要**：列出已安装的技能及对应斜杠命令
+
+> 若自动注册成功，技能命令立即可用；若自动注册失败，继续执行 Step 6-8，在 Step 8 的输出卡片中用户可通过 `/install-skill` 手动注册。
+
 ### Step 6: 初始化变更追踪
 
 从 `harness-core/templates/changes/` 复制到 `.harness/changes/`：
@@ -180,7 +195,9 @@ disable-model-invocation: true
 ║  技能:   12 个已就绪（9 语言特有 + 3 通用）║
 ║  Owner:  已就绪                          ║
 ╠══════════════════════════════════════════╣
-║  下一步: 创建你的第一个变更              ║
+║  下一步: 注册技能到当前工具              ║
+║  /install-skill                          ║
+║  然后创建你的第一个变更:                  ║
 ║  /request-analysis "一句话描述需求"      ║
 ╚══════════════════════════════════════════╝
 ```
