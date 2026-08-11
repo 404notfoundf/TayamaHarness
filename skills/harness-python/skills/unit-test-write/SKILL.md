@@ -9,7 +9,7 @@ description: 为实现代码编写 Python 单元测试，核心逻辑覆盖率 �
 > **流水线阶段**: ③ 第三步
 > **输入**: ② 阶段的实现代码 + change.md
 > **出口门禁**: 测试通过 · 核心逻辑覆盖率 ≥80% · 覆盖全部 AC、边界与降级路径
-> **测试框架**: pytest + pytest-mock
+> **测试框架**: {{TEST_FRAMEWORK}} + {{MOCK_LIB}}
 
 ### 核心规则（一句话摘要）
 
@@ -38,17 +38,17 @@ description: 为实现代码编写 Python 单元测试，核心逻辑覆盖率 �
 
 ### Step 3: 编写测试
 - 命名: `test_<期望>_when_<条件>`
-- 用 pytest + pytest-mock
+- 用 {{TEST_FRAMEWORK}} + {{MOCK_LIB}}
 - 每个测试**单一断言意图**，Arrange-Act-Assert 三段清晰
 - **降级逻辑必须实测**
 
 ### Step 4: Mock 原则
 - Mock 外部依赖（LLM、第三方 API、数据库、缓存）
 - **禁止 Mock 自己写的业务类**
-- 用 `pytest-mock` 的 `mocker` fixture 提供可控的故障场景
+- 用 `{{MOCK_LIB}}` 的 `mocker` fixture 提供可控的故障场景
 
 ### Step 5: 覆盖率核验
-- 跑 `pytest --cov`，核心逻辑 ≥80%
+- 跑 `{{COV_CMD}}`，核心逻辑 ≥80%
 - 覆盖率不足 → 补测试，而非降低标准
 
 ### Step 6: 诊断辅助

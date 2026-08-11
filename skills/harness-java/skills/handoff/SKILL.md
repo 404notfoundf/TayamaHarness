@@ -63,8 +63,8 @@ disable-model-invocation: true
 2. 读取 `.harness/rules/` — 了解约束
 3. 读取本文件 — 了解当前进度
 4. 读取 `.harness/changes/<id>/change.md` — 了解需求
-5. `mvn compile` — 检查编译状态
-6. `mvn test` — 检查测试状态
+5. `{{BUILD_CMD}}` — 检查编译状态
+6. `{{TEST_CMD}}` — 检查测试状态
 
 ## 风险提醒
 - ...
@@ -72,8 +72,8 @@ disable-model-invocation: true
 ## 断点续接命令
 ```bash
 # 从当前状态继续
-mvn compile
-mvn test -Dtest=<相关测试>
+{{BUILD_CMD}}
+{{TEST_CMD}} -Dtest=<相关测试>
 ```
 ```
 

@@ -50,6 +50,6 @@ disable-model-invocation: true
 
 - **服务间依赖** — 是否通过 RPC 通信而非直接调用？
 - **接口设计** — 是否有过于宽泛的接口（违反 ISP）？
-- **go-zero 布局** — api/rpc/models 分层是否正确？
+- **{{FRAMEWORK_NAME}} 布局** — api/rpc/models 分层是否正确？
 - **竞态检测** — 共享状态是否有锁保护？
 - **error 处理** — 是否有被忽略的 error 返回值？

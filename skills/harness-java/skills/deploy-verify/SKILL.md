@@ -27,7 +27,7 @@ description: 部署后冒烟、健康检查、关键链路验证，确保变更�
 
 ### Step 1: 准备环境
 ```bash
-mvn clean package -DskipTests   # 已在 CI 验过测试
+{{BUILD_CMD}}   # 已在 CI 验过测试
 java -jar <module>-server/target/*.jar --spring.profiles.active=dev
 ```
 

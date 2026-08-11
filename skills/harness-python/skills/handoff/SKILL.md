@@ -60,12 +60,12 @@ disable-model-invocation: true
 2. 读取 `.harness/rules/`
 3. 读取本文件
 4. 读取 `.harness/changes/<id>/change.md`
-5. 运行 `python -m pytest` 检查测试状态
+5. 运行 `{{TEST_CMD}}` 检查测试状态
 
 ## 断点续接命令
 ```bash
-python -m pytest tests/ -x -v
-flask run  # 或 uvicorn main:app
+{{TEST_CMD}} tests/ -x -v
+{{DEV_CMD}}  # 或 {{DEV_CMD}}
 ```
 ```
 

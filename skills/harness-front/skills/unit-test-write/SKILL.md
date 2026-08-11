@@ -9,7 +9,7 @@ description: 为实现代码编写 Vue 前端单元测试，核心逻辑覆盖�
 > **流水线阶段**: ③ 第三步
 > **输入**: ② 阶段的实现代码 + change.md
 > **出口门禁**: 测试通过 · 核心逻辑覆盖率 ≥80% · 覆盖全部 AC、边界与降级路径
-> **测试框架**: Vitest + @vue/test-utils + jsdom
+> **测试框架**: {{TEST_FRAMEWORK}} + {{UTIL_LIB}} + {{ENV_LIB}}
 
 ### 核心规则（一句话摘要）
 
@@ -39,17 +39,17 @@ description: 为实现代码编写 Vue 前端单元测试，核心逻辑覆盖�
 ### Step 3: 编写测试
 - 命名: `should_<期望>_when_<条件>`
 - 用 `describe` 组织测试套件，`it` 组织测试用例
-- 组件测试用 `mount` / `shallowMount`，props 用 `props` 选项传入
-- Store 测试用 `setActivePinia(createPinia())`
+- 组件测试用 `{{UTIL_LIB}}.mount` / `{{UTIL_LIB}}.shallowMount`，props 用 `props` 选项传入
+- Store 测试用 `setActive{{STATE_MGMT_LIB}}(create{{STATE_MGMT_LIB}}())`
 - 异步测试用 `flushPromises` 等待 DOM 更新
 
 ### Step 4: Mock 策略
-- 用 `vi.mock` Mock 外部依赖（API 请求、第三方库）
-- 用 `vi.fn()` 提供 stub 函数
-- 禁止 Mock `@vue/test-utils` 或 `vue` 本身
+- 用 `{{TEST_FRAMEWORK}}.mock` Mock 外部依赖（API 请求、第三方库）
+- 用 `{{TEST_FRAMEWORK}}.fn()` 提供 stub 函数
+- 禁止 Mock `{{UTIL_LIB}}` 或 `vue` 本身
 
 ### Step 5: 覆盖率核验
-- 跑 `npx vitest run --coverage`，核心逻辑 ≥80%
+- 跑 `{{TEST_CMD}} {{COV_CMD}}`，核心逻辑 ≥80%
 - 覆盖率不足 → 补测试，而非降低标准
 - 纯 UI 展示组件、路由配置、类型定义可豁免
 

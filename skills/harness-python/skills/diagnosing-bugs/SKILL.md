@@ -14,7 +14,7 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 
 ### 构建反馈循环的方式（按优先级排列）
 
-1. **失败测试** — 在能触达 Bug 的接缝处写 pytest 单元/集成测试
+1. **失败测试** — 在能触达 Bug 的接缝处写 {{TEST_FRAMEWORK}} 单元/集成测试
 2. **Curl / HTTP 脚本** — 针对运行中的 dev server（Flask `app.run()` / Uvicorn）
 3. **CLI 调用** — 用 `click` 或 `argparse` 入口，传入 fixture 输入
 4. **Playwright 无头浏览器脚本** — 驱动 UI，断言 DOM/console/network
@@ -48,11 +48,11 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 
 ## Phase 4 — 探测
 
-每个探测对应 Phase 3 的特定预测。**一次只改一个变量。** 用 `pdb` 调试器 / `breakpoint()` / `ipdb` 检查状态。
+每个探测对应 Phase 3 的特定预测。**一次只改一个变量。** 用 `{{DEBUG_TOOL}}` 调试器 / `{{DEBUG_TOOL}}` / `i{{DEBUG_TOOL}}` 检查状态。
 
 ## Phase 5 — 修复 + 回归测试
 
-**先写回归测试，再修复。** 用 pytest 写失败测试 → 看它失败 → 应用修复 → 看它通过 → 用原始场景重新运行 Phase 1 循环。
+**先写回归测试，再修复。** 用 {{TEST_CMD}} 写失败测试 → 看它失败 → 应用修复 → 看它通过 → 用原始场景重新运行 Phase 1 循环。
 
 ## Phase 6 — 清理 + 事后分析
 

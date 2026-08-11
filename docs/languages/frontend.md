@@ -2,20 +2,20 @@
 
 ## 概述
 
-Harness Frontend 语言规范包为前端项目提供完整的开发规范体系，基于 Vue 3 + TypeScript 严格模式。
+Harness Frontend 语言规范包为前端项目提供完整的开发规范体系，基于 TypeScript 严格模式，支持 Vue 3、React、Angular、Svelte、Next.js、Nuxt 等主流前端框架，覆盖 Vite、Webpack、Angular CLI、Turbopack 等构建工具。
 
 ## 基线
 
 | 维度 | 选型 |
 |------|------|
-| 基线框架 | Vue 3.4+ / TypeScript 5.x（strict 模式） |
-| 构建工具 | Vite 5.x |
-| 测试框架 | Vitest + @vue/test-utils |
-| 覆盖率工具 | c8 / istanbul（核心逻辑覆盖率 ≥80%） |
-| 代码规范 | ESLint 扁平配置 + Prettier + vue-tsc |
-| 状态管理 | Pinia |
-| 路由 | Vue Router 4.x |
-| HTTP 请求 | Axios（封装） |
+| **基线框架** | Vue 3.4+ / React 18+ / Angular 18+ / Svelte 5.x / Next.js 15.x / Nuxt 4.x |
+| **构建工具** | Vite 5.x / Webpack 5.x / Angular CLI 18+ / Turbopack |
+| **测试框架** | Vitest / Jest / Jasmine + Karma（按框架选择） |
+| **覆盖率工具** | c8 / istanbul（核心逻辑覆盖率 ≥80%） |
+| **代码规范** | ESLint 扁平配置 + Prettier + TypeScript strict 模式 |
+| **状态管理** | Pinia / Redux / Zustand / NgRx（按框架选择） |
+| **路由** | Vue Router 4.x / React Router 6.x / Angular Router 18+ |
+| **HTTP 请求** | Axios（封装） |
 
 ## 规则
 
@@ -42,12 +42,12 @@ Harness Frontend 语言规范包为前端项目提供完整的开发规范体系
 
 ### 工程结构要点
 
-- 基于 Vite + Vue 3 的标准目录结构
-- 页面组件放在 `pages/` 或 `views/`
+- 基于构建工具的标准目录结构（Vite / Webpack / Angular CLI）
+- 页面组件放在 `pages/` 或 `views/`（Next.js 用 `app/` 或 `pages/` 目录）
 - 通用组件放在 `components/`
-- Vue Router 的 `beforeEach` 中做权限校验
-- API 调用封装在 `api/` 模块，不直接在组件中写请求
-- 状态管理使用 Pinia，`store` 目录集中管理
+- 路由层做权限校验
+- API 调用封装在 `api/` 或 `services/` 模块，不直接在组件中写请求
+- 状态管理集中管理（Pinia / Redux / Zustand / NgRx）
 
 ## 技能
 
@@ -55,6 +55,6 @@ Harness Frontend 语言规范包为前端项目提供完整的开发规范体系
 
 ## 适用项目
 
-- Vue 3 + TypeScript 项目
-- Vite 构建的前端项目
+- Vue 3 / React / Angular / Svelte / Next.js / Nuxt 项目
+- Vite / Webpack / Angular CLI 构建的前端项目
 - 需要严格类型安全和代码规范的前端项目

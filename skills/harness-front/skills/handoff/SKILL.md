@@ -52,13 +52,13 @@ disable-model-invocation: true
 2. 读取 `.harness/rules/`
 3. 读取本文件
 4. 读取 `.harness/changes/<id>/change.md`
-5. `npm run lint` — 检查 lint 状态
-6. `npm run test:unit` — 检查测试状态
+5. `{{LINT_CMD}}` — 检查 lint 状态
+6. `{{TEST_CMD}}` — 检查测试状态
 
 ## 断点续接命令
 ```bash
-npm run dev
-npm run test:unit
+{{DEV_CMD}}
+{{TEST_CMD}}
 ```
 ```
 

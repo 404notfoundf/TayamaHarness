@@ -22,28 +22,28 @@ description: 机械化执行全量质量门禁——静态分析、架构约束�
 
 ---
 
-## 2. Maven CI 流水线
+## 2. {{BUILD_TOOL}} CI 流水线
 
 ```
 stage-1  编译检查
-  mvn clean compile
-  mvn checkstyle:check          # 风格：文件≤500行/方法≤50行/圈复杂度≤10
+  {{BUILD_CMD}}
+  {{LINT_CMD}}          # 风格：文件≤500行/方法≤50行/圈复杂度≤10
   mvn pmd:check                 # 静态分析 + 重复代码
 
 stage-2  架构约束
-  mvn test -Dtest=ArchitectureConstraints
+  {{ARCH_TEST_CMD}}
   # 模块依赖方向正确、Controller 不直调 Service 实现等
 
 stage-3  单元测试 + 覆盖率
-  mvn test
-  mvn jacoco:report             # 核心逻辑覆盖率 ≥80%
+  {{TEST_CMD}}
+  {{COV_CMD}}             # 核心逻辑覆盖率 ≥80%
 
 stage-4  安全扫描
-  mvn enforcer:enforce          # 依赖版本一致、禁 SNAPSHOT
+  {{SECURITY_CMD}}          # 依赖版本一致、禁 SNAPSHOT
   扫描硬编码密钥
 
 stage-5  集成测试（PR 时）
-  mvn verify -pl tests -Dtest="*IT"
+  {{INTEGRATION_CMD}}
 ```
 
 ---
@@ -53,7 +53,7 @@ stage-5  集成测试（PR 时）
 | 检查项 | 通过标准 | 失败处理 |
 |--------|---------|---------|
 | 编译 | 0 error | 退回 ② 编码 |
-| Checkstyle | 0 violation | 退回 ② 编码 |
+| {{LINT_TOOL}} | 0 violation | 退回 ② 编码 |
 | PMD | 0 priority-1/2 | 退回 ② 编码 |
 | 架构约束 | 全部 @ArchTest 通过 | 退回 ②（架构腐化，严重） |
 | 单元测试 | 0 failed | 退回 ② / ③ |

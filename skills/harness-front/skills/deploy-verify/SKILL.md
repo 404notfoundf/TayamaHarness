@@ -30,7 +30,7 @@ description: 部署后冒烟、健康检查、关键链路验证，确保变更�
 
 ### Step 3: 回滚预案
 - 确认上一版本构建产物可用
-- 回滚命令：`npm run rollback` 或 CDN 切换
+- 回滚命令：`{{ROLLBACK_CMD}}` 或 CDN 切换
 - 回滚后验证核心链路恢复
 
 ### Step 4: 输出验证报告

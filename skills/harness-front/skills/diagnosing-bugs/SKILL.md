@@ -14,12 +14,12 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 
 ### 构建反馈循环的方式（按优先级排列）
 
-1. **失败测试** — 在能触达 Bug 的接缝处写 Vitest 单元/组件测试
+1. **失败测试** — 在能触达 Bug 的接缝处写 {{TEST_FRAMEWORK}} 单元/组件测试
 2. **手动操作脚本** — 列出精确的复现步骤（点击顺序、输入值、API 参数）
-3. **浏览器 DevTools** — 捕获 Network/XHR、Console 错误、Vue Devtools 状态
+3. **浏览器 DevTools** — 捕获 Network/XHR、Console 错误、{{DEVTOOLS_TOOL}} 状态
 4. **Playwright 无头浏览器脚本** — 驱动 UI，断言 DOM/console/network
 5. **重放录制的 trace** — 保存真实请求/事件日志，隔离重放
-6. **临时测试桩** — 启动最小 mock 服务（`vi.mock` + `vi.fn()`）
+6. **临时测试桩** — 启动最小 mock 服务（`{{TEST_FRAMEWORK}}.mock` + `{{TEST_FRAMEWORK}}.fn()`）
 7. **对比测试** — 同一输入跑旧版 vs 新版，对比输出
 
 ### 核心原则
@@ -44,16 +44,16 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 
 ## Phase 4 — 探测
 
-每个探测对应 Phase 3 的特定预测。**一次只改一个变量。** 用浏览器的 DevTools 或 Vue Devtools 检查状态。
+每个探测对应 Phase 3 的特定预测。**一次只改一个变量。** 用浏览器的 DevTools 或 {{DEVTOOLS_TOOL}} 检查状态。
 
 ## Phase 5 — 修复 + 回归测试
 
-**先写回归测试，再修复。** 用 Vitest 写失败测试 → 看它失败 → 应用修复 → 看它通过 → 用原始场景重新运行 Phase 1 循环。
+**先写回归测试，再修复。** 用 {{TEST_FRAMEWORK}} 写失败测试 → 看它失败 → 应用修复 → 看它通过 → 用原始场景重新运行 Phase 1 循环。
 
 ## Phase 6 — 清理 + 事后分析
 
 - [ ] 原始场景不再复现
-- [ ] 回归测试通过（`npx vitest run`）
+- [ ] 回归测试通过（`{{TEST_CMD}}`）
 - [ ] 所有调试探针已移除
 - [ ] 正确的假设写入 commit message
 

@@ -19,7 +19,7 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 3. **CLI 调用** — 带 fixture 输入，比对 stdout 与已知正确快照
 4. **Playwright 无头浏览器脚本** — 驱动 UI，断言 DOM/console/network
 5. **重放录制的 trace** — 保存真实请求/事件日志到磁盘，隔离重放
-6. **临时测试桩** — 启动最小 `httptest.Server` + Mock 依赖
+6. **临时测试桩** — 启动最小 `{{HTTP_MOCK_UTIL}}` + Mock 依赖
 7. **二分法测试桩** — 如果 Bug 在两个已知状态之间出现，自动化"启动状态 X → 检查 → 重复"以便 `git bisect run`
 8. **对比测试** — 同一输入跑旧版 vs 新版，对比输出
 
@@ -45,7 +45,7 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 
 ## Phase 4 — 探测
 
-每个探测对应 Phase 3 的特定预测。**一次只改一个变量。** 用 `delve` 调试器或 `pprof` 检查状态。
+每个探测对应 Phase 3 的特定预测。**一次只改一个变量。** 用 `{{DEBUG_TOOL}}` 调试器或 `{{DEBUG_TOOL}}` 检查状态。
 
 ## Phase 5 — 修复 + 回归测试
 
@@ -54,7 +54,7 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 ## Phase 6 — 清理 + 事后分析
 
 - [ ] 原始场景不再复现
-- [ ] 回归测试通过（`go test -race`）
+- [ ] 回归测试通过（`{{TEST_CMD}} {{RACE_DETECT_ARG}}`）
 - [ ] 所有调试探针已移除
 - [ ] 正确的假设写入 commit message
 

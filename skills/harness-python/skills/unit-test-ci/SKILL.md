@@ -19,22 +19,22 @@ description: 机械化执行全量质量门禁——静态分析、架构约束�
 
 ```
 stage-1  语法/风格检查
-  flake8 --max-line-length=100 --max-complexity=10
-  mypy <app_package>/
-  black --check .
+  {{LINT_CMD}}
+  {{TYPE_CHECK_TOOL}} <app_package>/
+  {{FORMAT_CHECK_CMD}}
 
 stage-2  架构约束
-  pytest tests/architecture/ -v
+  {{ARCH_TEST_CMD}}
 
 stage-3  单元测试 + 覆盖率
-  pytest --cov=<app_package> --cov-fail-under=80 -v
+  {{COV_CMD}}=<app_package> --cov-fail-under=80 -v
 
 stage-4  安全扫描
   扫描硬编码密钥
-  检查依赖漏洞（pip-audit / safety）
+  检查依赖漏洞（{{SECURITY_CMD}}）
 
 stage-5  集成测试（PR 时）
-  pytest tests/integration/ -v
+  {{INTEGRATION_CMD}}
 ```
 
 ---
@@ -43,9 +43,9 @@ stage-5  集成测试（PR 时）
 
 | 检查项 | 通过标准 | 失败处理 |
 |--------|---------|---------|
-| flake8 | 0 violation | 退回 ② 编码 |
-| mypy | 0 type error | 退回 ② 编码 |
-| black | 格式一致 | 退回 ② 编码 |
+| {{LINT_CMD}} | 0 violation | 退回 ② 编码 |
+| {{TYPE_CHECK_TOOL}} | 0 type error | 退回 ② 编码 |
+| {{FORMAT_TOOL}} | 格式一致 | 退回 ② 编码 |
 | 单元测试 | 0 failed | 退回 ② / ③ |
 | 覆盖率 | 核心 ≥80% | 退回 ③ 补测试 |
 | 安全扫描 | 0 命中 | 退回 ② |

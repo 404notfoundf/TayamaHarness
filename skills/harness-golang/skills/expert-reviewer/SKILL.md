@@ -76,7 +76,7 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
 ### 维度 5: 安全
 - [ ] 外部输入已校验？
 - [ ] 日志无敏感信息？
-- [ ] 竞态条件已检查（`go test -race`）？
+- [ ] 竞态条件已检查（`{{TEST_CMD}} {{RACE_DETECT_ARG}}`）？
 
 ---
 

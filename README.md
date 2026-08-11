@@ -28,7 +28,31 @@ npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
 /apply-harness
 ```
 
-AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录：
+安装完成后，在 `.harness/` 目录下已注册 14 个技能，通过斜杠命令驱动 6 阶段流水线：
+
+```bash
+# ① 需求分析 — 打磨需求，生成规格说明书
+/harnessing
+
+# ② 编码实现 — 按 AC 列表逐个实现，垂直切片
+/coding-skill
+
+# ③ 单测编写 — 为核心逻辑编写单元测试（覆盖率 ≥80%）
+/unit-test-write
+
+# ④ 专家评审 — 双轴评审（Spec 匹配 + 规范合规），0 个 🔴 才放行
+/expert-reviewer
+
+# ⑤ CI 门禁 — 机械化执行静态分析 + 竞态检测 + 架构约束 + 全量测试
+/unit-test-ci
+
+# ⑥ 部署验证 — 冒烟测试、健康检查、关键链路验证、回滚确认
+/deploy-verify
+```
+
+> 每个技能完成后，自动进入下一个阶段。遇到 Bug 可用 `/diagnosing-bugs`，需要切换上下文时用 `/handoff`，定期运行 `/arch-review` 做架构体检。
+
+AI 自动检测项目语言与框架（Java / Python / Go / Frontend，支持 Spring Boot / Spring Cloud Alibaba / Dubbo / Quarkus / Django / FastAPI / TensorFlow / PyTorch / LangChain / Gin / Beego / GoFrame / Kitex / React / Vue / Angular / Next.js 等 50+ 主流框架和构建工具），生成 `.harness/` 目录：
 - **Owner Agent** — 应用负责人智能体（灵魂，定义你是谁、怎么工作）
 - **Rules** — 5 条规则（SDD-TDD / 编码规范 / 工程结构 / 开发流程 / 运行时可靠性）
 - **Skills** — 14 个技能（6 流水线 + 3 通用辅助 + 3 场景辅助 + 2 新增）
@@ -38,12 +62,12 @@ AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录�
 
 ## 支持的语言
 
-| 语言 | 基线规范 | 测试框架 | 代码规范 | 结构规范 |
+| 语言 | 支持框架 | 构建工具 | 测试框架 | 代码规范 |
 |------|---------|---------|---------|---------|
-| **Java** | Alibaba Java 手册 | JUnit 5 + Mockito | Checkstyle + PMD | Maven 多模块 + Spring Boot |
-| **Python** | PEP 8 + Google Style | pytest + pytest-mock | flake8 + mypy + black | Flask/FastAPI 分层架构 |
-| **Go** | Go Code Review + Uber Style | go test + testify | golangci-lint + go vet | go-zero/Gin 微服务布局 |
-| **Frontend** | Vue 3 + TypeScript 严格模式 | Vitest + @vue/test-utils | ESLint + Prettier + vue-tsc | Vite + Pinia + Vue Router |
+| **Java** | Spring Boot / Spring Cloud Alibaba / Spring MVC / Quarkus / Micronaut / Vert.x / Dropwizard / Dubbo / Spring AI / Spring AI Alibaba / LangChain4j / Semantic Kernel / AgentScope Java / Genkit Java | Maven / Gradle | JUnit 5 + Mockito | Checkstyle + PMD |
+| **Python** | Django / FastAPI / Flask / Tornado / TensorFlow / PyTorch / Keras / scikit-learn / XGBoost / LangChain / LangGraph / CrewAI / PydanticAI / Hugging Face Transformers / OpenAI Agents SDK | pip / Poetry / uv | pytest（Django 用 TestCase） | flake8 + mypy + black |
+| **Go** | Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Gorilla Mux / Kitex / Hertz / Iris / Macaron / Tango / GoFrame / LangChainGo / eino / ADK-Go / tRPC-Agent-Go / Genkit / Anyi | go mod | go test + testify | golangci-lint + go vet |
+| **Frontend** | Vue 3 / React / Angular / Svelte / Next.js / Nuxt | Vite / Webpack / Angular CLI | Vitest / Jest / Jasmine | ESLint + Prettier |
 
 ## 技能清单
 
@@ -52,15 +76,15 @@ AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录�
 | `/install-skill` | 技能注册 | 手动将 `.harness/skills/` 下的技能注册到当前 AI 工具（19+ 主流工具），使斜杠命令立即可用 |
 | `/harness-me` | 需求打磨 | 一场"灵魂拷问"式对话，帮你把模糊需求打磨到可落地                                  |
 | `/harnessing` | 需求拷问引擎 | 一次只问一个问题，沿决策树推进，输出需求总结卡片                                   |
-| `harnessing` | ① 需求分析 | 规格构建、AC 可测试、边界 ≥3                                          |
-| `coding-skill` | ② 编码实现 | 先写失败测试 → 最小实现 → 重构，垂直切片不批量                                 |
-| `unit-test-write` | ③ 单测编写 | 每条 AC 一个测试，覆盖率 ≥80%，不测 happy path                          |
-| `expert-reviewer` | ④ 专家评审 | 双轴评审（Spec + Standards），0 个 🔴 才放行                          |
-| `unit-test-ci` | ⑤ CI 门禁 | 机械化执行，任一检查失败即红灯                                            |
-| `deploy-verify` | ⑥ 部署验证 | "CI 绿"≠"线上可用"，确认健康检查+链路+回滚                                 |
-| `domain-modeling` | 通用辅助 | 主动维护领域模型，术语敲定当场写 CONTEXT.md / ADR                          |
-| `research` | 通用辅助 | 对一手来源调研，结果落 wiki                                           |
-| `resolving-merge-conflicts` | 通用辅助 | 解决 git merge/rebase 冲突，保留双方意图                              |
+| `/harnessing` | ① 需求分析 | 规格构建、AC 可测试、边界 ≥3                                          |
+| `/coding-skill` | ② 编码实现 | 先写失败测试 → 最小实现 → 重构，垂直切片不批量                                 |
+| `/unit-test-write` | ③ 单测编写 | 每条 AC 一个测试，覆盖率 ≥80%，不测 happy path                          |
+| `/expert-reviewer` | ④ 专家评审 | 双轴评审（Spec + Standards），0 个 🔴 才放行                          |
+| `/unit-test-ci` | ⑤ CI 门禁 | 机械化执行，任一检查失败即红灯                                            |
+| `/deploy-verify` | ⑥ 部署验证 | "CI 绿"≠"线上可用"，确认健康检查+链路+回滚                                 |
+| `/domain-modeling` | 通用辅助 | 主动维护领域模型，术语敲定当场写 CONTEXT.md / ADR                          |
+| `/research` | 通用辅助 | 对一手来源调研，结果落 wiki                                           |
+| `/resolving-merge-conflicts` | 通用辅助 | 解决 git merge/rebase 冲突，保留双方意图                              |
 | `/diagnosing-bugs` | Bug 诊断 | 先建反馈循环再猜原因，6 阶段严谨流程                                        |
 | `/handoff` | 上下文交接 | 压缩对话上下文为交接文档，无缝续接                                          |
 | `/arch-review` | 架构体检 | 扫描浅模块，生成 Mermaid 报告，逐一打磨                                   |

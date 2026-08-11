@@ -52,13 +52,13 @@ disable-model-invocation: true
 2. 读取 `.harness/rules/`
 3. 读取本文件
 4. 读取 `.harness/changes/<id>/change.md`
-5. `go build ./...` — 检查编译状态
-6. `go test ./...` — 检查测试状态
+5. `{{BUILD_CMD}}` — 检查编译状态
+6. `{{TEST_CMD}}` — 检查测试状态
 
 ## 断点续接命令
 ```bash
-go build ./...
-go test -race ./...
+{{BUILD_CMD}}
+{{TEST_CMD}} {{RACE_DETECT_ARG}} ./...
 ```
 ```
 

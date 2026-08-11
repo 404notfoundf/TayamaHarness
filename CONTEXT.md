@@ -5,7 +5,7 @@
 
 ## 项目概述
 
-**huazai-harness-skills** 是一套开箱即用的 Harness Engineering 跨语言开发流水线技能包，支持 Java / Python / Go / Frontend 四种语言。
+**huazai-harness-skills** 是一套开箱即用的 Harness Engineering 跨语言开发流水线技能包，支持 Java / Python / Go / Frontend 四种语言，涵盖 Spring Boot、Spring Cloud Alibaba、Spring MVC、Quarkus、Micronaut、Vert.x、Dropwizard、Dubbo、Spring AI、Spring AI Alibaba、AgentScope Java、LangChain4j、Semantic Kernel、Genkit Java、Django、FastAPI、Flask、Tornado、TensorFlow、PyTorch、Keras、scikit-learn、XGBoost、Hugging Face Transformers、LangChain、LangGraph、CrewAI、PydanticAI、SmolAgents、OpenAI Agents SDK、Gin、go-zero、Echo、Fiber、Chi、Beego、Go-Kit、Go-Kratos、Gorilla Mux、Kitex、Hertz、Iris、Macaron、Tango、GoFrame、LangChainGo、Google ADK-Go、cloudwego eino、tRPC-Agent-Go、Firebase Genkit、Anyi、React、Vue、Angular、Svelte、Next.js、Nuxt 等 60+ 主流框架和 Maven、Gradle、pip、poetry、uv、go mod、npm、pnpm、yarn、Vite、Webpack、Angular CLI 等主流构建工具。
 
 ## 术语表
 
@@ -45,12 +45,12 @@ huazai-harness-skills/
 
 ## 语言支持
 
-| 语言 | 目录 | 基线规范 |
-|------|------|---------|
-| Java | `skills/harness-java/` | Alibaba Java 手册 |
-| Python | `skills/harness-python/` | PEP 8 + Google Style |
-| Go | `skills/harness-golang/` | Go Code Review + Uber Style |
-| Frontend | `skills/harness-front/` | Vue 3 + TypeScript 严格模式 |
+| 语言 | 目录 | 支持框架 | 构建工具 |
+|------|------|---------|---------|
+| Java | `skills/harness-java/` | Spring Boot / Spring Cloud Alibaba / Spring MVC / Quarkus / Micronaut / Vert.x / Dropwizard / Dubbo / Spring AI / LangChain4j / Semantic Kernel / AgentScope / Genkit | Maven / Gradle |
+| Python | `skills/harness-python/` | Django / FastAPI / Flask / Tornado / TensorFlow / PyTorch / Keras / scikit-learn / XGBoost / LangChain / LangGraph / CrewAI / PydanticAI / Hugging Face Transformers / OpenAI Agents SDK | pip / Poetry / uv |
+| Go | `skills/harness-golang/` | Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Gorilla Mux / Kitex / Hertz / Iris / GoFrame / LangChainGo / eino / ADK-Go / Genkit / Anyi | go mod |
+| Frontend | `skills/harness-front/` | Vue 3 / React / Angular / Svelte / Next.js / Nuxt | Vite / Webpack / Angular CLI |
 
 ## 6 阶段流水线
 

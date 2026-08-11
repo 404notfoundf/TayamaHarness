@@ -20,7 +20,7 @@ description: 部署后冒烟、健康检查、关键链路验证
 ### Step 1: 准备环境
 ```bash
 # Flask 版本
-gunicorn <app_package>.app:app -b 0.0.0.0:5000 -w 4
+{{RUN_CMD}} <app_package>.app:app -b 0.0.0.0:5000 -w 4
 
 # FastAPI 版本
 uvicorn <app_package>.main:app --host 0.0.0.0 --port 8000
@@ -28,8 +28,8 @@ uvicorn <app_package>.main:app --host 0.0.0.0 --port 8000
 
 ### Step 2: 健康检查
 ```bash
-curl localhost:5000/health        # 期望 {"status": "ok"}
-curl localhost:5000/metrics       # 指标可读
+{{HEALTH_CHECK_CMD}}        # 期望 {"status": "ok"}
+{{METRICS_CHECK_CMD}}       # 指标可读
 ```
 
 ### Step 3: 冒烟测试（关键链路）
@@ -51,7 +51,7 @@ curl localhost:5000/metrics       # 指标可读
 # ✅ 部署验证报告: C-NNN
 
 ## 健康检查
-- [x] /health = UP
+- [x] {{HEALTH_ENDPOINT}} = UP
 
 ## 冒烟测试
 | 链路 | 结果 |

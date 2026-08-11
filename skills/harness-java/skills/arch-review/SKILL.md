@@ -54,7 +54,7 @@ disable-model-invocation: true
 
 ## 2. 对 Java 项目的特别关注点
 
-- **Maven 模块间依赖方向** — 是否有反向依赖？
-- **ArchUnit 约束** — 是否有被绕过的架构规则？
+- **{{BUILD_TOOL}} 模块间依赖方向** — 是否有反向依赖？
+- **{{ARCH_TEST_TOOL}} 约束** — 是否有被绕过的架构规则？
 - **Spring Bean 注入** — 是否有循环依赖？
 - **Service 层** — 是否有瘦 service + 胖 controller 的反模式？

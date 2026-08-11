@@ -20,27 +20,27 @@ description: 机械化执行全量质量门禁——静态分析、架构约束�
 
 ```bash
 # Step 1: Lint 检查
-npm run lint
+{{LINT_CMD}}
 
 # Step 2: TypeScript 类型检查
-npx vue-tsc --noEmit
+{{TYPE_CHECK_CMD}}
 
 # Step 3: 单元测试 + 覆盖率
-npx vitest run --coverage --reporter=verbose
+{{TEST_CMD}} {{COV_CMD}}
 
 # Step 4: 构建检查
-npm run build-only
+{{BUILD_CMD}}
 ```
 
 ## 2. 门禁标准
 
 | 检查项 | 命令 | 通过标准 |
 |--------|------|---------|
-| Lint | `npm run lint` | 0 error, 0 warning |
-| 类型检查 | `vue-tsc --noEmit` | 0 error |
-| 单元测试 | `vitest run` | 全部通过 |
-| 覆盖率 | `vitest run --coverage` | 核心逻辑 ≥80% |
-| 构建 | `npm run build-only` | 成功输出 |
+| Lint | `{{LINT_CMD}}` | 0 error, 0 warning |
+| 类型检查 | `{{TYPE_CHECK_CMD}}` | 0 error |
+| 单元测试 | `{{TEST_CMD}}` | 全部通过 |
+| 覆盖率 | `{{TEST_CMD}} {{COV_CMD}}` | 核心逻辑 ≥80% |
+| 构建 | `{{BUILD_CMD}}` | 成功输出 |
 
 ## 3. 失败处理
 

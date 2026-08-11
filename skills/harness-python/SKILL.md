@@ -7,11 +7,11 @@ description: Python 语言规范包 — 编码规范、工程结构（SDD-TDD/�
 
 本包为 Python 项目提供完整的 Harness 开发规范体系，基于：
 
-- **基线框架**: Flask 3.x / FastAPI 0.110+
+- **基线框架**: Django / FastAPI / Flask / Tornado / TensorFlow / PyTorch / Keras / scikit-learn / XGBoost / LangChain / LangGraph / CrewAI / PydanticAI / SmolAgents / OpenAI Agents SDK / Hugging Face Transformers
 - **运行时**: Python 3.11+
 - **测试框架**: pytest + pytest-mock
-- **代码规范**: PEP 8 + Google Python Style + flake8 + mypy + black
-- **依赖管理**: pip + virtualenv / poetry
+- **代码规范**: PEP 8 + Google Python Style + flake8 + mypy + black + isort
+- **依赖管理**: pip + virtualenv / poetry / uv
 
 包含 rules（2 个语言特有 + 3 个通用来自 harness-core）和 skills（9 个），与 `apply-harness` 入口技能配合使用。
 

@@ -19,23 +19,23 @@ description: 机械化执行全量质量门禁——静态分析、竞态检测�
 
 ```
 stage-1  编译检查
-  go mod tidy
-  go build ./...
+  {{DEP_CMD}}
+  {{BUILD_CMD}}
 
 stage-2  静态分析
-  go vet ./...
-  golangci-lint run ./...          # 包含 staticcheck + gocyclo + funlen 等
+  {{VET_CMD}}
+  {{LINT_CMD}}          # 包含 staticcheck + gocyclo + funlen 等
 
 stage-3  架构约束
-  go test ./internal/arch/... -v   # 自定义架构约束测试
+  {{ARCH_TEST_CMD}}   # 自定义架构约束测试
 
 stage-4  单元测试 + 覆盖率 + 竞态检测
-  go test -race -cover -coverprofile=coverage.out ./...
+  {{TEST_CMD}} {{RACE_DETECT_ARG}} -cover -coverprofile=coverage.out ./...
   go tool cover -func=coverage.out | grep "total" | awk '{print $3}' | cut -d'.' -f1
   # 要求: 核心逻辑覆盖率 ≥80%
 
 stage-5  集成测试（PR 时）
-  go test ./tests/... -tags=integration
+  {{INTEGRATION_CMD}}
 ```
 
 ---
@@ -46,7 +46,7 @@ stage-5  集成测试（PR 时）
 |--------|---------|---------|
 | go build | 0 error | 退回 ② 编码 |
 | go vet | 0 warning | 退回 ② 编码 |
-| golangci-lint | 0 error | 退回 ② 编码 |
+| {{LINT_TOOL}} | 0 error | 退回 ② 编码 |
 | 竞态检测 | 0 data race | 退回 ②（严重） |
 | 单元测试 | 0 failed | 退回 ② / ③ |
 | 覆盖率 | 核心 ≥80% | 退回 ③ 补测试 |

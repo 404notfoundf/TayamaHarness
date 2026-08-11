@@ -2,20 +2,20 @@
 
 ## 概述
 
-Harness Go 语言规范包为 Go 项目提供完整的开发规范体系，基于 Go Code Review Comments 和 Uber Go Style Guide。
+Harness Go 语言规范包为 Go 项目提供完整的开发规范体系，基于 Go Code Review Comments 和 Uber Go Style Guide，支持 Gin、go-zero、Echo、Fiber、Chi、Beego、Go-Kit、Go-Kratos、Gorilla Mux、Kitex、Hertz、Iris、GoFrame 等框架，以及 LangChainGo、eino、ADK-Go、Firebase Genkit 等 AI/LLM 框架。
 
 ## 基线
 
 | 维度 | 选型 |
 |------|------|
-| 基线框架 | Go 1.22+ / go-zero / Gin |
-| 构建工具 | go build / Makefile |
-| 测试框架 | go test + testify |
-| 覆盖率工具 | go test -cover（核心逻辑覆盖率 ≥80%） |
-| 代码规范 | golangci-lint + go vet |
-| 架构约束 | goimports + 自定义检查 |
-| 安全扫描 | gosec |
-| 数据库 | GORM / sqlx + golang-migrate |
+| **基线框架** | Go 1.22+ / Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Gorilla Mux / Kitex / Hertz / Iris / Macaron / Tango / GoFrame / LangChainGo / Google ADK-Go / cloudwego eino / tRPC-Agent-Go / Firebase Genkit / Anyi |
+| **构建工具** | go build / Makefile / go mod |
+| **测试框架** | go test + testify |
+| **覆盖率工具** | go test -cover（核心逻辑覆盖率 ≥80%） |
+| **代码规范** | golangci-lint + go vet |
+| **架构约束** | goimports + 自定义检查 |
+| **安全扫描** | gosec |
+| **数据库** | GORM / sqlx + golang-migrate |
 
 ## 规则
 
@@ -43,7 +43,9 @@ Harness Go 语言规范包为 Go 项目提供完整的开发规范体系，基�
 - `internal` 目录隔离内部实现
 - 依赖注入通过构造函数显式传递
 - 接口在消费者侧定义（consumer-side interface）
-- HTTP 处理：Gin 路由或 go-zero REST 风格
+- HTTP 处理：Gin / Echo / Fiber / Chi / Iris / Macaron / Tango / Hertz 路由，或 go-zero REST 风格
+- 微服务间通信：gRPC（go-zero）/ Kitex RPC / Go-Kit / Go-Kratos 标准布局
+- Web 框架：Beego / GoFrame 全栈 MVC
 
 ## 技能
 
@@ -51,6 +53,7 @@ Harness Go 语言规范包为 Go 项目提供完整的开发规范体系，基�
 
 ## 适用项目
 
-- Gin / go-zero 微服务
+- Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Gorilla Mux / Kitex / Hertz / Iris / GoFrame 微服务
+- LangChainGo / eino / ADK-Go / Firebase Genkit / Anyi LLM/AI Agent 应用
 - Go 1.22+ 项目
 - 高性能后端服务

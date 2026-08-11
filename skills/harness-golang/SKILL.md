@@ -7,10 +7,10 @@ description: Golang 语言规范包 — 编码规范、工程结构（SDD-TDD/�
 
 本包为 Go 项目提供完整的 Harness 开发规范体系，基于：
 
-- **基线框架**: go-zero 1.9.x / Gin 1.10+
+- **基线框架**: Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Gorilla Mux / Kitex / Hertz / Iris / Macaron / Tango / GoFrame / LangChainGo / Google ADK-Go / cloudwego eino / tRPC-Agent-Go / Firebase Genkit / Anyi
 - **运行时**: Go 1.22+
 - **测试框架**: go test + testify
-- **代码规范**: Go Code Review Comments + Uber Go Style + golangci-lint
+- **代码规范**: Go Code Review Comments + Uber Go Style + golangci-lint（go vet + staticcheck）
 - **依赖管理**: go mod
 
 包含 rules（2 个语言特有 + 3 个通用来自 harness-core）和 skills（9 个），与 `apply-harness` 入口技能配合使用。

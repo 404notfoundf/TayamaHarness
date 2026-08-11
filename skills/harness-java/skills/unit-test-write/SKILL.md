@@ -9,7 +9,7 @@ description: 为实现代码编写 Java 单元测试，核心逻辑覆盖率 ≥
 > **流水线阶段**: ③ 第三步
 > **输入**: ② 阶段的实现代码 + change.md
 > **出口门禁**: 测试通过 · 核心逻辑覆盖率 ≥80% · 覆盖全部 AC、边界与降级路径
-> **测试框架**: JUnit 5 + Mockito + AssertJ
+> **测试框架**: {{TEST_FRAMEWORK}} + {{MOCK_LIB}}
 
 ### 核心规则（一句话摘要）
 
@@ -38,7 +38,7 @@ description: 为实现代码编写 Java 单元测试，核心逻辑覆盖率 ≥
 
 ### Step 3: 编写测试
 - 命名: `should_<期望>_when_<条件>` 或 `测试方法名_场景`
-- 用 JUnit 5 + Mockito + AssertJ
+- 用 {{TEST_FRAMEWORK}} + {{MOCK_LIB}}
 - 每个测试**单一断言意图**，Arrange-Act-Assert 三段清晰
 - **降级逻辑必须实测**，不满足于"应该能处理"
 
@@ -48,7 +48,7 @@ description: 为实现代码编写 Java 单元测试，核心逻辑覆盖率 ≥
 - 用 Stub 提供可控的故障场景（超时、异常、空返回）
 
 ### Step 5: 覆盖率核验
-- 跑 JaCoCo，核心逻辑 ≥80%
+- 跑 {{COV_TOOL}}，核心逻辑 ≥80%
 - 覆盖率不足 → 补测试，而非降低标准
 - 纯 getter/setter/配置类可豁免
 

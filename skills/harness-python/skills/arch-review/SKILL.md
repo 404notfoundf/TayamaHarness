@@ -51,4 +51,4 @@ disable-model-invocation: true
 - **分层依赖** — handler → service → model 方向是否正确？
 - **导入关系** — 是否有循环 import？
 - **Flask/FastAPI 入口** — 是否有胖 handler 反模式？
-- **SQLAlchemy 模型** — 是否有业务逻辑泄漏到模型层？
+- **{{ORM_TOOL}} 模型** — 是否有业务逻辑泄漏到模型层？

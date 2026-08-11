@@ -19,14 +19,14 @@ description: 部署后冒烟、健康检查、关键链路验证
 
 ### Step 1: 准备环境
 ```bash
-go build -o bin/server ./<service>/api/<service>.go
-./bin/server -f etc/dev.yaml
+{{BUILD_CMD}} bin/server ./<service>/api/<service>.go
+{{RUN_CMD}} -f etc/dev.yaml
 ```
 
 ### Step 2: 健康检查
 ```bash
-curl localhost:8888/health          # 期望 UP
-curl localhost:8888/prometheus      # 指标可读
+{{HEALTH_CHECK_CMD}}          # 期望 UP
+curl {{METRICS_ENDPOINT}}      # 指标可读
 ```
 
 ### Step 3: 冒烟测试（关键链路）
