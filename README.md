@@ -11,7 +11,7 @@
 Harness 是一个**人类设计约束、AI 写代码、机器验证**的开发方法论。核心是 **Owner Agent**（应用负责人智能体），它编排 6 阶段流水线：
 
 ```
-① request-analysis  →  ② coding-skill  →  ③ unit-test-write  →  ④ expert-reviewer  →  ⑤ unit-test-ci  →  ⑥ deploy-verify
+① harnessing  →  ② coding-skill  →  ③ unit-test-write  →  ④ expert-reviewer  →  ⑤ unit-test-ci  →  ⑥ deploy-verify
 ```
 
 ## 快速开始
@@ -47,23 +47,23 @@ AI 自动检测项目语言（Java / Python / Go），生成 `.harness/` 目录�
 
 ## 技能清单
 
-| 技能 | 阶段 | 一句话摘要 |
-|------|------|-----------|
-| `/install-skill` | 技能注册 | 将 `.harness/skills/` 下的技能注册到当前 AI 工具（19+ 主流工具），使斜杠命令立即可用 |
-| `/harness-me` | 需求打磨 | 一场"灵魂拷问"式对话，帮你把模糊需求打磨到可落地 |
-| `/harnessing` | 需求拷问引擎 | 一次只问一个问题，沿决策树推进，输出需求总结卡片 |
-| `request-analysis` | ① 需求分析 | 规格构建、AC 可测试、边界 ≥3 |
-| `coding-skill` | ② 编码实现 | 先写失败测试 → 最小实现 → 重构，垂直切片不批量 |
-| `unit-test-write` | ③ 单测编写 | 每条 AC 一个测试，覆盖率 ≥80%，不测 happy path |
-| `expert-reviewer` | ④ 专家评审 | 双轴评审（Spec + Standards），0 个 🔴 才放行 |
-| `unit-test-ci` | ⑤ CI 门禁 | 机械化执行，任一检查失败即红灯 |
-| `deploy-verify` | ⑥ 部署验证 | "CI 绿"≠"线上可用"，确认健康检查+链路+回滚 |
-| `domain-modeling` | 通用辅助 | 主动维护领域模型，术语敲定当场写 CONTEXT.md / ADR |
-| `research` | 通用辅助 | 对一手来源调研，结果落 wiki |
-| `resolving-merge-conflicts` | 通用辅助 | 解决 git merge/rebase 冲突，保留双方意图 |
-| `/diagnosing-bugs` | Bug 诊断 | 先建反馈循环再猜原因，6 阶段严谨流程 |
-| `/handoff` | 上下文交接 | 压缩对话上下文为交接文档，无缝续接 |
-| `/arch-review` | 架构体检 | 扫描浅模块，生成 Mermaid 报告，逐一打磨 |
+| 技能 | 阶段 | 一句话摘要                                                      |
+|------|------|------------------------------------------------------------|
+| `/install-skill` | 技能注册 | 手动将 `.harness/skills/` 下的技能注册到当前 AI 工具（19+ 主流工具），使斜杠命令立即可用 |
+| `/harness-me` | 需求打磨 | 一场"灵魂拷问"式对话，帮你把模糊需求打磨到可落地                                  |
+| `/harnessing` | 需求拷问引擎 | 一次只问一个问题，沿决策树推进，输出需求总结卡片                                   |
+| `harnessing` | ① 需求分析 | 规格构建、AC 可测试、边界 ≥3                                          |
+| `coding-skill` | ② 编码实现 | 先写失败测试 → 最小实现 → 重构，垂直切片不批量                                 |
+| `unit-test-write` | ③ 单测编写 | 每条 AC 一个测试，覆盖率 ≥80%，不测 happy path                          |
+| `expert-reviewer` | ④ 专家评审 | 双轴评审（Spec + Standards），0 个 🔴 才放行                          |
+| `unit-test-ci` | ⑤ CI 门禁 | 机械化执行，任一检查失败即红灯                                            |
+| `deploy-verify` | ⑥ 部署验证 | "CI 绿"≠"线上可用"，确认健康检查+链路+回滚                                 |
+| `domain-modeling` | 通用辅助 | 主动维护领域模型，术语敲定当场写 CONTEXT.md / ADR                          |
+| `research` | 通用辅助 | 对一手来源调研，结果落 wiki                                           |
+| `resolving-merge-conflicts` | 通用辅助 | 解决 git merge/rebase 冲突，保留双方意图                              |
+| `/diagnosing-bugs` | Bug 诊断 | 先建反馈循环再猜原因，6 阶段严谨流程                                        |
+| `/handoff` | 上下文交接 | 压缩对话上下文为交接文档，无缝续接                                          |
+| `/arch-review` | 架构体检 | 扫描浅模块，生成 Mermaid 报告，逐一打磨                                   |
 
 ## 核心设计理念
 

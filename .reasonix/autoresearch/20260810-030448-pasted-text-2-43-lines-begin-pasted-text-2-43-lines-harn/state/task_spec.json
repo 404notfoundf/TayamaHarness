@@ -1,0 +1,27 @@
+{
+  "task_id": "20260810-030448-pasted-text-2-43-lines-begin-pasted-text-2-43-lines-harn",
+  "goal": "[Pasted text #2 · 43 lines]\n\n--- Begin [Pasted text #2 · 43 lines] ---\nHarness 规范已重新应用到 huazai-go-im 项目。以下是完整的交付摘要：\r\r│ ╔══════════════════════════════════════════╗\r│ ║   ✅ Harness 规范已应用到 huazai-go-im   ║\r│ ╠══════════════════════════════════════════╣\r│ ║  语言:   Go                              ║\r│ ║  框架:   go-zero 1.9.x / Gin 1.10+      ║\r│ ║  规则:   5 个已就绪（3 通用 + 2 语言特有）   ║\r│ ║  技能:   13 个已就绪（10 golang + 3 common）║\r│ ║  Owner:  已就绪                          ║\r│ ║  变更追踪:  已就绪                        ║\r│ ║  领域知识库:  已就绪                      ║\r│ ║  共享上下文:  已就绪                      ║\r│ ╠══════════════════════════════════════════╣\r│ ║  ✅ 技能已注册到 Reasonix                 ║\r│ ║  斜杠命令立即可用:                        ║\r│ ║  /harnessing-golang    ✅ 需求拷问引擎    ║\r│ ║  /harness-me-golang    ✅ 需求打磨       ║\r│ ║  /coding-skill-golang  ✅ 编码实现        ║\r│ ║  /unit-test-write-golang ✅ 单测编写      ║\r│ ║  /diagnosing-bugs-golang ✅ Bug 诊断     ║\r│ ║  /handoff-golang       ✅ 上下文交接       ║\r│ ║  /arch-review-golang   ✅ 架构体检        ║\r│ ║  /expert-reviewer-golang ✅ 专家评审      ║\r│ ║  /unit-test-ci-golang  ✅ CI 门禁         ║\r│ ║  /deploy-verify-golang ✅ 部署验证        ║\r│ ╠══════════════════════════════════════════╣\r│ ║  下一步: 创建你的第一个变更               ║\r│ ║  /harnessing-golang \"一句话描述需求\"      ║\r│ ╚══════════════════════════════════════════╝\r\r交付清单：\r\r• .harness/agents/owner.md — 已渲染（Go 参数）\r• .harness/rules/ — 5 个规则（SDD-TDD、开发流程、运行时可靠性、编码规范、工程结构）\r• .harness/skills/golang/ — 10 个 Go 专有技能\r• .harness/skills/common/ — 3 个跨语言通用技能\r• .harness/changes/_TEMPLATE/ — 变更卡/评审报告/部署验证模板\r• .harness/wiki/ — 5 个领域知识库模板\r• .harness/CONTEXT.md + CONTEXT-FORMAT.md — 共享语言上下文\r• .reasonix/skills/ — 13 个技能已注册，斜杠命令立即可用\r  · 52381 tok · in 51662 (51200 cached / 462 new) · out 719 · ¥0.0029\r  · 未知命令: /harnessing\n--- End [Pasted text #2 · 43 lines] ---  有了 .reasonix/skills/ 也不行啊，请检查C:\\code\\go\\src\\huazai-go-im",
+  "scope": null,
+  "non_goals": null,
+  "allowed_operations": {
+    "write": true,
+    "network": false,
+    "publish": false
+  },
+  "success_criteria": [
+    {
+      "id": "objective_evidence",
+      "description": "The goal outcome is supported by direct evidence, such as inspected code, reproduced behavior, source material, or concrete findings.",
+      "required": true,
+      "evidence_ids": [
+        "f1"
+      ]
+    },
+    {
+      "id": "verification",
+      "description": "The result has relevant verification evidence, such as tests, commands, benchmarks, manual checks, or a documented reason why verification is not applicable.",
+      "required": true,
+      "evidence_ids": null
+    }
+  ]
+}

@@ -24,7 +24,7 @@ description: 对高信任一手来源调研问题，结果作为 Markdown 文件
 
 | 触发场景 | 动作 |
 |---------|------|
-| `request-analysis` 需要确认外部 API/库是否支持某能力 | 调用本技能查证 |
+| `harnessing` 需要确认外部 API/库是否支持某能力 | 调用本技能查证 |
 | `coding-skill` 不确定某依赖的正确用法 | 调用本技能查一手文档 |
 | `expert-reviewer` 需要确认某规范条款的权威解释 | 调用本技能查证 |
 

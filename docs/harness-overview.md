@@ -43,7 +43,7 @@
 ## 6 阶段流水线
 
 ```
-① request-analysis  →  ② coding-skill  →  ③ unit-test-write  →  ④ expert-reviewer  →  ⑤ unit-test-ci  →  ⑥ deploy-verify
+① harnessing  →  ② coding-skill  →  ③ unit-test-write  →  ④ expert-reviewer  →  ⑤ unit-test-ci  →  ⑥ deploy-verify
 ```
 
 详见 [6 阶段流水线](6-stage-pipeline.md) 文档。

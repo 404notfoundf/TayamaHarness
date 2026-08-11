@@ -6,7 +6,7 @@
                                    ┌──────────── 每一步都对照 .harness/rules/ 校验 ────────────┐
                                    │                                                          │
    人类意图                         ▼                                                          │
-      │   ① request-analysis  ──▶ ② coding-skill ──▶ ③ unit-test-write ──▶ ④ expert-reviewer ──▶ ⑤ unit-test-ci ──▶ ⑥ deploy-verify ──▶ 交付
+      │   ① harnessing  ──▶ ② coding-skill ──▶ ③ unit-test-write ──▶ ④ expert-reviewer ──▶ ⑤ unit-test-ci ──▶ ⑥ deploy-verify ──▶ 交付
       │   规格构建                 测试先行实现       测试完善              专家评审             CI 门禁            部署验证
       ▼
    .harness/changes/<id>/   （全程留档，状态机驱动）
@@ -16,7 +16,7 @@
 
 ## 阶段定义
 
-### ① 需求分析 — `request-analysis`
+### ① 需求分析 — `harnessing`
 
 | 属性 | 说明 |
 |------|------|

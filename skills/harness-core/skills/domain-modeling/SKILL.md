@@ -71,7 +71,7 @@ CONTEXT.md 应**完全不含实现细节**。不要把它当规格、草稿或�
 
 | 触发场景 | 动作 |
 |---------|------|
-| `request-analysis` 遇到模糊术语 | 调用本技能精化并写 CONTEXT.md |
+| `harnessing` 遇到模糊术语 | 调用本技能精化并写 CONTEXT.md |
 | `coding-skill` 发现代码与 CONTEXT.md 矛盾 | 调用本技能修正术语 |
 | 做出满足 ADR 条件的设计决策 | 调用本技能写 ADR |
 | `expert-reviewer` 发现代码与领域语言不一致 | 标注为问题项 |

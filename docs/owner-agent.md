@@ -34,7 +34,7 @@ Owner Agent 知道"我是谁"：
 ```
 你 → 一句话需求 → Owner Agent
                     ↓
-             ① request-analysis  →  规格卡
+             ① harnessing  →  规格卡
                     ↓
              ② coding-skill      →  实现代码
                     ↓

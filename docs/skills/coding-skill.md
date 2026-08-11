@@ -50,7 +50,7 @@ Refactor：在测试保护下重构
 
 1. `change.md` 存在且状态为 `approved`
 2. 已加载 `.harness/rules/工程结构.md` + `编码规范.md`
-3. 缺前置 → 退回 ① request-analysis
+3. 缺前置 → 退回 ① harnessing
 
 ## 为什么重要？
 

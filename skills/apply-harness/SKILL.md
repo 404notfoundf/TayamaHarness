@@ -198,7 +198,7 @@ disable-model-invocation: true
 ║  下一步: 注册技能到当前工具              ║
 ║  /install-skill                          ║
 ║  然后创建你的第一个变更:                  ║
-║  /request-analysis "一句话描述需求"      ║
+║  /harnessing "一句话描述需求"            ║
 ╚══════════════════════════════════════════╝
 ```
 

@@ -16,7 +16,7 @@
 
 | 阶段 | 技能 | 文档 |
 |------|------|------|
-| ① 需求分析 | `request-analysis` | [文档](skills/request-analysis.md) |
+| ① 需求分析 | `harnessing` | [文档](skills/harnessing.md) |
 | ② 编码实现 | `coding-skill` | [文档](skills/coding-skill.md) |
 | ③ 单元测试编写 | `unit-test-write` | [文档](skills/unit-test-write.md) |
 | ④ 专家评审 | `expert-reviewer` | [文档](skills/expert-reviewer.md) |

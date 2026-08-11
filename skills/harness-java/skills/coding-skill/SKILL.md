@@ -26,7 +26,7 @@ description: 按已确认的需求卡与编码规范，小步实现可编译的 
 
 1. `change.md` 存在且状态为 `coding`（需求已审批）
 2. 加载上下文：`.harness/rules/工程结构.md` + `编码规范.md` + 相关 `.harness/wiki/*`
-3. 缺前置 → 退回 ① request-analysis
+3. 缺前置 → 退回 ① harnessing-java
 
 ---
 
