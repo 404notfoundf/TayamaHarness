@@ -1,10 +1,10 @@
 ---
-name: feign-toolkit
+name: openfeign-toolkit
 stage: 组件封装
-description: Feign 工具封装——统一超时配置、错误解码器、重试配置、请求/响应拦截器（traceId/鉴权头）、熔断集成
+description: OpenFeign 工具封装——统一超时配置、错误解码器、重试配置、请求/响应拦截器（traceId/鉴权头）、熔断集成
 ---
 
-# Feign 工具封装（feign-toolkit）
+# OpenFeign 工具封装（openfeign-toolkit）
 
 > **Lang**: Java 特有（基于 Spring Cloud OpenFeign）
 > **存放位置**: `harness-java/skills/`
@@ -17,7 +17,7 @@ description: Feign 工具封装——统一超时配置、错误解码器、重�
 
 | 方式 | 说明 |
 |------|------|
-| 独立命令 | `/feign-toolkit [timeout|decoder|retry|interceptor|circuit|all]` |
+| 独立命令 | `/openfeign-toolkit [timeout|decoder|retry|interceptor|circuit|all]` |
 | 自动加载 | coding-skill 阶段检测到 `@FeignClient` / `Feign.Builder` / `feign` 依赖时 |
 
 ## 3. 前置条件

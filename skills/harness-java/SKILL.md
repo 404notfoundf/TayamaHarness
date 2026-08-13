@@ -34,7 +34,7 @@ description: Java 语言规范包 — 编码规范、工程结构（SDD-TDD/开�
 | `java-code-review` | Java 并发编程工具封装（线程池工厂/锁/重试/限流/异步） |
 | `spring-api-convention` | Spring API 规范封装（统一响应/异常处理/幂等/分页/traceId） |
 | `mybatis-toolkit` | MyBatis 工具封装（分页/乐观锁/逻辑删除/自动填充/数据权限/批量） |
-| `feign-toolkit` | Feign 工具封装（超时/错误解码器/重试/拦截器/traceId/熔断） |
+| `openfeign-toolkit` | OpenFeign 工具封装（超时/错误解码器/重试/拦截器/traceId/熔断） |
 
 ### 跨语言技能（来自 harness-core，全语言共享）
 | 技能 | 说明 |

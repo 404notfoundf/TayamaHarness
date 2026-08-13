@@ -45,7 +45,7 @@ expert-reviewer 支持混合加载领域专家技能，自动根据文件类型�
 | 性能异常/线程 dump/GC 日志 | `performance-toolkit` | 诊断工具（火焰图/GC分析/慢SQL/线程dump） | `harness-core/skills/` |
 | 安全敏感模式（密钥/注入/鉴权/URL） | `security-toolkit` | 安全工具（脱敏/加密/校验/XSS/鉴权） | `harness-core/skills/` |
 | MyBatis Mapper XML / `@Mapper` / `SqlSessionFactory` | `mybatis-toolkit` | MyBatis 工具（分页/乐观锁/逻辑删除/自动填充/权限） | `harness-java/skills/` |
-| `@FeignClient` / Feign 接口 | `feign-toolkit` | Feign 工具（超时/错误解码/重试/拦截器/熔断） | `harness-java/skills/` |
+| `@FeignClient` / Feign 接口 | `openfeign-toolkit` | OpenFeign 工具（超时/错误解码/重试/拦截器/熔断） | `harness-java/skills/` |
 | RocketMQ 生产者/消费者代码 | `rocketmq-toolkit` | RocketMQ 工具（事务消息/顺序消息/延迟/DLQ） | `harness-core/skills/` |
 | HTTP 客户端调用（RestTemplate/OkHttp/HttpClient） | `http-client-toolkit` | HTTP 工具（连接池/超时/重试/熔断/traceId） | `harness-core/skills/` |
 | 日志配置/日志打印代码 | `logging-toolkit` | 日志工具（traceId/MDC/脱敏/动态级别） | `harness-core/skills/` |
@@ -56,7 +56,7 @@ expert-reviewer 支持混合加载领域专家技能，自动根据文件类型�
 
 **加载方式**：检测到匹配条件时，将对应技能的完整检查清单作为"领域知识包"注入 Standards 轴，**不替代既有的 10 维度审查**，而是作为维度 4~6（编码规范/代码质量/安全）的**补充细则**。
 
-**独立命令**：每个技能也可通过 `/skill-name` 直接调用（如 `/java-code-review`、`/redis-cache-wrapper`、`/kafka-toolkit`、`/security-toolkit`、`/mybatis-toolkit`、`/feign-toolkit`、`/rocketmq-toolkit`、`/http-client-toolkit`、`/logging-toolkit`、`/scheduler-toolkit`、`/oss-toolkit`、`/excel-toolkit`、`/eventbus-toolkit`），绕过 expert-reviewer 主流程，适合专项代码生成或排查场景。
+**独立命令**：每个技能也可通过 `/skill-name` 直接调用（如 `/java-code-review`、`/redis-cache-wrapper`、`/kafka-toolkit`、`/security-toolkit`、`/mybatis-toolkit`、`/openfeign-toolkit`、`/rocketmq-toolkit`、`/http-client-toolkit`、`/logging-toolkit`、`/scheduler-toolkit`、`/oss-toolkit`、`/excel-toolkit`、`/eventbus-toolkit`），绕过 expert-reviewer 主流程，适合专项代码生成或排查场景。
 
 ---
 

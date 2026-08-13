@@ -28,7 +28,7 @@ npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
 /apply-harness
 ```
 
-安装完成后，在 `.harness/` 目录下已注册 14 个技能，通过斜杠命令驱动 6 阶段流水线：
+安装完成后，在 `.harness/` 目录下已注册 30+ 个技能，通过斜杠命令驱动 6 阶段流水线：
 
 ```bash
 # ① 需求分析 — 打磨需求，生成规格说明书
@@ -55,7 +55,7 @@ npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
 AI 自动检测项目语言与框架（Java / Python / Go / Frontend，支持 Spring Boot / Spring Cloud Alibaba / Dubbo / Quarkus / Django / FastAPI / TensorFlow / PyTorch / LangChain / Gin / Beego / GoFrame / Kitex / React / Vue / Angular / Next.js 等 50+ 主流框架和构建工具），生成 `.harness/` 目录：
 - **Owner Agent** — 应用负责人智能体（灵魂，定义你是谁、怎么工作）
 - **Rules** — 5 条规则（SDD-TDD / 编码规范 / 工程结构 / 开发流程 / 运行时可靠性）
-- **Skills** — 14 个技能（6 流水线 + 3 通用辅助 + 3 场景辅助 + 2 新增）
+- **Skills** — 30+ 个技能（6 流水线 + 3 通用辅助 + 3 场景辅助 + 17 封装组件 + 2 领域专家）
 - **Changes** — 变更追踪模板
 - **Wiki** — 领域知识库模板
 - **CONTEXT.md** — 共享语言机制（AI 与人类间的术语表）
@@ -87,6 +87,28 @@ AI 自动检测项目语言与框架（Java / Python / Go / Frontend，支持 Sp
 | `/diagnosing-bugs` | Bug 诊断 | 先建反馈循环再猜原因，6 阶段严谨流程                                        |
 | `/handoff` | 上下文交接 | 压缩对话上下文为交接文档，无缝续接                                          |
 | `/arch-review` | 架构体检 | 扫描浅模块，生成 Mermaid 报告，逐一打磨                                   |
+
+### 封装组件技能（17 个，即插即用）
+
+| 技能 | 领域 | 一句话摘要 |
+|------|------|------------|
+| `/redis-cache-wrapper` | 缓存 | 多级缓存封装（穿透/击穿/雪崩防护、分布式锁、热 key 探测） |
+| `/database-migration-toolkit` | 数据库迁移 | 迁移模板、回滚脚本、数据回填辅助、兼容性检查 |
+| `/kafka-toolkit` | 消息中间件 | 消费者封装（幂等/重试/DLQ）、生产者封装、Lag 监控 |
+| `/k8s-release-toolkit` | K8s 部署 | Deployment/HPA/探针/灰度发布/回滚检查脚本 |
+| `/performance-toolkit` | 性能诊断 | 一键诊断脚本、火焰图采集、GC 分析、慢 SQL 分析、线程 dump |
+| `/security-toolkit` | 安全 | 脱敏/加密工具、输入校验、鉴权中间件、日志脱敏、安全配置 |
+| `/rocketmq-toolkit` | 消息中间件 | 事务消息（半消息+反查）、顺序消息、延迟消息、DLQ |
+| `/http-client-toolkit` | HTTP 调用 | 连接池管理、超时三件套、重试/熔断/负载均衡、traceId 透传 |
+| `/logging-toolkit` | 日志 | MDC traceId 自动注入、日志脱敏、动态级别 API、文件策略 |
+| `/scheduler-toolkit` | 分布式调度 | 分布式锁调度、任务幂等、补偿机制、控制台 API |
+| `/oss-toolkit` | 对象存储 | 统一接口、分片上传/断点续传、图片处理、CDN 刷新 |
+| `/excel-toolkit` | Excel | 模板导出、大数据量分批、导入校验、动态列/合并单元格 |
+| `/eventbus-toolkit` | 事件总线 | 同步/异步事件、事务事件、事件追踪持久化 |
+| `/java-code-review` | Java 并发 | 线程池工厂、锁模板、重试模板、限流模板、异步模板 |
+| `/spring-api-convention` | Spring API | 统一响应体、全局异常处理、幂等注解、分页工具、traceId 链路 |
+| `/mybatis-toolkit` | MyBatis | 通用分页、乐观锁、逻辑删除、自动填充、数据权限、批量操作 |
+| `/openfeign-toolkit` | OpenFeign | 统一超时、错误解码器、重试、traceId/鉴权拦截器、熔断集成 |
 
 ## 核心设计理念
 
@@ -134,10 +156,23 @@ huazai-harness-skills/
 │   │       ├── handoff/           # ⚙ 模板化技能
 │   │       ├── diagnosing-bugs/   # ⚙ 模板化技能
 │   │       ├── coding-skill/      # ⚙ 模板化技能
-│   │       └── unit-test-write/   # ⚙ 模板化技能
+│   │       ├── unit-test-write/   # ⚙ 模板化技能
+│   │       ├── redis-cache-wrapper/       # 多级缓存封装
+│   │       ├── database-migration-toolkit/ # 数据库迁移工具
+│   │       ├── kafka-toolkit/             # Kafka 工具封装
+│   │       ├── k8s-release-toolkit/       # K8s 发布工具
+│   │       ├── performance-toolkit/       # 性能诊断工具
+│   │       ├── security-toolkit/          # 安全工具封装
+│   │       ├── rocketmq-toolkit/          # RocketMQ 工具封装
+│   │       ├── http-client-toolkit/       # HTTP 客户端工具
+│   │       ├── logging-toolkit/           # 日志工具
+│   │       ├── scheduler-toolkit/         # 分布式调度工具
+│   │       ├── oss-toolkit/               # 对象存储工具
+│   │       ├── excel-toolkit/             # Excel 工具
+│   │       └── eventbus-toolkit/          # 事件总线工具
 │   ├── harness-java/              # Java 语言规范包
 │   │   ├── rules/                 # 5 条规则
-│   │   ├── skills/                # 9 个技能
+│   │   ├── skills/                # 15 个技能（含 6 流水线 + 3 场景辅助 + 2 领域专家 + 2 Java 封装组件）
 │   ├── harness-python/            # Python 语言规范包（同上）
 │   ├── harness-golang/            # Golang 语言规范包（同上）
 │   └── harness-front/             # Frontend 语言规范包（同上）
