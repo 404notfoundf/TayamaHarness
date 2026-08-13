@@ -15,6 +15,18 @@ description: 机械化执行全量质量门禁——静态分析、竞态检测�
 
 ---
 
+## 前置检查
+
+1. **定位目标 change**（按 `.harness/rules/变更定位规则.md`）：
+   - 扫描 `.harness/changes/*/change.md`，过滤 `status: ci`
+   - 用户已指定 `<id>` → 校验该 change 状态是否为 `ci`，否则报错
+   - 恰好 1 个 → 自动选中
+   - 0 个 → 报错：无处于 `ci` 状态的 change，退回 ④ expert-reviewer
+   - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
+2. 缺前置 → 退回 ④ expert-reviewer
+
+---
+
 ## 1. Go CI 流水线
 
 ```

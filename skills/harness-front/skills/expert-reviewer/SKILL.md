@@ -17,6 +17,19 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
 
 ---
 
+## 前置检查
+
+1. **定位目标 change**（按 `.harness/rules/变更定位规则.md`）：
+   - 扫描 `.harness/changes/*/change.md`，过滤 `status: reviewing`
+   - 用户已指定 `<id>` → 校验该 change 状态是否为 `reviewing`，否则报错
+   - 恰好 1 个 → 自动选中
+   - 0 个 → 报错：无处于 `reviewing` 状态的 change，退回 ③ unit-test-write
+   - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
+2. 验证 `review.md` 不存在或可覆盖
+3. 缺前置 → 退回 ③ unit-test-write
+
+---
+
 ## 审查设计
 
 本技能采用**双轴并行子智能体**架构：

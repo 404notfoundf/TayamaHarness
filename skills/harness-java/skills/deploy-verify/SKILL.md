@@ -17,6 +17,18 @@ description: 部署后冒烟、健康检查、关键链路验证，确保变更�
 
 ---
 
+## 前置检查
+
+1. **定位目标 change**（按 `.harness/rules/变更定位规则.md`）：
+   - 扫描 `.harness/changes/*/change.md`，过滤 `status: verifying`
+   - 用户已指定 `<id>` → 校验该 change 状态是否为 `verifying`，否则报错
+   - 恰好 1 个 → 自动选中
+   - 0 个 → 报错：无处于 `verifying` 状态的 change，退回 ⑤ unit-test-ci
+   - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
+2. 缺前置 → 退回 ⑤ unit-test-ci
+
+---
+
 ## 1. 职责
 
 你是上线把关人。确认变更在真实/类生产环境**真的能跑、关键链路真的通**，且出问题能快速回滚。"CI 绿"不等于"线上可用"。

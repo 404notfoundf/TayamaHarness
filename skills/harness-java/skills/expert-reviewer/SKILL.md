@@ -17,6 +17,49 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
 
 ---
 
+## 前置检查
+
+1. **定位目标 change**（按 `.harness/rules/变更定位规则.md`）：
+   - 扫描 `.harness/changes/*/change.md`，过滤 `status: reviewing`
+   - 用户已指定 `<id>` → 校验该 change 状态是否为 `reviewing`，否则报错
+   - 恰好 1 个 → 自动选中
+   - 0 个 → 报错：无处于 `reviewing` 状态的 change，退回 ③ unit-test-write
+   - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
+2. 验证 `review.md` 不存在或可覆盖
+3. 缺前置 → 退回 ③ unit-test-write
+
+---
+
+## 领域技能加载（混合模式）
+
+expert-reviewer 支持混合加载领域专家技能，自动根据文件类型引入对应的专业知识：
+
+| 检测条件 | 加载技能 | 封装类型 | 存放位置 |
+|---------|---------|---------|---------|
+| `*.java` 文件 | `java-code-review` | 并发工具封装（线程池工厂/锁/重试/限流） | `harness-java/skills/` |
+| `@RestController` / `@RequestMapping` | `spring-api-convention` | API 规范封装（统一响应/异常处理/幂等） | `harness-java/skills/` |
+| RedisTemplate / Jedis / Lettuce | `redis-cache-wrapper` | 多级缓存封装（穿透/击穿/雪崩防护） | `harness-core/skills/` |
+| `V*__*.sql` / `migrations/*.sql` | `database-migration-toolkit` | 迁移工具（迁移模板/回滚/回填辅助） | `harness-core/skills/` |
+| Kafka 消费者/生产者代码 | `kafka-toolkit` | 消息工具（消费者封装/DLQ/监控） | `harness-core/skills/` |
+| `*.yaml` / `k8s/` 清单 | `k8s-release-toolkit` | 发布工具（Deployment模板/HPA/探针/灰度） | `harness-core/skills/` |
+| 性能异常/线程 dump/GC 日志 | `performance-toolkit` | 诊断工具（火焰图/GC分析/慢SQL/线程dump） | `harness-core/skills/` |
+| 安全敏感模式（密钥/注入/鉴权/URL） | `security-toolkit` | 安全工具（脱敏/加密/校验/XSS/鉴权） | `harness-core/skills/` |
+| MyBatis Mapper XML / `@Mapper` / `SqlSessionFactory` | `mybatis-toolkit` | MyBatis 工具（分页/乐观锁/逻辑删除/自动填充/权限） | `harness-java/skills/` |
+| `@FeignClient` / Feign 接口 | `feign-toolkit` | Feign 工具（超时/错误解码/重试/拦截器/熔断） | `harness-java/skills/` |
+| RocketMQ 生产者/消费者代码 | `rocketmq-toolkit` | RocketMQ 工具（事务消息/顺序消息/延迟/DLQ） | `harness-core/skills/` |
+| HTTP 客户端调用（RestTemplate/OkHttp/HttpClient） | `http-client-toolkit` | HTTP 工具（连接池/超时/重试/熔断/traceId） | `harness-core/skills/` |
+| 日志配置/日志打印代码 | `logging-toolkit` | 日志工具（traceId/MDC/脱敏/动态级别） | `harness-core/skills/` |
+| `@Scheduled` / cron 表达式 / 定时任务 | `scheduler-toolkit` | 调度工具（分布式锁/幂等/重试/补偿） | `harness-core/skills/` |
+| OSS/S3/MinIO/COS 客户端代码 | `oss-toolkit` | 存储工具（统一接口/分片上传/预签名/CDN） | `harness-core/skills/` |
+| Excel 导入导出代码（POI/openpyxl/Excelize） | `excel-toolkit` | Excel 工具（模板导出/大数据量/导入校验） | `harness-core/skills/` |
+| `ApplicationEventPublisher` / `@EventListener` / EventBus | `eventbus-toolkit` | 事件总线工具（同步/异步/事务事件/追踪） | `harness-core/skills/` |
+
+**加载方式**：检测到匹配条件时，将对应技能的完整检查清单作为"领域知识包"注入 Standards 轴，**不替代既有的 10 维度审查**，而是作为维度 4~6（编码规范/代码质量/安全）的**补充细则**。
+
+**独立命令**：每个技能也可通过 `/skill-name` 直接调用（如 `/java-code-review`、`/redis-cache-wrapper`、`/kafka-toolkit`、`/security-toolkit`、`/mybatis-toolkit`、`/feign-toolkit`、`/rocketmq-toolkit`、`/http-client-toolkit`、`/logging-toolkit`、`/scheduler-toolkit`、`/oss-toolkit`、`/excel-toolkit`、`/eventbus-toolkit`），绕过 expert-reviewer 主流程，适合专项代码生成或排查场景。
+
+---
+
 ## 审查设计
 
 本技能采用**双轴并行子智能体**架构：

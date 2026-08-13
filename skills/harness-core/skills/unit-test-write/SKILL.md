@@ -23,7 +23,20 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 
 ---
 
-## 2. 工作流程
+## 2. 前置检查
+
+1. **定位目标 change**（按 `.harness/rules/变更定位规则.md`）：
+   - 扫描 `.harness/changes/*/change.md`，过滤 `status: testing`
+   - 用户已指定 `<id>` → 校验该 change 状态是否为 `testing`，否则报错
+   - 恰好 1 个 → 自动选中
+   - 0 个 → 报错：无处于 `testing` 状态的 change，退回 ② coding-skill
+   - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
+2. 验证 `change.md` 的 `status: testing` 与编码阶段交付物一致
+3. 缺前置 → 退回 ② coding-skill
+
+---
+
+## 3. 工作流程
 
 ### Step 1: 梳理测试矩阵
 从 `change.md` 提取所有 AC 与边界情况，建立"测试点 → 测试用例"映射表，确保无遗漏。
@@ -58,7 +71,7 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 
 ---
 
-## 3. 测试质量红线
+## 4. 测试质量红线
 
 - ❌ 只测 happy path，边界靠注释"应该能处理"
 - ❌ 断言空泛（`assertTrue` 当主断言）
@@ -70,6 +83,6 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 
 ---
 
-## 4. 完成标志
+## 5. 完成标志
 
 测试全绿 + 覆盖率达标 → 更新 `change.md` 状态 `testing → reviewing`，进入 ④ 专家评审。

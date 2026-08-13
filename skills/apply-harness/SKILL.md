@@ -157,6 +157,7 @@ disable-model-invocation: true
 .harness/rules/
 ├── SDD-TDD模式.md       ← 来自 harness-core（跨语言通用）
 ├── 开发流程规范.md       ← 来自 harness-core（跨语言通用）
+├── 变更定位规则.md       ← 来自 harness-core（跨语言通用）
 ├── 运行时可靠性.md       ← 来自 harness-core（后端）/ 来自 harness-front（前端特有）
 ├── 编码规范.md           ← 来自 harness-{lang}（语言特有）
 └── 工程结构.md           ← 来自 harness-{lang}（语言特有）
@@ -168,7 +169,23 @@ disable-model-invocation: true
 
 1. **渲染模板化技能**：从 `harness-core/skills/` 读取模板 SKILL.md，替换其中的 `{{PLACEHOLDER}}` 为语言参数表中对应框架参数块的值，写入 `.harness/skills/{lang}/`
 2. **复制语言特有技能**：从 `harness-{lang}/skills/` 复制全部技能目录到 `.harness/skills/{lang}/`，并同时将该语言对应框架参数块的值替换其中的 `{{PLACEHOLDER}}`（同名覆盖渲染文件，语言特有内容优先）
-3. **复制跨语言通用技能**：从 `harness-core/skills/` 复制 `domain-modeling`、`research`、`resolving-merge-conflicts` 到 `.harness/skills/common/`（纯通用，无需渲染）
+3. **复制跨语言通用技能**：从 `harness-core/skills/` 复制以下技能到 `.harness/skills/common/`（纯通用，无需渲染）：
+    - `domain-modeling` — 领域语言维护
+    - `research` — 外部事实查证
+    - `resolving-merge-conflicts` — 合并冲突解决
+    - `redis-cache-wrapper` — 多级缓存封装
+    - `database-migration-toolkit` — 数据库迁移工具
+    - `kafka-toolkit` — Kafka 工具封装
+    - `k8s-release-toolkit` — K8s 发布工具
+    - `performance-toolkit` — 性能诊断工具
+    - `security-toolkit` — 安全工具封装
+    - `rocketmq-toolkit` — RocketMQ 工具封装
+    - `http-client-toolkit` — HTTP 客户端工具封装
+    - `logging-toolkit` — 日志工具封装
+    - `scheduler-toolkit` — 分布式调度工具封装
+    - `oss-toolkit` — 对象存储工具封装
+    - `excel-toolkit` — Excel 工具封装
+    - `eventbus-toolkit` — 事件总线工具封装
 
 **模板化技能清单**（以下技能的核心逻辑来自 `harness-core/skills/` 模板，语言包提供覆写）：
 
@@ -182,24 +199,24 @@ disable-model-invocation: true
 
 **技能参数说明**——渲染时替换模板中的 `{{PLACEHOLDER}}`：
 
-| 参数 | 说明 |
-|------|------|
-| `{{LANG_TAG}}` | 技能名称后缀，如 `-python`、`-java`、`-golang`、`-front` |
-| `{{HARNESS_ME_NAME}}` | harness-me 技能名（`harness-me`/`harness-me-python`/`harness-me-golang`/`harness-me-front`） |
-| `{{HARNESSING_CMD}}` | harnessing 命令，如 `/harnessing`、`/harnessing-python` |
-| `{{BUILD_CMD}}` | 编译命令，如 `mvn compile`、`go build ./...` |
-| `{{TEST_CMD}}` | 测试命令 |
-| `{{LINT_CMD}}` | 代码规范检查命令 |
-| `{{DEV_CMD}}` | 开发服务器启动命令 |
-| `{{DOCSTYLE}}` | 文档注释风格，如 `Javadoc`、`docstring`、`JSDoc` |
-| `{{FILE_LIMIT}}` | 单文件行数上限 |
-| `{{FRAMEWORK_DESC}}` | 语言技术栈描述 |
-| `{{ARCH_LAYER}}` | 架构依赖方向描述 |
-| `{{TEST_NAMING}}` | 测试命名规范 |
-| `{{MOCK_LIB}}` | Mock 库 |
-| `{{COV_CMD}}` | 覆盖率检查命令 |
-| `{{DEBUG_TOOL}}` | 调试工具 |
-| `{{ARCH_REVIEW_CMD}}` | 架构审查命令，如 `/arch-review`、`/arch-review-python` |
+| 参数 | 说明                                                                                       |
+|------|------------------------------------------------------------------------------------------|
+| `{{LANG_TAG}}` | 技能名称后缀，如 `-python`、`-java`、`-golang`、`-front`                                            |
+| `{{HARNESS_ME_NAME}}` | harness-me 技能名（`/harness-me`/`harness-me-python`/`harness-me-golang`/`harness-me-front`） |
+| `{{HARNESSING_CMD}}` | harnessing 命令，如 `/harnessing`、`/harnessing-python`                                       |
+| `{{BUILD_CMD}}` | 编译命令，如 `mvn compile`、`go build ./...`                                                    |
+| `{{TEST_CMD}}` | 测试命令                                                                                     |
+| `{{LINT_CMD}}` | 代码规范检查命令                                                                                 |
+| `{{DEV_CMD}}` | 开发服务器启动命令                                                                                |
+| `{{DOCSTYLE}}` | 文档注释风格，如 `Javadoc`、`docstring`、`JSDoc`                                                   |
+| `{{FILE_LIMIT}}` | 单文件行数上限                                                                                  |
+| `{{FRAMEWORK_DESC}}` | 语言技术栈描述                                                                                  |
+| `{{ARCH_LAYER}}` | 架构依赖方向描述                                                                                 |
+| `{{TEST_NAMING}}` | 测试命名规范                                                                                   |
+| `{{MOCK_LIB}}` | Mock 库                                                                                   |
+| `{{COV_CMD}}` | 覆盖率检查命令                                                                                  |
+| `{{DEBUG_TOOL}}` | 调试工具                                                                                     |
+| `{{ARCH_REVIEW_CMD}}` | 架构审查命令，如 `/arch-review`、`/arch-review-python`                                            |
 
 ```
 .harness/skills/
@@ -217,7 +234,20 @@ disable-model-invocation: true
 └── common/                # 跨语言通用技能
     ├── domain-modeling/           # 领域语言维护（术语敲定当场写 CONTEXT.md / ADR）
     ├── research/                  # 外部事实查证（一手来源，结果落 wiki）
-    └── resolving-merge-conflicts/ # 解决 git merge/rebase 冲突
+    ├── resolving-merge-conflicts/ # 解决 git merge/rebase 冲突
+    ├── redis-cache-wrapper/       # 多级缓存封装（穿透/击穿/雪崩防护 + 分布式锁）
+    ├── database-migration-toolkit/ # 数据库迁移工具封装（迁移/回滚/数据回填）
+    ├── kafka-toolkit/             # Kafka 工具封装（消费者/DLQ/生产者/Lag 监控）
+    ├── k8s-release-toolkit/       # K8s 发布工具封装（Deployment/HPA/探针/灰度/回滚）
+    ├── performance-toolkit/       # 性能诊断工具封装（火焰图/GC/慢SQL/线程 dump）
+    └── security-toolkit/          # 安全工具封装（脱敏/加密/输入校验/鉴权/日志脱敏）
+    ├── rocketmq-toolkit/          # RocketMQ 工具封装（事务消息/顺序消息/DLQ）
+    ├── http-client-toolkit/       # HTTP 客户端工具封装（连接池/超时/重试/熔断）
+    ├── logging-toolkit/           # 日志工具封装（traceId/MDC/脱敏/动态级别）
+    ├── scheduler-toolkit/         # 分布式调度工具封装（分布式锁/幂等/补偿）
+    ├── oss-toolkit/               # 对象存储工具封装（统一接口/分片上传/预签名）
+    ├── excel-toolkit/             # Excel 工具封装（模板导出/大数据量/导入校验）
+    └── eventbus-toolkit/          # 事件总线工具封装（同步/异步/事务事件）
 ```
 
 ### Step 5.5: 注册技能到当前 AI 工具
@@ -298,47 +328,47 @@ disable-model-invocation: true
 
 ### Java — Spring Boot + Maven（默认）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Java` |
-| `{{LANGUAGE_DESC}}` | Java、Spring Boot、多模块 Maven 架构 |
-| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS |
-| `{{FRAMEWORK_VER}}` | Spring Boot 3.x+ |
-| `{{BUILD_TOOL}}` | Maven 3.9+ |
-| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ |
-| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs |
-| `{{ARCH_TEST_TOOL}}` | ArchUnit |
-| `{{DB_ACCESS}}` | MyBatis-Plus / JPA + Flyway |
-| `{{LANG_TAG}}` | `-java` |
-| `{{HARNESS_ME_NAME}}` | `harness-me` |
-| `{{HARNESSING_CMD}}` | `/harnessing` |
-| `{{BUILD_CMD}}` | `mvn compile` |
-| `{{TEST_CMD}}` | `mvn test` |
-| `{{LINT_CMD}}` | `mvn checkstyle:check` |
-| `{{DEV_CMD}}` | `mvn spring-boot:run` |
-| `{{DOCSTYLE}}` | `Javadoc` |
-| `{{FILE_LIMIT}}` | `500` |
+| 参数 | 值                                           |
+|------|---------------------------------------------|
+| `{{LANGUAGE}}` | `Java`                                      |
+| `{{LANGUAGE_DESC}}` | Java、Spring Boot、多模块 Maven 架构               |
+| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS                                  |
+| `{{FRAMEWORK_VER}}` | Spring Boot 3.x+                            |
+| `{{BUILD_TOOL}}` | Maven 3.9+                                  |
+| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ                 |
+| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%)                          |
+| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs                 |
+| `{{ARCH_TEST_TOOL}}` | ArchUnit                                    |
+| `{{DB_ACCESS}}` | MyBatis-Plus / JPA + Flyway                 |
+| `{{LANG_TAG}}` | `-java`                                     |
+| `{{HARNESS_ME_NAME}}` | `/harness-me`                               |
+| `{{HARNESSING_CMD}}` | `/harnessing`                               |
+| `{{BUILD_CMD}}` | `mvn compile`                               |
+| `{{TEST_CMD}}` | `mvn test`                                  |
+| `{{LINT_CMD}}` | `mvn checkstyle:check`                      |
+| `{{DEV_CMD}}` | `mvn spring-boot:run`                       |
+| `{{DOCSTYLE}}` | `Javadoc`                                   |
+| `{{FILE_LIMIT}}` | `500`                                       |
 | `{{ARCH_LAYER}}` | 模块间仅通过接口通信，依赖方向 `common ← service ← server` |
-| `{{TEST_NAMING}}` | `method_should_x_when_y` |
-| `{{MOCK_LIB}}` | `Mockito` |
-| `{{COV_CMD}}` | `mvn jacoco:report` |
-| `{{DEBUG_TOOL}}` | 调试器 / `jdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令 |
-| `{{SECURITY_CMD}}` | 安全扫描命令 |
-| `{{INTEGRATION_CMD}}` | 集成测试命令 |
-| `{{RUN_CMD}}` | 启动服务命令 |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令 |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点 |
-| `{{METRICS_ENDPOINT}}` | 指标端点 |
-| `{{VET_CMD}}` | 静态分析命令（实际合并到 LINT_CMD） |
-| `{{DEP_CMD}}` | 依赖管理命令：`mvn dependency:tree` |
-| `{{ORM_TOOL}}` | ORM 框架：MyBatis-Plus / JPA |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：javac（编译时检查） |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`{{BUILD_CMD}}` |
-| `{{ASSERT_LIB}}` | 断言库：AssertJ |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空 |
+| `{{TEST_NAMING}}` | `method_should_x_when_y`                    |
+| `{{MOCK_LIB}}` | `Mockito`                                   |
+| `{{COV_CMD}}` | `mvn jacoco:report`                         |
+| `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                 |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                              |
+| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                    |
+| `{{SECURITY_CMD}}` | 安全扫描命令                                      |
+| `{{INTEGRATION_CMD}}` | 集成测试命令                                      |
+| `{{RUN_CMD}}` | 启动服务命令                                      |
+| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                                      |
+| `{{HEALTH_ENDPOINT}}` | 健康检查端点                                      |
+| `{{METRICS_ENDPOINT}}` | 指标端点                                        |
+| `{{VET_CMD}}` | 静态分析命令（实际合并到 LINT_CMD）                      |
+| `{{DEP_CMD}}` | 依赖管理命令：`mvn dependency:tree`                |
+| `{{ORM_TOOL}}` | ORM 框架：MyBatis-Plus / JPA                   |
+| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：javac（编译时检查）                         |
+| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`{{BUILD_CMD}}`                      |
+| `{{ASSERT_LIB}}` | 断言库：AssertJ                                 |
+| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空                                    |
 
 ### Java — Spring Boot + Gradle
 
@@ -356,33 +386,33 @@ disable-model-invocation: true
 
 ### Java — Quarkus + Maven
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Java` |
-| `{{LANGUAGE_DESC}}` | Java、Quarkus、GraalVM 原生可执行 |
-| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS |
-| `{{FRAMEWORK_VER}}` | Quarkus 3.x |
-| `{{BUILD_TOOL}}` | Maven 3.9+ |
-| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ |
-| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs |
-| `{{ARCH_TEST_TOOL}}` | ArchUnit |
-| `{{DB_ACCESS}}` | Hibernate Panache / JPA + Flyway |
-| `{{LANG_TAG}}` | `-java` |
-| `{{HARNESS_ME_NAME}}` | `harness-me` |
-| `{{HARNESSING_CMD}}` | `/harnessing` |
-| `{{BUILD_CMD}}` | `mvn compile` |
-| `{{TEST_CMD}}` | `mvn test` |
-| `{{LINT_CMD}}` | `mvn checkstyle:check` |
-| `{{DEV_CMD}}` | `mvn quarkus:dev` |
-| `{{DOCSTYLE}}` | `Javadoc` |
-| `{{FILE_LIMIT}}` | `500` |
+| 参数 | 值                                                  |
+|------|----------------------------------------------------|
+| `{{LANGUAGE}}` | `Java`                                             |
+| `{{LANGUAGE_DESC}}` | Java、Quarkus、GraalVM 原生可执行                         |
+| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS                                         |
+| `{{FRAMEWORK_VER}}` | Quarkus 3.x                                        |
+| `{{BUILD_TOOL}}` | Maven 3.9+                                         |
+| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ                        |
+| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%)                                 |
+| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs                        |
+| `{{ARCH_TEST_TOOL}}` | ArchUnit                                           |
+| `{{DB_ACCESS}}` | Hibernate Panache / JPA + Flyway                   |
+| `{{LANG_TAG}}` | `-java`                                            |
+| `{{HARNESS_ME_NAME}}` | `/harness-me`                                      |
+| `{{HARNESSING_CMD}}` | `/harnessing`                                      |
+| `{{BUILD_CMD}}` | `mvn compile`                                      |
+| `{{TEST_CMD}}` | `mvn test`                                         |
+| `{{LINT_CMD}}` | `mvn checkstyle:check`                             |
+| `{{DEV_CMD}}` | `mvn quarkus:dev`                                  |
+| `{{DOCSTYLE}}` | `Javadoc`                                          |
+| `{{FILE_LIMIT}}` | `500`                                              |
 | `{{ARCH_LAYER}}` | 分层 `entity → repository → service → resource`，依赖单向 |
-| `{{TEST_NAMING}}` | `method_should_x_when_y` |
-| `{{MOCK_LIB}}` | `Mockito` |
-| `{{COV_CMD}}` | `mvn jacoco:report` |
-| `{{DEBUG_TOOL}}` | 调试器 / `jdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{TEST_NAMING}}` | `method_should_x_when_y`                           |
+| `{{MOCK_LIB}}` | `Mockito`                                          |
+| `{{COV_CMD}}` | `mvn jacoco:report`                                |
+| `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                        |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                                     |
 
 ### Java — Quarkus + Gradle
 
@@ -398,681 +428,681 @@ disable-model-invocation: true
 
 ### Java — Micronaut + Maven
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Java` |
-| `{{LANGUAGE_DESC}}` | Java、Micronaut、低内存云原生框架 |
-| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS |
-| `{{FRAMEWORK_VER}}` | Micronaut 4.x |
-| `{{BUILD_TOOL}}` | Maven 3.9+ |
-| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito |
-| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs |
-| `{{ARCH_TEST_TOOL}}` | ArchUnit |
-| `{{DB_ACCESS}}` | Micronaut Data + Flyway |
-| `{{LANG_TAG}}` | `-java` |
-| `{{HARNESS_ME_NAME}}` | `harness-me` |
-| `{{HARNESSING_CMD}}` | `/harnessing` |
-| `{{BUILD_CMD}}` | `mvn compile` |
-| `{{TEST_CMD}}` | `mvn test` |
-| `{{LINT_CMD}}` | `mvn checkstyle:check` |
-| `{{DEV_CMD}}` | `mvn mn:run` |
-| `{{DOCSTYLE}}` | `Javadoc` |
-| `{{FILE_LIMIT}}` | `500` |
+| 参数 | 值                                       |
+|------|-----------------------------------------|
+| `{{LANGUAGE}}` | `Java`                                  |
+| `{{LANGUAGE_DESC}}` | Java、Micronaut、低内存云原生框架                 |
+| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS                              |
+| `{{FRAMEWORK_VER}}` | Micronaut 4.x                           |
+| `{{BUILD_TOOL}}` | Maven 3.9+                              |
+| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito                       |
+| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%)                      |
+| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs             |
+| `{{ARCH_TEST_TOOL}}` | ArchUnit                                |
+| `{{DB_ACCESS}}` | Micronaut Data + Flyway                 |
+| `{{LANG_TAG}}` | `-java`                                 |
+| `{{HARNESS_ME_NAME}}` | `/harness-me`                           |
+| `{{HARNESSING_CMD}}` | `/harnessing`                           |
+| `{{BUILD_CMD}}` | `mvn compile`                           |
+| `{{TEST_CMD}}` | `mvn test`                              |
+| `{{LINT_CMD}}` | `mvn checkstyle:check`                  |
+| `{{DEV_CMD}}` | `mvn mn:run`                            |
+| `{{DOCSTYLE}}` | `Javadoc`                               |
+| `{{FILE_LIMIT}}` | `500`                                   |
 | `{{ARCH_LAYER}}` | 分层 `domain → service → controller`，依赖单向 |
-| `{{TEST_NAMING}}` | `method_should_x_when_y` |
-| `{{MOCK_LIB}}` | `Mockito` |
-| `{{COV_CMD}}` | `mvn jacoco:report` |
-| `{{DEBUG_TOOL}}` | 调试器 / `jdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{TEST_NAMING}}` | `method_should_x_when_y`                |
+| `{{MOCK_LIB}}` | `Mockito`                               |
+| `{{COV_CMD}}` | `mvn jacoco:report`                     |
+| `{{DEBUG_TOOL}}` | 调试器 / `jdb`                             |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                          |
 
 ### Java — Vert.x + Maven
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Java` |
-| `{{LANGUAGE_DESC}}` | Java、Vert.x、响应式事件驱动框架 |
-| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS |
-| `{{FRAMEWORK_VER}}` | Vert.x 4.x |
-| `{{BUILD_TOOL}}` | Maven 3.9+ |
+| 参数 | 值                               |
+|------|---------------------------------|
+| `{{LANGUAGE}}` | `Java`                          |
+| `{{LANGUAGE_DESC}}` | Java、Vert.x、响应式事件驱动框架           |
+| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS                      |
+| `{{FRAMEWORK_VER}}` | Vert.x 4.x                      |
+| `{{BUILD_TOOL}}` | Maven 3.9+                      |
 | `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + Vert.x Test |
-| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs |
-| `{{ARCH_TEST_TOOL}}` | ArchUnit |
-| `{{DB_ACCESS}}` | Vert.x JDBC/MySQL 客户端 |
-| `{{LANG_TAG}}` | `-java` |
-| `{{HARNESS_ME_NAME}}` | `harness-me` |
-| `{{HARNESSING_CMD}}` | `/harnessing` |
-| `{{BUILD_CMD}}` | `mvn compile` |
-| `{{TEST_CMD}}` | `mvn test` |
-| `{{LINT_CMD}}` | `mvn checkstyle:check` |
-| `{{DEV_CMD}}` | `mvn vertx:run` |
-| `{{DOCSTYLE}}` | `Javadoc` |
-| `{{FILE_LIMIT}}` | `500` |
-| `{{ARCH_LAYER}}` | Verticle 间通过事件总线通信，禁止直接耦合 |
-| `{{TEST_NAMING}}` | `method_should_x_when_y` |
-| `{{MOCK_LIB}}` | `Mockito` |
-| `{{COV_CMD}}` | `mvn jacoco:report` |
-| `{{DEBUG_TOOL}}` | 调试器 / `jdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%)              |
+| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs     |
+| `{{ARCH_TEST_TOOL}}` | ArchUnit                        |
+| `{{DB_ACCESS}}` | Vert.x JDBC/MySQL 客户端           |
+| `{{LANG_TAG}}` | `-java`                         |
+| `{{HARNESS_ME_NAME}}` | `/harness-me`                   |
+| `{{HARNESSING_CMD}}` | `/harnessing`                   |
+| `{{BUILD_CMD}}` | `mvn compile`                   |
+| `{{TEST_CMD}}` | `mvn test`                      |
+| `{{LINT_CMD}}` | `mvn checkstyle:check`          |
+| `{{DEV_CMD}}` | `mvn vertx:run`                 |
+| `{{DOCSTYLE}}` | `Javadoc`                       |
+| `{{FILE_LIMIT}}` | `500`                           |
+| `{{ARCH_LAYER}}` | Verticle 间通过事件总线通信，禁止直接耦合       |
+| `{{TEST_NAMING}}` | `method_should_x_when_y`        |
+| `{{MOCK_LIB}}` | `Mockito`                       |
+| `{{COV_CMD}}` | `mvn jacoco:report`             |
+| `{{DEBUG_TOOL}}` | 调试器 / `jdb`                     |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                  |
 
 ### Java — Dropwizard + Maven
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Java` |
-| `{{LANGUAGE_DESC}}` | Java、Dropwizard、轻量 REST 服务 |
-| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS |
-| `{{FRAMEWORK_VER}}` | Dropwizard 4.x |
-| `{{BUILD_TOOL}}` | Maven 3.9+ |
-| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ |
-| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs |
-| `{{ARCH_TEST_TOOL}}` | ArchUnit |
-| `{{DB_ACCESS}}` | JDBI / Hibernate + Flyway |
-| `{{LANG_TAG}}` | `-java` |
-| `{{HARNESS_ME_NAME}}` | `harness-me` |
-| `{{HARNESSING_CMD}}` | `/harnessing` |
-| `{{BUILD_CMD}}` | `mvn compile` |
-| `{{TEST_CMD}}` | `mvn test` |
-| `{{LINT_CMD}}` | `mvn checkstyle:check` |
+| 参数 | 值                                          |
+|------|--------------------------------------------|
+| `{{LANGUAGE}}` | `Java`                                     |
+| `{{LANGUAGE_DESC}}` | Java、Dropwizard、轻量 REST 服务                 |
+| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS                                 |
+| `{{FRAMEWORK_VER}}` | Dropwizard 4.x                             |
+| `{{BUILD_TOOL}}` | Maven 3.9+                                 |
+| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ                |
+| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%)                         |
+| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs                |
+| `{{ARCH_TEST_TOOL}}` | ArchUnit                                   |
+| `{{DB_ACCESS}}` | JDBI / Hibernate + Flyway                  |
+| `{{LANG_TAG}}` | `-java`                                    |
+| `{{HARNESS_ME_NAME}}` | `/harness-me`                              |
+| `{{HARNESSING_CMD}}` | `/harnessing`                              |
+| `{{BUILD_CMD}}` | `mvn compile`                              |
+| `{{TEST_CMD}}` | `mvn test`                                 |
+| `{{LINT_CMD}}` | `mvn checkstyle:check`                     |
 | `{{DEV_CMD}}` | `java -jar target/*.jar server config.yml` |
-| `{{DOCSTYLE}}` | `Javadoc` |
-| `{{FILE_LIMIT}}` | `500` |
-| `{{ARCH_LAYER}}` | 分层 `domain → service → resource`，依赖单向 |
-| `{{TEST_NAMING}}` | `method_should_x_when_y` |
-| `{{MOCK_LIB}}` | `Mockito` |
-| `{{COV_CMD}}` | `mvn jacoco:report` |
-| `{{DEBUG_TOOL}}` | 调试器 / `jdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{DOCSTYLE}}` | `Javadoc`                                  |
+| `{{FILE_LIMIT}}` | `500`                                      |
+| `{{ARCH_LAYER}}` | 分层 `domain → service → resource`，依赖单向      |
+| `{{TEST_NAMING}}` | `method_should_x_when_y`                   |
+| `{{MOCK_LIB}}` | `Mockito`                                  |
+| `{{COV_CMD}}` | `mvn jacoco:report`                        |
+| `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                             |
 
 ### Java — Spring MVC + Maven（经典 Servlet 架构）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Java` |
-| `{{LANGUAGE_DESC}}` | Java、Spring MVC、经典 Servlet 分层架构 |
-| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS |
-| `{{FRAMEWORK_VER}}` | Spring 6.x Web MVC |
-| `{{BUILD_TOOL}}` | Maven 3.9+ |
-| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ |
-| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs |
-| `{{ARCH_TEST_TOOL}}` | ArchUnit |
-| `{{DB_ACCESS}}` | MyBatis-Plus / JPA + Flyway |
-| `{{LANG_TAG}}` | `-java` |
-| `{{HARNESS_ME_NAME}}` | `harness-me` |
-| `{{HARNESSING_CMD}}` | `/harnessing` |
-| `{{BUILD_CMD}}` | `mvn compile` |
-| `{{TEST_CMD}}` | `mvn test` |
-| `{{LINT_CMD}}` | `mvn checkstyle:check` |
-| `{{DEV_CMD}}` | `mvn tomcat7:run` / 部署到外部 Servlet 容器 |
-| `{{DOCSTYLE}}` | `Javadoc` |
-| `{{FILE_LIMIT}}` | `500` |
+| 参数 | 值                                                  |
+|------|----------------------------------------------------|
+| `{{LANGUAGE}}` | `Java`                                             |
+| `{{LANGUAGE_DESC}}` | Java、Spring MVC、经典 Servlet 分层架构                    |
+| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS                                         |
+| `{{FRAMEWORK_VER}}` | Spring 6.x Web MVC                                 |
+| `{{BUILD_TOOL}}` | Maven 3.9+                                         |
+| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ                        |
+| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%)                                 |
+| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs                        |
+| `{{ARCH_TEST_TOOL}}` | ArchUnit                                           |
+| `{{DB_ACCESS}}` | MyBatis-Plus / JPA + Flyway                        |
+| `{{LANG_TAG}}` | `-java`                                            |
+| `{{HARNESS_ME_NAME}}` | `/harness-me`                                      |
+| `{{HARNESSING_CMD}}` | `/harnessing`                                      |
+| `{{BUILD_CMD}}` | `mvn compile`                                      |
+| `{{TEST_CMD}}` | `mvn test`                                         |
+| `{{LINT_CMD}}` | `mvn checkstyle:check`                             |
+| `{{DEV_CMD}}` | `mvn tomcat7:run` / 部署到外部 Servlet 容器               |
+| `{{DOCSTYLE}}` | `Javadoc`                                          |
+| `{{FILE_LIMIT}}` | `500`                                              |
 | `{{ARCH_LAYER}}` | 分层 `controller → service → mapper/repository`，依赖单向 |
-| `{{TEST_NAMING}}` | `method_should_x_when_y` |
-| `{{MOCK_LIB}}` | `Mockito` |
-| `{{COV_CMD}}` | `mvn jacoco:report` |
-| `{{DEBUG_TOOL}}` | 调试器 / `jdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{TEST_NAMING}}` | `method_should_x_when_y`                           |
+| `{{MOCK_LIB}}` | `Mockito`                                          |
+| `{{COV_CMD}}` | `mvn jacoco:report`                                |
+| `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                        |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                                     |
 
 ---
 
 ### Python — FastAPI
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Python` |
-| `{{LANGUAGE_DESC}}` | Python、FastAPI、异步 API 服务 |
-| `{{LANGUAGE_RUNTIME}}` | Python 3.11+ |
-| `{{FRAMEWORK_VER}}` | FastAPI 0.110+ |
-| `{{BUILD_TOOL}}` | pip + virtualenv / poetry / uv |
-| `{{TEST_FRAMEWORK}}` | pytest + pytest-mock |
-| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | flake8 + mypy + black + isort |
-| `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查 |
-| `{{DB_ACCESS}}` | SQLAlchemy + Alembic |
-| `{{LANG_TAG}}` | `-python` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-python` |
-| `{{HARNESSING_CMD}}` | `/harnessing-python` |
-| `{{BUILD_CMD}}` | `python -m compileall .` |
-| `{{TEST_CMD}}` | `python -m pytest` |
-| `{{LINT_CMD}}` | `flake8 .` |
-| `{{DEV_CMD}}` | `uvicorn main:app --reload` |
-| `{{DOCSTYLE}}` | `docstring` |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                         |
+|------|-------------------------------------------|
+| `{{LANGUAGE}}` | `Python`                                  |
+| `{{LANGUAGE_DESC}}` | Python、FastAPI、异步 API 服务                  |
+| `{{LANGUAGE_RUNTIME}}` | Python 3.11+                              |
+| `{{FRAMEWORK_VER}}` | FastAPI 0.110+                            |
+| `{{BUILD_TOOL}}` | pip + virtualenv / poetry / uv            |
+| `{{TEST_FRAMEWORK}}` | pytest + pytest-mock                      |
+| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%)                    |
+| `{{LINT_TOOL}}` | flake8 + mypy + black + isort             |
+| `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查                        |
+| `{{DB_ACCESS}}` | SQLAlchemy + Alembic                      |
+| `{{LANG_TAG}}` | `-python`                                 |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                      |
+| `{{HARNESSING_CMD}}` | `/harnessing-python`                      |
+| `{{BUILD_CMD}}` | `python -m compileall .`                  |
+| `{{TEST_CMD}}` | `python -m pytest`                        |
+| `{{LINT_CMD}}` | `flake8 .`                                |
+| `{{DEV_CMD}}` | `uvicorn main:app --reload`               |
+| `{{DOCSTYLE}}` | `docstring`                               |
+| `{{FILE_LIMIT}}` | `800`                                     |
 | `{{ARCH_LAYER}}` | 依赖方向 `router → handler → service → model` |
-| `{{TEST_NAMING}}` | `test_x_when_y` |
-| `{{MOCK_LIB}}` | `pytest-mock` |
-| `{{COV_CMD}}` | `pytest --cov` |
-| `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python` |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令 |
-| `{{SECURITY_CMD}}` | 安全扫描命令 |
-| `{{INTEGRATION_CMD}}` | 集成测试命令 |
-| `{{RUN_CMD}}` | 启动服务命令 |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令 |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点 |
-| `{{METRICS_ENDPOINT}}` | 指标端点 |
-| `{{VET_CMD}}` | 静态分析命令：`mypy` |
-| `{{DEP_CMD}}` | 依赖管理命令：`pip install` / `poetry add` |
-| `{{ORM_TOOL}}` | ORM 框架：SQLAlchemy |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：mypy |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`mypy` |
-| `{{FORMAT_TOOL}}` | 格式化工具：black |
-| `{{FORMAT_CHECK_CMD}}` | 格式检查命令：`black --check .` |
-| `{{METRICS_CHECK_CMD}}` | 指标检查命令：`curl {{METRICS_ENDPOINT}}` |
-| `{{ASSERT_LIB}}` | 断言库：`assert` |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空 |
+| `{{TEST_NAMING}}` | `test_x_when_y`                           |
+| `{{MOCK_LIB}}` | `pytest-mock`                             |
+| `{{COV_CMD}}` | `pytest --cov`                            |
+| `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb`           |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`                     |
+| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                  |
+| `{{SECURITY_CMD}}` | 安全扫描命令                                    |
+| `{{INTEGRATION_CMD}}` | 集成测试命令                                    |
+| `{{RUN_CMD}}` | 启动服务命令                                    |
+| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                                    |
+| `{{HEALTH_ENDPOINT}}` | 健康检查端点                                    |
+| `{{METRICS_ENDPOINT}}` | 指标端点                                      |
+| `{{VET_CMD}}` | 静态分析命令：`mypy`                             |
+| `{{DEP_CMD}}` | 依赖管理命令：`pip install` / `poetry add`       |
+| `{{ORM_TOOL}}` | ORM 框架：SQLAlchemy                         |
+| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：mypy                               |
+| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`mypy`                             |
+| `{{FORMAT_TOOL}}` | 格式化工具：black                               |
+| `{{FORMAT_CHECK_CMD}}` | 格式检查命令：`black --check .`                  |
+| `{{METRICS_CHECK_CMD}}` | 指标检查命令：`curl {{METRICS_ENDPOINT}}`        |
+| `{{ASSERT_LIB}}` | 断言库：`assert`                              |
+| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空                                  |
 
 ### Python — Flask
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Python、Flask、轻量模板化 Web 服务 |
-| `{{FRAMEWORK_VER}}` | Flask 3.x |
-| `{{LANGUAGE_RUNTIME}}` | Python 3.11+ |
-| `{{BUILD_TOOL}}` | pip + virtualenv / poetry / uv |
-| `{{TEST_FRAMEWORK}}` | pytest + pytest-mock |
-| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | flake8 + mypy + black + isort |
-| `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查 |
-| `{{DB_ACCESS}}` | SQLAlchemy + Flask-Migrate（Alembic） |
-| `{{LANG_TAG}}` | `-python` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-python` |
-| `{{HARNESSING_CMD}}` | `/harnessing-python` |
-| `{{BUILD_CMD}}` | `python -m compileall .` |
-| `{{TEST_CMD}}` | `python -m pytest` |
-| `{{LINT_CMD}}` | `flake8 .` |
-| `{{DEV_CMD}}` | `flask --app <app> run --debug` |
-| `{{DOCSTYLE}}` | `docstring` |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                                   |
+|------|-----------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Python、Flask、轻量模板化 Web 服务                           |
+| `{{FRAMEWORK_VER}}` | Flask 3.x                                           |
+| `{{LANGUAGE_RUNTIME}}` | Python 3.11+                                        |
+| `{{BUILD_TOOL}}` | pip + virtualenv / poetry / uv                      |
+| `{{TEST_FRAMEWORK}}` | pytest + pytest-mock                                |
+| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%)                              |
+| `{{LINT_TOOL}}` | flake8 + mypy + black + isort                       |
+| `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查                                  |
+| `{{DB_ACCESS}}` | SQLAlchemy + Flask-Migrate（Alembic）                 |
+| `{{LANG_TAG}}` | `-python`                                           |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                                |
+| `{{HARNESSING_CMD}}` | `/harnessing-python`                                |
+| `{{BUILD_CMD}}` | `python -m compileall .`                            |
+| `{{TEST_CMD}}` | `python -m pytest`                                  |
+| `{{LINT_CMD}}` | `flake8 .`                                          |
+| `{{DEV_CMD}}` | `flask --app <app> run --debug`                     |
+| `{{DOCSTYLE}}` | `docstring`                                         |
+| `{{FILE_LIMIT}}` | `800`                                               |
 | `{{ARCH_LAYER}}` | 依赖方向 `blueprint/router → handler → service → model` |
-| `{{TEST_NAMING}}` | `test_x_when_y` |
-| `{{MOCK_LIB}}` | `pytest-mock` |
-| `{{COV_CMD}}` | `pytest --cov` |
-| `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python` |
+| `{{TEST_NAMING}}` | `test_x_when_y`                                     |
+| `{{MOCK_LIB}}` | `pytest-mock`                                       |
+| `{{COV_CMD}}` | `pytest --cov`                                      |
+| `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb`                     |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`                               |
 
 ### Python — Django
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Python` |
-| `{{LANGUAGE_DESC}}` | Python、Django、全栈 MTV 框架（自带 ORM/Admin/迁移） |
-| `{{LANGUAGE_RUNTIME}}` | Python 3.11+ |
-| `{{FRAMEWORK_VER}}` | Django 5.x |
-| `{{BUILD_TOOL}}` | pip + virtualenv / poetry / uv |
-| `{{TEST_FRAMEWORK}}` | Django TestCase + pytest-django |
-| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | flake8 + mypy + black + isort |
-| `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查 |
-| `{{DB_ACCESS}}` | Django ORM + 内置迁移（makemigrations） |
-| `{{LANG_TAG}}` | `-python` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-python` |
-| `{{HARNESSING_CMD}}` | `/harnessing-python` |
-| `{{BUILD_CMD}}` | `python -m compileall .` |
-| `{{TEST_CMD}}` | `python manage.py test` |
-| `{{LINT_CMD}}` | `flake8 .` |
-| `{{DEV_CMD}}` | `python manage.py runserver` |
-| `{{DOCSTYLE}}` | `docstring` |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                           |
+|------|---------------------------------------------|
+| `{{LANGUAGE}}` | `Python`                                    |
+| `{{LANGUAGE_DESC}}` | Python、Django、全栈 MTV 框架（自带 ORM/Admin/迁移）    |
+| `{{LANGUAGE_RUNTIME}}` | Python 3.11+                                |
+| `{{FRAMEWORK_VER}}` | Django 5.x                                  |
+| `{{BUILD_TOOL}}` | pip + virtualenv / poetry / uv              |
+| `{{TEST_FRAMEWORK}}` | Django TestCase + pytest-django             |
+| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%)                      |
+| `{{LINT_TOOL}}` | flake8 + mypy + black + isort               |
+| `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查                          |
+| `{{DB_ACCESS}}` | Django ORM + 内置迁移（makemigrations）           |
+| `{{LANG_TAG}}` | `-python`                                   |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                        |
+| `{{HARNESSING_CMD}}` | `/harnessing-python`                        |
+| `{{BUILD_CMD}}` | `python -m compileall .`                    |
+| `{{TEST_CMD}}` | `python manage.py test`                     |
+| `{{LINT_CMD}}` | `flake8 .`                                  |
+| `{{DEV_CMD}}` | `python manage.py runserver`                |
+| `{{DOCSTYLE}}` | `docstring`                                 |
+| `{{FILE_LIMIT}}` | `800`                                       |
 | `{{ARCH_LAYER}}` | MTV 分层：依赖方向 `views → services/models → ORM` |
-| `{{TEST_NAMING}}` | `test_x_when_y` |
-| `{{MOCK_LIB}}` | `pytest-mock` / `unittest.mock` |
-| `{{COV_CMD}}` | `pytest --cov` |
-| `{{DEBUG_TOOL}}` | `pdb` / `django-debug-toolbar` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python` |
+| `{{TEST_NAMING}}` | `test_x_when_y`                             |
+| `{{MOCK_LIB}}` | `pytest-mock` / `unittest.mock`             |
+| `{{COV_CMD}}` | `pytest --cov`                              |
+| `{{DEBUG_TOOL}}` | `pdb` / `django-debug-toolbar`              |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`                       |
 
 ---
 
 ### Go — Gin
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Go` |
-| `{{LANGUAGE_DESC}}` | Go、Gin、高性能 HTTP 框架 |
-| `{{LANGUAGE_RUNTIME}}` | Go 1.22+ |
-| `{{FRAMEWORK_VER}}` | Gin 1.10+ |
-| `{{BUILD_TOOL}}` | go mod |
-| `{{TEST_FRAMEWORK}}` | go test + testify |
-| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck) |
-| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查 |
-| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate |
-| `{{LANG_TAG}}` | `-golang` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-golang` |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang` |
-| `{{BUILD_CMD}}` | `go build ./...` |
-| `{{TEST_CMD}}` | `go test ./...` |
-| `{{LINT_CMD}}` | `golangci-lint run` |
-| `{{DEV_CMD}}` | `go run ./cmd/server` |
-| `{{DOCSTYLE}}` | Go 注释 |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                       |
+|------|-----------------------------------------|
+| `{{LANGUAGE}}` | `Go`                                    |
+| `{{LANGUAGE_DESC}}` | Go、Gin、高性能 HTTP 框架                      |
+| `{{LANGUAGE_RUNTIME}}` | Go 1.22+                                |
+| `{{FRAMEWORK_VER}}` | Gin 1.10+                               |
+| `{{BUILD_TOOL}}` | go mod                                  |
+| `{{TEST_FRAMEWORK}}` | go test + testify                       |
+| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%)              |
+| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck)    |
+| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                     |
+| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate            |
+| `{{LANG_TAG}}` | `-golang`                               |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                    |
+| `{{HARNESSING_CMD}}` | `/harnessing-golang`                    |
+| `{{BUILD_CMD}}` | `go build ./...`                        |
+| `{{TEST_CMD}}` | `go test ./...`                         |
+| `{{LINT_CMD}}` | `golangci-lint run`                     |
+| `{{DEV_CMD}}` | `go run ./cmd/server`                   |
+| `{{DOCSTYLE}}` | Go 注释                                   |
+| `{{FILE_LIMIT}}` | `800`                                   |
 | `{{ARCH_LAYER}}` | 分层 `handler → service → repository`，依赖单向 |
-| `{{TEST_NAMING}}` | `TestX_WhenY` |
-| `{{MOCK_LIB}}` | `gomock` / `testify` |
-| `{{COV_CMD}}` | `go test -cover` |
-| `{{DEBUG_TOOL}}` | `delve` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令 |
-| `{{SECURITY_CMD}}` | 安全扫描命令 |
-| `{{INTEGRATION_CMD}}` | 集成测试命令 |
-| `{{RUN_CMD}}` | 启动服务命令 |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令 |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点 |
-| `{{METRICS_ENDPOINT}}` | 指标端点 |
-| `{{VET_CMD}}` | 静态分析命令：`go vet ./...` |
-| `{{DEP_CMD}}` | 依赖管理命令：`go mod tidy` |
-| `{{ORM_TOOL}}` | ORM 框架：GORM / sqlx |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：go vet |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`go vet ./...` |
-| `{{ASSERT_LIB}}` | 断言库：testify |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：`-race` |
-| `{{HTTP_MOCK_UTIL}}` | HTTP Mock 工具：`httptest.Server` |
-| `{{FRAMEWORK_NAME}}` | 框架名称（从 {{FRAMEWORK_DESC}} 提取） |
+| `{{TEST_NAMING}}` | `TestX_WhenY`                           |
+| `{{MOCK_LIB}}` | `gomock` / `testify`                    |
+| `{{COV_CMD}}` | `go test -cover`                        |
+| `{{DEBUG_TOOL}}` | `delve`                                 |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                          |
+| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                |
+| `{{SECURITY_CMD}}` | 安全扫描命令                                  |
+| `{{INTEGRATION_CMD}}` | 集成测试命令                                  |
+| `{{RUN_CMD}}` | 启动服务命令                                  |
+| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                                  |
+| `{{HEALTH_ENDPOINT}}` | 健康检查端点                                  |
+| `{{METRICS_ENDPOINT}}` | 指标端点                                    |
+| `{{VET_CMD}}` | 静态分析命令：`go vet ./...`                   |
+| `{{DEP_CMD}}` | 依赖管理命令：`go mod tidy`                    |
+| `{{ORM_TOOL}}` | ORM 框架：GORM / sqlx                      |
+| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：go vet                           |
+| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`go vet ./...`                   |
+| `{{ASSERT_LIB}}` | 断言库：testify                             |
+| `{{RACE_DETECT_ARG}}` | 竞态检测参数：`-race`                          |
+| `{{HTTP_MOCK_UTIL}}` | HTTP Mock 工具：`httptest.Server`          |
+| `{{FRAMEWORK_NAME}}` | 框架名称（从 {{FRAMEWORK_DESC}} 提取）           |
 
 ### Go — go-zero
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Go、go-zero、一体化微服务框架（API/RPC） |
-| `{{FRAMEWORK_VER}}` | go-zero 1.9.x |
-| `{{LANGUAGE_RUNTIME}}` | Go 1.22+ |
-| `{{BUILD_TOOL}}` | go mod + goctl |
-| `{{TEST_FRAMEWORK}}` | go test + testify |
-| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck) |
-| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查 |
-| `{{DB_ACCESS}}` | GORM + goctl model |
-| `{{LANG_TAG}}` | `-golang` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-golang` |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang` |
-| `{{BUILD_CMD}}` | `goctl api go` + `go build ./...` |
-| `{{TEST_CMD}}` | `go test ./...` |
-| `{{LINT_CMD}}` | `golangci-lint run` |
-| `{{DEV_CMD}}` | `go run <service>.go` |
-| `{{DOCSTYLE}}` | Go 注释 |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                                |
+|------|--------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Go、go-zero、一体化微服务框架（API/RPC）                     |
+| `{{FRAMEWORK_VER}}` | go-zero 1.9.x                                    |
+| `{{LANGUAGE_RUNTIME}}` | Go 1.22+                                         |
+| `{{BUILD_TOOL}}` | go mod + goctl                                   |
+| `{{TEST_FRAMEWORK}}` | go test + testify                                |
+| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%)                       |
+| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck)             |
+| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                              |
+| `{{DB_ACCESS}}` | GORM + goctl model                               |
+| `{{LANG_TAG}}` | `-golang`                                        |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                             |
+| `{{HARNESSING_CMD}}` | `/harnessing-golang`                             |
+| `{{BUILD_CMD}}` | `goctl api go` + `go build ./...`                |
+| `{{TEST_CMD}}` | `go test ./...`                                  |
+| `{{LINT_CMD}}` | `golangci-lint run`                              |
+| `{{DEV_CMD}}` | `go run <service>.go`                            |
+| `{{DOCSTYLE}}` | Go 注释                                            |
+| `{{FILE_LIMIT}}` | `800`                                            |
 | `{{ARCH_LAYER}}` | 服务间仅通过 RPC 通信，依赖方向 `common → models → rpc → api` |
-| `{{TEST_NAMING}}` | `TestX_WhenY` |
-| `{{MOCK_LIB}}` | `gomock` / `testify` / `goctl` |
-| `{{COV_CMD}}` | `go test -cover` |
-| `{{DEBUG_TOOL}}` | `delve` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{TEST_NAMING}}` | `TestX_WhenY`                                    |
+| `{{MOCK_LIB}}` | `gomock` / `testify` / `goctl`                   |
+| `{{COV_CMD}}` | `go test -cover`                                 |
+| `{{DEBUG_TOOL}}` | `delve`                                          |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                                   |
 
 ### Go — Echo
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Go、Echo、极简高性能 HTTP 框架 |
-| `{{FRAMEWORK_VER}}` | Echo v4 |
-| `{{LANGUAGE_RUNTIME}}` | Go 1.22+ |
-| `{{BUILD_TOOL}}` | go mod |
-| `{{TEST_FRAMEWORK}}` | go test + testify |
-| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck) |
-| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查 |
-| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate |
-| `{{LANG_TAG}}` | `-golang` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-golang` |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang` |
-| `{{BUILD_CMD}}` | `go build ./...` |
-| `{{TEST_CMD}}` | `go test ./...` |
-| `{{LINT_CMD}}` | `golangci-lint run` |
-| `{{DEV_CMD}}` | `go run ./cmd/server` |
-| `{{DOCSTYLE}}` | Go 注释 |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                        |
+|------|------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Go、Echo、极简高性能 HTTP 框架                    |
+| `{{FRAMEWORK_VER}}` | Echo v4                                  |
+| `{{LANGUAGE_RUNTIME}}` | Go 1.22+                                 |
+| `{{BUILD_TOOL}}` | go mod                                   |
+| `{{TEST_FRAMEWORK}}` | go test + testify                        |
+| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%)               |
+| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck)     |
+| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                      |
+| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate             |
+| `{{LANG_TAG}}` | `-golang`                                |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                     |
+| `{{HARNESSING_CMD}}` | `/harnessing-golang`                     |
+| `{{BUILD_CMD}}` | `go build ./...`                         |
+| `{{TEST_CMD}}` | `go test ./...`                          |
+| `{{LINT_CMD}}` | `golangci-lint run`                      |
+| `{{DEV_CMD}}` | `go run ./cmd/server`                    |
+| `{{DOCSTYLE}}` | Go 注释                                    |
+| `{{FILE_LIMIT}}` | `800`                                    |
 | `{{ARCH_LAYER}}` | 分层 `handler → service → repository`，依赖单向 |
-| `{{TEST_NAMING}}` | `TestX_WhenY` |
-| `{{MOCK_LIB}}` | `gomock` / `testify` |
-| `{{COV_CMD}}` | `go test -cover` |
-| `{{DEBUG_TOOL}}` | `delve` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{TEST_NAMING}}` | `TestX_WhenY`                            |
+| `{{MOCK_LIB}}` | `gomock` / `testify`                     |
+| `{{COV_CMD}}` | `go test -cover`                         |
+| `{{DEBUG_TOOL}}` | `delve`                                  |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                           |
 
 ### Go — Fiber
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Go、Fiber、基于 fasthttp 的极速 Web 框架 |
-| `{{FRAMEWORK_VER}}` | Fiber v2 |
-| `{{LANGUAGE_RUNTIME}}` | Go 1.22+ |
-| `{{BUILD_TOOL}}` | go mod |
-| `{{TEST_FRAMEWORK}}` | go test + testify |
-| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck) |
-| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查 |
-| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate |
-| `{{LANG_TAG}}` | `-golang` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-golang` |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang` |
-| `{{BUILD_CMD}}` | `go build ./...` |
-| `{{TEST_CMD}}` | `go test ./...` |
-| `{{LINT_CMD}}` | `golangci-lint run` |
-| `{{DEV_CMD}}` | `go run ./cmd/server` |
-| `{{DOCSTYLE}}` | Go 注释 |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                        |
+|------|------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Go、Fiber、基于 fasthttp 的极速 Web 框架          |
+| `{{FRAMEWORK_VER}}` | Fiber v2                                 |
+| `{{LANGUAGE_RUNTIME}}` | Go 1.22+                                 |
+| `{{BUILD_TOOL}}` | go mod                                   |
+| `{{TEST_FRAMEWORK}}` | go test + testify                        |
+| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%)               |
+| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck)     |
+| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                      |
+| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate             |
+| `{{LANG_TAG}}` | `-golang`                                |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                     |
+| `{{HARNESSING_CMD}}` | `/harnessing-golang`                     |
+| `{{BUILD_CMD}}` | `go build ./...`                         |
+| `{{TEST_CMD}}` | `go test ./...`                          |
+| `{{LINT_CMD}}` | `golangci-lint run`                      |
+| `{{DEV_CMD}}` | `go run ./cmd/server`                    |
+| `{{DOCSTYLE}}` | Go 注释                                    |
+| `{{FILE_LIMIT}}` | `800`                                    |
 | `{{ARCH_LAYER}}` | 分层 `handler → service → repository`，依赖单向 |
-| `{{TEST_NAMING}}` | `TestX_WhenY` |
-| `{{MOCK_LIB}}` | `gomock` / `testify` |
-| `{{COV_CMD}}` | `go test -cover` |
-| `{{DEBUG_TOOL}}` | `delve` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{TEST_NAMING}}` | `TestX_WhenY`                            |
+| `{{MOCK_LIB}}` | `gomock` / `testify`                     |
+| `{{COV_CMD}}` | `go test -cover`                         |
+| `{{DEBUG_TOOL}}` | `delve`                                  |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                           |
 
 ### Go — Chi
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Go、Chi、轻量标准库风格路由器 |
-| `{{FRAMEWORK_VER}}` | chi v5 |
-| `{{LANGUAGE_RUNTIME}}` | Go 1.22+ |
-| `{{BUILD_TOOL}}` | go mod |
-| `{{TEST_FRAMEWORK}}` | go test + testify |
-| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck) |
-| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查 |
-| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate |
-| `{{LANG_TAG}}` | `-golang` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-golang` |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang` |
-| `{{BUILD_CMD}}` | `go build ./...` |
-| `{{TEST_CMD}}` | `go test ./...` |
-| `{{LINT_CMD}}` | `golangci-lint run` |
-| `{{DEV_CMD}}` | `go run ./cmd/server` |
-| `{{DOCSTYLE}}` | Go 注释 |
-| `{{FILE_LIMIT}}` | `800` |
+| 参数 | 值                                        |
+|------|------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Go、Chi、轻量标准库风格路由器                        |
+| `{{FRAMEWORK_VER}}` | chi v5                                   |
+| `{{LANGUAGE_RUNTIME}}` | Go 1.22+                                 |
+| `{{BUILD_TOOL}}` | go mod                                   |
+| `{{TEST_FRAMEWORK}}` | go test + testify                        |
+| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%)               |
+| `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck)     |
+| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                      |
+| `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate             |
+| `{{LANG_TAG}}` | `-golang`                                |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                     |
+| `{{HARNESSING_CMD}}` | `/harnessing-golang`                     |
+| `{{BUILD_CMD}}` | `go build ./...`                         |
+| `{{TEST_CMD}}` | `go test ./...`                          |
+| `{{LINT_CMD}}` | `golangci-lint run`                      |
+| `{{DEV_CMD}}` | `go run ./cmd/server`                    |
+| `{{DOCSTYLE}}` | Go 注释                                    |
+| `{{FILE_LIMIT}}` | `800`                                    |
 | `{{ARCH_LAYER}}` | 分层 `handler → service → repository`，依赖单向 |
-| `{{TEST_NAMING}}` | `TestX_WhenY` |
-| `{{MOCK_LIB}}` | `gomock` / `testify` |
-| `{{COV_CMD}}` | `go test -cover` |
-| `{{DEBUG_TOOL}}` | `delve` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
+| `{{TEST_NAMING}}` | `TestX_WhenY`                            |
+| `{{MOCK_LIB}}` | `gomock` / `testify`                     |
+| `{{COV_CMD}}` | `go test -cover`                         |
+| `{{DEBUG_TOOL}}` | `delve`                                  |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                           |
 
 ---
 
 ### Frontend — Vue 3 + Vite
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Frontend` |
-| `{{LANGUAGE_DESC}}` | Vue 3、Vite、Pinia、Vue Router、TypeScript |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{FRAMEWORK_VER}}` | Vue 3.x+ / Vite 5.x+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Vitest + @vue/test-utils |
-| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier + vue-tsc |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | Pinia store + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run dev` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                                  |
+|------|--------------------------------------------------------------------|
+| `{{LANGUAGE}}` | `Frontend`                                                         |
+| `{{LANGUAGE_DESC}}` | Vue 3、Vite、Pinia、Vue Router、TypeScript                             |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                                           |
+| `{{FRAMEWORK_VER}}` | Vue 3.x+ / Vite 5.x+                                               |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                                      |
+| `{{TEST_FRAMEWORK}}` | Vitest + @vue/test-utils                                           |
+| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%)                                          |
+| `{{LINT_TOOL}}` | ESLint + Prettier + vue-tsc                                        |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
+| `{{DB_ACCESS}}` | Pinia store + Axios 封装                                             |
+| `{{LANG_TAG}}` | `-front`                                                           |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{BUILD_CMD}}` | `npm run build`                                                    |
+| `{{TEST_CMD}}` | `npm run test`                                                     |
+| `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{DEV_CMD}}` | `npm run dev`                                                      |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
+| `{{FILE_LIMIT}}` | `400`                                                              |
 | `{{ARCH_LAYER}}` | 依赖方向 `views → components → stores → services/api → models → utils` |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | `vitest` mock / msw |
-| `{{COV_CMD}}` | `npx vitest --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令 |
-| `{{SECURITY_CMD}}` | 安全扫描命令 |
-| `{{INTEGRATION_CMD}}` | 集成测试命令 |
-| `{{RUN_CMD}}` | 启动服务命令 |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令 |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点 |
-| `{{METRICS_ENDPOINT}}` | 指标端点 |
-| `{{VET_CMD}}` | 静态分析命令：`eslint --fix` |
-| `{{DEP_CMD}}` | 依赖管理命令：`npm install` |
-| `{{ORM_TOOL}}` | ORM 框架：N/A |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：`vue-tsc` / `tsc` |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`{{TYPE_CHECK_TOOL}} --noEmit` |
-| `{{FORMAT_TOOL}}` | 格式化工具：Prettier |
-| `{{ASSERT_LIB}}` | 断言库：来自 {{TEST_FRAMEWORK}} |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空 |
-| `{{DEVTOOLS_TOOL}}` | DevTools：Vue Devtools / React DevTools / Angular DevTools |
-| `{{ENV_LIB}}` | 测试环境库：`jsdom` |
-| `{{UTIL_LIB}}` | 测试工具库：`@vue/test-utils` / `@testing-library/react` |
-| `{{STATE_MGMT_LIB}}` | 状态管理库：Pinia / Redux / NgRx / Zustand |
-| `{{API_FILE}}` | API 层文件：`request.ts` |
-| `{{METRICS_CHECK_CMD}}` | 指标检查命令：N/A |
-| `{{ROLLBACK_CMD}}` | 回滚命令：`npm run rollback` |
+| `{{TEST_NAMING}}` | component/function 描述名                                             |
+| `{{MOCK_LIB}}` | `vitest` mock / msw                                                |
+| `{{COV_CMD}}` | `npx vitest --coverage`                                            |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools                                        |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
+| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                                           |
+| `{{SECURITY_CMD}}` | 安全扫描命令                                                             |
+| `{{INTEGRATION_CMD}}` | 集成测试命令                                                             |
+| `{{RUN_CMD}}` | 启动服务命令                                                             |
+| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                                                             |
+| `{{HEALTH_ENDPOINT}}` | 健康检查端点                                                             |
+| `{{METRICS_ENDPOINT}}` | 指标端点                                                               |
+| `{{VET_CMD}}` | 静态分析命令：`eslint --fix`                                              |
+| `{{DEP_CMD}}` | 依赖管理命令：`npm install`                                               |
+| `{{ORM_TOOL}}` | ORM 框架：N/A                                                         |
+| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：`vue-tsc` / `tsc`                                           |
+| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`{{TYPE_CHECK_TOOL}} --noEmit`                              |
+| `{{FORMAT_TOOL}}` | 格式化工具：Prettier                                                     |
+| `{{ASSERT_LIB}}` | 断言库：来自 {{TEST_FRAMEWORK}}                                          |
+| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空                                                           |
+| `{{DEVTOOLS_TOOL}}` | DevTools：Vue Devtools / React DevTools / Angular DevTools          |
+| `{{ENV_LIB}}` | 测试环境库：`jsdom`                                                      |
+| `{{UTIL_LIB}}` | 测试工具库：`@vue/test-utils` / `@testing-library/react`                 |
+| `{{STATE_MGMT_LIB}}` | 状态管理库：Pinia / Redux / NgRx / Zustand                               |
+| `{{API_FILE}}` | API 层文件：`request.ts`                                               |
+| `{{METRICS_CHECK_CMD}}` | 指标检查命令：N/A                                                         |
+| `{{ROLLBACK_CMD}}` | 回滚命令：`npm run rollback`                                            |
 
 ### Frontend — React + Vite
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | React、Vite、TypeScript |
-| `{{FRAMEWORK_VER}}` | React 18/19 + Vite 5.x+ |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Vitest + React Testing Library |
-| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier + typescript-eslint |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | Redux / Zustand + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run dev` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                                  |
+|------|--------------------------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | React、Vite、TypeScript                                              |
+| `{{FRAMEWORK_VER}}` | React 18/19 + Vite 5.x+                                            |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                                           |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                                      |
+| `{{TEST_FRAMEWORK}}` | Vitest + React Testing Library                                     |
+| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%)                                          |
+| `{{LINT_TOOL}}` | ESLint + Prettier + typescript-eslint                              |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
+| `{{DB_ACCESS}}` | Redux / Zustand + Axios 封装                                         |
+| `{{LANG_TAG}}` | `-front`                                                           |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{BUILD_CMD}}` | `npm run build`                                                    |
+| `{{TEST_CMD}}` | `npm run test`                                                     |
+| `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{DEV_CMD}}` | `npm run dev`                                                      |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
+| `{{FILE_LIMIT}}` | `400`                                                              |
 | `{{ARCH_LAYER}}` | 依赖方向 `pages → components → stores → services/api → models → utils` |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | `vitest` mock / msw |
-| `{{COV_CMD}}` | `npx vitest --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | component/function 描述名                                             |
+| `{{MOCK_LIB}}` | `vitest` mock / msw                                                |
+| `{{COV_CMD}}` | `npx vitest --coverage`                                            |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools                                      |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
 
 ### Frontend — Next.js
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | React、Next.js、全栈框架（App Router + RSC） |
-| `{{FRAMEWORK_VER}}` | Next.js 15.x |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Vitest/Jest + React Testing Library |
-| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier + typescript-eslint |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | Server Actions / Prisma + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run dev` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                              |
+|------|----------------------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | React、Next.js、全栈框架（App Router + RSC）                           |
+| `{{FRAMEWORK_VER}}` | Next.js 15.x                                                   |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                                       |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                                  |
+| `{{TEST_FRAMEWORK}}` | Vitest/Jest + React Testing Library                            |
+| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%)                                      |
+| `{{LINT_TOOL}}` | ESLint + Prettier + typescript-eslint                          |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                       |
+| `{{DB_ACCESS}}` | Server Actions / Prisma + Axios 封装                             |
+| `{{LANG_TAG}}` | `-front`                                                       |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                            |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                            |
+| `{{BUILD_CMD}}` | `npm run build`                                                |
+| `{{TEST_CMD}}` | `npm run test`                                                 |
+| `{{LINT_CMD}}` | `npm run lint`                                                 |
+| `{{DEV_CMD}}` | `npm run dev`                                                  |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                                  |
+| `{{FILE_LIMIT}}` | `400`                                                          |
 | `{{ARCH_LAYER}}` | 依赖方向 `app(route) → components → lib/services → models → utils` |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | `vitest` mock / msw |
-| `{{COV_CMD}}` | `npx vitest --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | component/function 描述名                                         |
+| `{{MOCK_LIB}}` | `vitest` mock / msw                                            |
+| `{{COV_CMD}}` | `npx vitest --coverage`                                        |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools                                  |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                           |
 
 ### Frontend — Vue 3 + Vue CLI（Webpack）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Vue 3、Vue CLI、Webpack |
-| `{{FRAMEWORK_VER}}` | Vue 3.x + Vue CLI 5.x |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Jest + @vue/test-utils |
-| `{{COV_TOOL}}` | istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | Pinia store + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run serve` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                                  |
+|------|--------------------------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Vue 3、Vue CLI、Webpack                                              |
+| `{{FRAMEWORK_VER}}` | Vue 3.x + Vue CLI 5.x                                              |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                                           |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                                      |
+| `{{TEST_FRAMEWORK}}` | Jest + @vue/test-utils                                             |
+| `{{COV_TOOL}}` | istanbul (核心逻辑 ≥80%)                                               |
+| `{{LINT_TOOL}}` | ESLint + Prettier                                                  |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
+| `{{DB_ACCESS}}` | Pinia store + Axios 封装                                             |
+| `{{LANG_TAG}}` | `-front`                                                           |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{BUILD_CMD}}` | `npm run build`                                                    |
+| `{{TEST_CMD}}` | `npm run test`                                                     |
+| `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{DEV_CMD}}` | `npm run serve`                                                    |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
+| `{{FILE_LIMIT}}` | `400`                                                              |
 | `{{ARCH_LAYER}}` | 依赖方向 `views → components → stores → services/api → models → utils` |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | Jest mock / msw |
-| `{{COV_CMD}}` | `npx jest --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | component/function 描述名                                             |
+| `{{MOCK_LIB}}` | Jest mock / msw                                                    |
+| `{{COV_CMD}}` | `npx jest --coverage`                                              |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools                                        |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
 
 ### Frontend — Angular
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Angular、Angular CLI、TypeScript |
-| `{{FRAMEWORK_VER}}` | Angular 18+ |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Jasmine + Karma / Jest |
-| `{{COV_TOOL}}` | Karma 覆盖率 / istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | NgRx / Signal + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run start` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                   |
+|------|-----------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Angular、Angular CLI、TypeScript                      |
+| `{{FRAMEWORK_VER}}` | Angular 18+                                         |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                            |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                       |
+| `{{TEST_FRAMEWORK}}` | Jasmine + Karma / Jest                              |
+| `{{COV_TOOL}}` | Karma 覆盖率 / istanbul (核心逻辑 ≥80%)                    |
+| `{{LINT_TOOL}}` | ESLint + Prettier                                   |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                            |
+| `{{DB_ACCESS}}` | NgRx / Signal + Axios 封装                            |
+| `{{LANG_TAG}}` | `-front`                                            |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                 |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                 |
+| `{{BUILD_CMD}}` | `npm run build`                                     |
+| `{{TEST_CMD}}` | `npm run test`                                      |
+| `{{LINT_CMD}}` | `npm run lint`                                      |
+| `{{DEV_CMD}}` | `npm run start`                                     |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                       |
+| `{{FILE_LIMIT}}` | `400`                                               |
 | `{{ARCH_LAYER}}` | 依赖方向 `components → services → models → utils`，模块化分层 |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | Jasmine spies / Jest mock |
-| `{{COV_CMD}}` | `npx ng test --code-coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / Angular DevTools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | component/function 描述名                              |
+| `{{MOCK_LIB}}` | Jasmine spies / Jest mock                           |
+| `{{COV_CMD}}` | `npx ng test --code-coverage`                       |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / Angular DevTools                     |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                |
 
 ### Frontend — Svelte + Vite
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Svelte、Vite、TypeScript |
-| `{{FRAMEWORK_VER}}` | Svelte 5.x + Vite 5.x+ |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Vitest + @testing-library/svelte |
-| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier + svelte-check |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | Svelte stores + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run dev` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                                  |
+|------|--------------------------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Svelte、Vite、TypeScript                                             |
+| `{{FRAMEWORK_VER}}` | Svelte 5.x + Vite 5.x+                                             |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                                           |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                                      |
+| `{{TEST_FRAMEWORK}}` | Vitest + @testing-library/svelte                                   |
+| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%)                                          |
+| `{{LINT_TOOL}}` | ESLint + Prettier + svelte-check                                   |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
+| `{{DB_ACCESS}}` | Svelte stores + Axios 封装                                           |
+| `{{LANG_TAG}}` | `-front`                                                           |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{BUILD_CMD}}` | `npm run build`                                                    |
+| `{{TEST_CMD}}` | `npm run test`                                                     |
+| `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{DEV_CMD}}` | `npm run dev`                                                      |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
+| `{{FILE_LIMIT}}` | `400`                                                              |
 | `{{ARCH_LAYER}}` | 依赖方向 `pages → components → stores → services/api → models → utils` |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | `vitest` mock / msw |
-| `{{COV_CMD}}` | `npx vitest --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / Svelte DevTools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | component/function 描述名                                             |
+| `{{MOCK_LIB}}` | `vitest` mock / msw                                                |
+| `{{COV_CMD}}` | `npx vitest --coverage`                                            |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / Svelte DevTools                                     |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
 
 ### Frontend — Nuxt
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | Vue、Nuxt、全栈框架（SSR/SSG + 自动导入） |
-| `{{FRAMEWORK_VER}}` | Nuxt 4.x |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Vitest + @vue/test-utils |
-| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier + vue-tsc |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | Pinia store + Nitro API + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run dev` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                            |
+|------|--------------------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | Vue、Nuxt、全栈框架（SSR/SSG + 自动导入）                                |
+| `{{FRAMEWORK_VER}}` | Nuxt 4.x                                                     |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                                     |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                                |
+| `{{TEST_FRAMEWORK}}` | Vitest + @vue/test-utils                                     |
+| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%)                                    |
+| `{{LINT_TOOL}}` | ESLint + Prettier + vue-tsc                                  |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                     |
+| `{{DB_ACCESS}}` | Pinia store + Nitro API + Axios 封装                           |
+| `{{LANG_TAG}}` | `-front`                                                     |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                          |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                          |
+| `{{BUILD_CMD}}` | `npm run build`                                              |
+| `{{TEST_CMD}}` | `npm run test`                                               |
+| `{{LINT_CMD}}` | `npm run lint`                                               |
+| `{{DEV_CMD}}` | `npm run dev`                                                |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                                |
+| `{{FILE_LIMIT}}` | `400`                                                        |
 | `{{ARCH_LAYER}}` | 依赖方向 `pages → components → composables → server/api → utils` |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | `vitest` mock / msw |
-| `{{COV_CMD}}` | `npx vitest --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | component/function 描述名                                       |
+| `{{MOCK_LIB}}` | `vitest` mock / msw                                          |
+| `{{COV_CMD}}` | `npx vitest --coverage`                                      |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools                                  |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                         |
 
 ### Frontend — React + CRA（Webpack）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | React、Create React App、Webpack |
-| `{{FRAMEWORK_VER}}` | React 18 + CRA 5.x |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Jest + React Testing Library |
-| `{{COV_TOOL}}` | istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | Redux / Zustand + Axios 封装 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run start` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                                                                  |
+|------|--------------------------------------------------------------------|
+| `{{LANGUAGE_DESC}}` | React、Create React App、Webpack                                     |
+| `{{FRAMEWORK_VER}}` | React 18 + CRA 5.x                                                 |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                                                           |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                                                      |
+| `{{TEST_FRAMEWORK}}` | Jest + React Testing Library                                       |
+| `{{COV_TOOL}}` | istanbul (核心逻辑 ≥80%)                                               |
+| `{{LINT_TOOL}}` | ESLint + Prettier                                                  |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
+| `{{DB_ACCESS}}` | Redux / Zustand + Axios 封装                                         |
+| `{{LANG_TAG}}` | `-front`                                                           |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{BUILD_CMD}}` | `npm run build`                                                    |
+| `{{TEST_CMD}}` | `npm run test`                                                     |
+| `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{DEV_CMD}}` | `npm run start`                                                    |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
+| `{{FILE_LIMIT}}` | `400`                                                              |
 | `{{ARCH_LAYER}}` | 依赖方向 `pages → components → stores → services/api → models → utils` |
-| `{{TEST_NAMING}}` | component/function 描述名 |
-| `{{MOCK_LIB}}` | Jest mock / msw |
-| `{{COV_CMD}}` | `npx react-scripts test --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | component/function 描述名                                             |
+| `{{MOCK_LIB}}` | Jest mock / msw                                                    |
+| `{{COV_CMD}}` | `npx react-scripts test --coverage`                                |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools                                      |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
 
 ### Frontend — 纯 Vite（无前端框架）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | 纯 Vite、TypeScript |
-| `{{FRAMEWORK_VER}}` | Vite 5.x+ |
-| `{{LANGUAGE_RUNTIME}}` | Node 20+ |
-| `{{BUILD_TOOL}}` | npm/pnpm/yarn |
-| `{{TEST_FRAMEWORK}}` | Vitest |
-| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | ESLint + Prettier |
-| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查 |
-| `{{DB_ACCESS}}` | 无特定状态管理 |
-| `{{LANG_TAG}}` | `-front` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-front` |
-| `{{HARNESSING_CMD}}` | `/harnessing-front` |
-| `{{BUILD_CMD}}` | `npm run build` |
-| `{{TEST_CMD}}` | `npm run test` |
-| `{{LINT_CMD}}` | `npm run lint` |
-| `{{DEV_CMD}}` | `npm run dev` |
-| `{{DOCSTYLE}}` | JSDoc / TSDoc |
-| `{{FILE_LIMIT}}` | `400` |
+| 参数 | 值                               |
+|------|---------------------------------|
+| `{{LANGUAGE_DESC}}` | 纯 Vite、TypeScript               |
+| `{{FRAMEWORK_VER}}` | Vite 5.x+                       |
+| `{{LANGUAGE_RUNTIME}}` | Node 20+                        |
+| `{{BUILD_TOOL}}` | npm/pnpm/yarn                   |
+| `{{TEST_FRAMEWORK}}` | Vitest                          |
+| `{{COV_TOOL}}` | c8 / istanbul (核心逻辑 ≥80%)       |
+| `{{LINT_TOOL}}` | ESLint + Prettier               |
+| `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查        |
+| `{{DB_ACCESS}}` | 无特定状态管理                         |
+| `{{LANG_TAG}}` | `-front`                        |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-front`             |
+| `{{HARNESSING_CMD}}` | `/harnessing-front`             |
+| `{{BUILD_CMD}}` | `npm run build`                 |
+| `{{TEST_CMD}}` | `npm run test`                  |
+| `{{LINT_CMD}}` | `npm run lint`                  |
+| `{{DEV_CMD}}` | `npm run dev`                   |
+| `{{DOCSTYLE}}` | JSDoc / TSDoc                   |
+| `{{FILE_LIMIT}}` | `400`                           |
 | `{{ARCH_LAYER}}` | 依赖方向 `src → components → utils` |
-| `{{TEST_NAMING}}` | function 描述名 |
-| `{{MOCK_LIB}}` | `vitest` mock |
-| `{{COV_CMD}}` | `npx vitest --coverage` |
-| `{{DEBUG_TOOL}}` | 浏览器 DevTools |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front` |
+| `{{TEST_NAMING}}` | function 描述名                    |
+| `{{MOCK_LIB}}` | `vitest` mock                   |
+| `{{COV_CMD}}` | `npx vitest --coverage`         |
+| `{{DEBUG_TOOL}}` | 浏览器 DevTools                    |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`            |
 
 ### 参数块使用说明（差异化）
 
@@ -1080,41 +1110,41 @@ disable-model-invocation: true
 
 ### Java 基础参数（JDK 21 + Maven Web 家族通用）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Java` |
-| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS |
-| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ |
-| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs |
-| `{{ARCH_TEST_TOOL}}` | ArchUnit |
-| `{{LANG_TAG}}` | `-java` |
-| `{{HARNESS_ME_NAME}}` | `harness-me` |
-| `{{HARNESSING_CMD}}` | `/harnessing` |
-| `{{BUILD_CMD}}` | `mvn compile` |
-| `{{TEST_CMD}}` | `mvn test` |
-| `{{LINT_CMD}}` | `mvn checkstyle:check` |
-| `{{COV_CMD}}` | `mvn jacoco:report` |
-| `{{DOCSTYLE}}` | `Javadoc` |
-| `{{FILE_LIMIT}}` | `500` |
-| `{{TEST_NAMING}}` | `method_should_x_when_y` |
-| `{{MOCK_LIB}}` | `Mockito` |
-| `{{DEBUG_TOOL}}` | 调试器 / `jdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令 |
-| `{{SECURITY_CMD}}` | 安全扫描命令 |
-| `{{INTEGRATION_CMD}}` | 集成测试命令 |
-| `{{RUN_CMD}}` | 启动服务命令 |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令 |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点 |
-| `{{METRICS_ENDPOINT}}` | 指标端点 |
-| `{{VET_CMD}}` | 静态分析命令（实际合并到 LINT_CMD） |
+| 参数 | 值                            |
+|------|------------------------------|
+| `{{LANGUAGE}}` | `Java`                       |
+| `{{LANGUAGE_RUNTIME}}` | JDK 21 LTS                   |
+| `{{TEST_FRAMEWORK}}` | JUnit 5 + Mockito + AssertJ  |
+| `{{COV_TOOL}}` | JaCoCo (核心逻辑 ≥80%)           |
+| `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs  |
+| `{{ARCH_TEST_TOOL}}` | ArchUnit                     |
+| `{{LANG_TAG}}` | `-java`                      |
+| `{{HARNESS_ME_NAME}}` | `/harness-me`                |
+| `{{HARNESSING_CMD}}` | `/harnessing`                |
+| `{{BUILD_CMD}}` | `mvn compile`                |
+| `{{TEST_CMD}}` | `mvn test`                   |
+| `{{LINT_CMD}}` | `mvn checkstyle:check`       |
+| `{{COV_CMD}}` | `mvn jacoco:report`          |
+| `{{DOCSTYLE}}` | `Javadoc`                    |
+| `{{FILE_LIMIT}}` | `500`                        |
+| `{{TEST_NAMING}}` | `method_should_x_when_y`     |
+| `{{MOCK_LIB}}` | `Mockito`                    |
+| `{{DEBUG_TOOL}}` | 调试器 / `jdb`                  |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`               |
+| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                     |
+| `{{SECURITY_CMD}}` | 安全扫描命令                       |
+| `{{INTEGRATION_CMD}}` | 集成测试命令                       |
+| `{{RUN_CMD}}` | 启动服务命令                       |
+| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                       |
+| `{{HEALTH_ENDPOINT}}` | 健康检查端点                       |
+| `{{METRICS_ENDPOINT}}` | 指标端点                         |
+| `{{VET_CMD}}` | 静态分析命令（实际合并到 LINT_CMD）       |
 | `{{DEP_CMD}}` | 依赖管理命令：`mvn dependency:tree` |
-| `{{ORM_TOOL}}` | ORM 框架：MyBatis-Plus / JPA |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：javac（编译时检查） |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`{{BUILD_CMD}}` |
-| `{{ASSERT_LIB}}` | 断言库：AssertJ |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空 |
+| `{{ORM_TOOL}}` | ORM 框架：MyBatis-Plus / JPA    |
+| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：javac（编译时检查）          |
+| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`{{BUILD_CMD}}`       |
+| `{{ASSERT_LIB}}` | 断言库：AssertJ                  |
+| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空                     |
 
 ### Java — Dubbo（微服务 RPC）
 
@@ -1200,41 +1230,41 @@ disable-model-invocation: true
 
 ### Python 基础参数（通用）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Python` |
-| `{{LANGUAGE_RUNTIME}}` | Python 3.11+ |
-| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%) |
-| `{{LINT_TOOL}}` | flake8 + mypy + black + isort |
-| `{{LANG_TAG}}` | `-python` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-python` |
-| `{{HARNESSING_CMD}}` | `/harnessing-python` |
-| `{{BUILD_CMD}}` | `python -m compileall .` |
-| `{{TEST_CMD}}` | `python -m pytest` |
-| `{{LINT_CMD}}` | `flake8 .` |
-| `{{COV_CMD}}` | `pytest --cov` |
-| `{{DOCSTYLE}}` | `docstring` |
-| `{{FILE_LIMIT}}` | `800` |
-| `{{TEST_NAMING}}` | `test_x_when_y` |
-| `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python` |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令 |
-| `{{SECURITY_CMD}}` | 安全扫描命令 |
-| `{{INTEGRATION_CMD}}` | 集成测试命令 |
-| `{{RUN_CMD}}` | 启动服务命令 |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令 |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点 |
-| `{{METRICS_ENDPOINT}}` | 指标端点 |
-| `{{VET_CMD}}` | 静态分析命令：`mypy` |
+| 参数 | 值                                   |
+|------|-------------------------------------|
+| `{{LANGUAGE}}` | `Python`                            |
+| `{{LANGUAGE_RUNTIME}}` | Python 3.11+                        |
+| `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%)              |
+| `{{LINT_TOOL}}` | flake8 + mypy + black + isort       |
+| `{{LANG_TAG}}` | `-python`                           |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                |
+| `{{HARNESSING_CMD}}` | `/harnessing-python`                |
+| `{{BUILD_CMD}}` | `python -m compileall .`            |
+| `{{TEST_CMD}}` | `python -m pytest`                  |
+| `{{LINT_CMD}}` | `flake8 .`                          |
+| `{{COV_CMD}}` | `pytest --cov`                      |
+| `{{DOCSTYLE}}` | `docstring`                         |
+| `{{FILE_LIMIT}}` | `800`                               |
+| `{{TEST_NAMING}}` | `test_x_when_y`                     |
+| `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb`     |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`               |
+| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                            |
+| `{{SECURITY_CMD}}` | 安全扫描命令                              |
+| `{{INTEGRATION_CMD}}` | 集成测试命令                              |
+| `{{RUN_CMD}}` | 启动服务命令                              |
+| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                              |
+| `{{HEALTH_ENDPOINT}}` | 健康检查端点                              |
+| `{{METRICS_ENDPOINT}}` | 指标端点                                |
+| `{{VET_CMD}}` | 静态分析命令：`mypy`                       |
 | `{{DEP_CMD}}` | 依赖管理命令：`pip install` / `poetry add` |
-| `{{ORM_TOOL}}` | ORM 框架：SQLAlchemy |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：mypy |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`mypy` |
-| `{{FORMAT_TOOL}}` | 格式化工具：black |
-| `{{FORMAT_CHECK_CMD}}` | 格式检查命令：`black --check .` |
-| `{{METRICS_CHECK_CMD}}` | 指标检查命令：`curl {{METRICS_ENDPOINT}}` |
-| `{{ASSERT_LIB}}` | 断言库：`assert` |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空 |
+| `{{ORM_TOOL}}` | ORM 框架：SQLAlchemy                   |
+| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：mypy                         |
+| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`mypy`                       |
+| `{{FORMAT_TOOL}}` | 格式化工具：black                         |
+| `{{FORMAT_CHECK_CMD}}` | 格式检查命令：`black --check .`            |
+| `{{METRICS_CHECK_CMD}}` | 指标检查命令：`curl {{METRICS_ENDPOINT}}`  |
+| `{{ASSERT_LIB}}` | 断言库：`assert`                        |
+| `{{RACE_DETECT_ARG}}` | 竞态检测参数：空                            |
 
 ### Python — Tornado（异步 Web）
 
@@ -1409,41 +1439,41 @@ disable-model-invocation: true
 
 ### Go 基础参数（通用）
 
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE}}` | `Go` |
-| `{{LANGUAGE_RUNTIME}}` | Go 1.22+ |
-| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%) |
+| 参数 | 值                                    |
+|------|--------------------------------------|
+| `{{LANGUAGE}}` | `Go`                                 |
+| `{{LANGUAGE_RUNTIME}}` | Go 1.22+                             |
+| `{{COV_TOOL}}` | go test -cover (核心逻辑 ≥80%)           |
 | `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck) |
-| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查 |
-| `{{LANG_TAG}}` | `-golang` |
-| `{{HARNESS_ME_NAME}}` | `harness-me-golang` |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang` |
-| `{{BUILD_CMD}}` | `go build ./...` |
-| `{{TEST_CMD}}` | `go test ./...` |
-| `{{LINT_CMD}}` | `golangci-lint run` |
-| `{{COV_CMD}}` | `go test -cover` |
-| `{{DOCSTYLE}}` | Go 注释 |
-| `{{FILE_LIMIT}}` | `800` |
-| `{{TEST_NAMING}}` | `TestX_WhenY` |
-| `{{DEBUG_TOOL}}` | `delve` |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review` |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令 |
-| `{{SECURITY_CMD}}` | 安全扫描命令 |
-| `{{INTEGRATION_CMD}}` | 集成测试命令 |
-| `{{RUN_CMD}}` | 启动服务命令 |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令 |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点 |
-| `{{METRICS_ENDPOINT}}` | 指标端点 |
-| `{{VET_CMD}}` | 静态分析命令：`go vet ./...` |
-| `{{DEP_CMD}}` | 依赖管理命令：`go mod tidy` |
-| `{{ORM_TOOL}}` | ORM 框架：GORM / sqlx |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：go vet |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`go vet ./...` |
-| `{{ASSERT_LIB}}` | 断言库：testify |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：`-race` |
-| `{{HTTP_MOCK_UTIL}}` | HTTP Mock 工具：`httptest.Server` |
-| `{{FRAMEWORK_NAME}}` | 框架名称（从 {{FRAMEWORK_DESC}} 提取） |
+| `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                  |
+| `{{LANG_TAG}}` | `-golang`                            |
+| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                 |
+| `{{HARNESSING_CMD}}` | `/harnessing-golang`                 |
+| `{{BUILD_CMD}}` | `go build ./...`                     |
+| `{{TEST_CMD}}` | `go test ./...`                      |
+| `{{LINT_CMD}}` | `golangci-lint run`                  |
+| `{{COV_CMD}}` | `go test -cover`                     |
+| `{{DOCSTYLE}}` | Go 注释                                |
+| `{{FILE_LIMIT}}` | `800`                                |
+| `{{TEST_NAMING}}` | `TestX_WhenY`                        |
+| `{{DEBUG_TOOL}}` | `delve`                              |
+| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                       |
+| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                             |
+| `{{SECURITY_CMD}}` | 安全扫描命令                               |
+| `{{INTEGRATION_CMD}}` | 集成测试命令                               |
+| `{{RUN_CMD}}` | 启动服务命令                               |
+| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                               |
+| `{{HEALTH_ENDPOINT}}` | 健康检查端点                               |
+| `{{METRICS_ENDPOINT}}` | 指标端点                                 |
+| `{{VET_CMD}}` | 静态分析命令：`go vet ./...`                |
+| `{{DEP_CMD}}` | 依赖管理命令：`go mod tidy`                 |
+| `{{ORM_TOOL}}` | ORM 框架：GORM / sqlx                   |
+| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：go vet                        |
+| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`go vet ./...`                |
+| `{{ASSERT_LIB}}` | 断言库：testify                          |
+| `{{RACE_DETECT_ARG}}` | 竞态检测参数：`-race`                       |
+| `{{HTTP_MOCK_UTIL}}` | HTTP Mock 工具：`httptest.Server`       |
+| `{{FRAMEWORK_NAME}}` | 框架名称（从 {{FRAMEWORK_DESC}} 提取）        |
 
 ### Go — Beego
 
