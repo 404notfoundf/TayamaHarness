@@ -51,7 +51,7 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 
 ### Step 3: 编写测试
 - 命名: `{{TEST_NAMING}}`
-- 用 {{TEST_FRAMEWORK}} + {{MOCK_LIB}}
+- 用 {{TEST_FRAMEWORK}} + {{MOCK_LIB}}，断言用 {{ASSERT_LIB}}
 - 每个测试**单一断言意图**，Arrange-Act-Assert 三段清晰
 - **降级逻辑必须实测**，不满足于"应该能处理"
 
@@ -64,6 +64,9 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 - 跑 `{{COV_CMD}}`，核心逻辑 ≥80%
 - 覆盖率不足 → 补测试，而非降低标准
 - 纯 getter/setter/配置类可豁免
+
+### Step 5.5: 竞态检测
+- 跑 `{{TEST_CMD}} {{RACE_DETECT_ARG}}` 检测竞态（{{RACE_DETECT_ARG}} 为空可跳过）
 
 ### Step 6: 诊断辅助
 如果遇到无法稳定复现的 Bug 或非确定性故障，建议运行 `/diagnosing-bugs` 进行 6 阶段诊断。
@@ -85,4 +88,4 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 
 ## 5. 完成标志
 
-测试全绿 + 覆盖率达标 → 更新 `change.md` 状态 `testing → reviewing`，进入 ④ 专家评审。
+`{{TEST_CMD}} {{RACE_DETECT_ARG}}` + `{{COV_CMD}}` 全绿 + 覆盖率达标 → 更新 `change.md` 状态 `testing → reviewing`，进入 ④ 专家评审。

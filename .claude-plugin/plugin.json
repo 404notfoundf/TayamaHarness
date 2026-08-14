@@ -1,7 +1,7 @@
 {
   "name": "huazai-harness-skills",
   "version": "1.0.0",
-  "description": "Harness Engineering 跨语言开发流水线技能包 — Java / Python / Go",
+  "description": "Harness Engineering 跨语言开发流水线技能包 — Java / Python / Go / Rust / PHP / Frontend",
   "repository": "https://gitcode.com/huazaiteam/huazai-harness-skills",
   "keywords": [
     "harness",
@@ -18,6 +18,8 @@
     "./skills/harness-java",
     "./skills/harness-python",
     "./skills/harness-golang",
+    "./skills/harness-rust",
+    "./skills/harness-php",
     "./skills/harness-front"
   ]
 }

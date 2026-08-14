@@ -1,6 +1,6 @@
 # huazai-harness-skills
 
-> 开箱即用的 Harness Engineering 跨语言开发流水线技能包
+> 开箱即用的 Harness Engineering 跨语言开发流水线技能包（支持 Java / Python / Go / Rust / PHP / Frontend）
 >
 > 参考 [mattpocock/skills](https://github.com/mattpocock/skills) 的 SKILL.md 体系开发
 
@@ -52,7 +52,7 @@ npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
 
 > 每个技能完成后，自动进入下一个阶段。遇到 Bug 可用 `/diagnosing-bugs`，需要切换上下文时用 `/handoff`，定期运行 `/arch-review` 做架构体检。
 
-AI 自动检测项目语言与框架（Java / Python / Go / Frontend，支持 Spring Boot / Spring Cloud Alibaba / Dubbo / Quarkus / Django / FastAPI / TensorFlow / PyTorch / LangChain / Gin / Beego / GoFrame / Kitex / React / Vue / Angular / Next.js 等 50+ 主流框架和构建工具），生成 `.harness/` 目录：
+AI 自动检测项目语言与框架（Java / Python / Go / Rust / PHP / Frontend，支持 Spring Boot / Spring Cloud Alibaba / Dubbo / Quarkus / Django / FastAPI / TensorFlow / PyTorch / LangChain / Gin / Beego / GoFrame / Kitex / Axum / Actix Web / Laravel / ThinkPHP / Symfony / React / Vue / Angular / Next.js 等 80+ 主流框架和构建工具），生成 `.harness/` 目录：
 - **Owner Agent** — 应用负责人智能体（灵魂，定义你是谁、怎么工作）
 - **Rules** — 5 条规则（SDD-TDD / 编码规范 / 工程结构 / 开发流程 / 运行时可靠性）
 - **Skills** — 30+ 个技能（6 流水线 + 3 通用辅助 + 3 场景辅助 + 17 封装组件 + 2 领域专家）
@@ -67,6 +67,8 @@ AI 自动检测项目语言与框架（Java / Python / Go / Frontend，支持 Sp
 | **Java** | Spring Boot / Spring Cloud Alibaba / Spring MVC / Quarkus / Micronaut / Vert.x / Dropwizard / Dubbo / Spring AI / Spring AI Alibaba / LangChain4j / Semantic Kernel / AgentScope Java / Genkit Java | Maven / Gradle | JUnit 5 + Mockito | Checkstyle + PMD |
 | **Python** | Django / FastAPI / Flask / Tornado / TensorFlow / PyTorch / Keras / scikit-learn / XGBoost / LangChain / LangGraph / CrewAI / PydanticAI / Hugging Face Transformers / OpenAI Agents SDK | pip / Poetry / uv | pytest（Django 用 TestCase） | flake8 + mypy + black |
 | **Go** | Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Gorilla Mux / Kitex / Hertz / Iris / Macaron / Tango / GoFrame / LangChainGo / eino / ADK-Go / tRPC-Agent-Go / Genkit / Anyi | go mod | go test + testify | golangci-lint + go vet |
+| **Rust** | Axum / Actix Web / Rocket / Warp / Poem / Loco / Salvo / Tauri / Iced / egui / Dioxus / Candle / Burn / tch-rs / ort / rlx-models / ADK-Rust / Blockcell / vLLM | cargo | cargo test + rstest | clippy + rustfmt |
+| **PHP** | Laravel / Laravel AI SDK / Neuron AI / LLPhant / Prism / PocketFlow PHP / Cognesy Instructor PHP / Papiai / ThinkPHP / Hyperf / Yii / Yii 3 / Workerman / webman / CodeIgniter (CI) / Slim / WordPress / WooCommerce / Drupal / Joomla / phpcms / dedecms / discuz / Phalcon / CakePHP / Craft CMS / October CMS / OpenCart / GravCMS / Symfony2 / Yaf / Swoole | composer | PHPUnit | phpstan + php-cs-fixer |
 | **Frontend** | Vue 3 / React / Angular / Svelte / Next.js / Nuxt | Vite / Webpack / Angular CLI | Vitest / Jest / Jasmine | ESLint + Prettier |
 
 ## 技能清单
@@ -152,10 +154,15 @@ huazai-harness-skills/
 │   │       ├── domain-modeling/   # 领域语言维护
 │   │       ├── research/          # 外部事实查证
 │   │       ├── resolving-merge-conflicts/ # 合并冲突解决
-│   │       ├── harness-me/        # ⚙ 模板化技能（被 apply-harness 渲染）
-│   │       ├── handoff/           # ⚙ 模板化技能
-│   │       ├── diagnosing-bugs/   # ⚙ 模板化技能
+│   │       ├── arch-review/       # ⚙ 模板化技能（被 apply-harness 渲染）
 │   │       ├── coding-skill/      # ⚙ 模板化技能
+│   │       ├── deploy-verify/     # ⚙ 模板化技能
+│   │       ├── diagnosing-bugs/   # ⚙ 模板化技能
+│   │       ├── expert-reviewer/   # ⚙ 模板化技能
+│   │       ├── handoff/           # ⚙ 模板化技能
+│   │       ├── harness-me/        # ⚙ 模板化技能
+│   │       ├── harnessing/        # ⚙ 模板化技能
+│   │       ├── unit-test-ci/      # ⚙ 模板化技能
 │   │       ├── unit-test-write/   # ⚙ 模板化技能
 │   │       ├── redis-cache-wrapper/       # 多级缓存封装
 │   │       ├── database-migration-toolkit/ # 数据库迁移工具
@@ -170,11 +177,13 @@ huazai-harness-skills/
 │   │       ├── oss-toolkit/               # 对象存储工具
 │   │       ├── excel-toolkit/             # Excel 工具
 │   │       └── eventbus-toolkit/          # 事件总线工具
-│   ├── harness-java/              # Java 语言规范包
+│   ├── harness-java/              # Java 语言规范包（流水线技能由 core 渲染，仅保留专属技能）
 │   │   ├── rules/                 # 5 条规则
-│   │   ├── skills/                # 15 个技能（含 6 流水线 + 3 场景辅助 + 2 领域专家 + 2 Java 封装组件）
-│   ├── harness-python/            # Python 语言规范包（同上）
+│   │   └── skills/                # 4 个框架专属技能（java-code-review、spring-api-convention、mybatis-toolkit、openfeign-toolkit）
+│   ├── harness-python/            # Python 语言规范包（规则 + 参数，技能由 core 渲染）
 │   ├── harness-golang/            # Golang 语言规范包（同上）
+│   ├── harness-rust/              # Rust 语言规范包（同上）
+│   ├── harness-php/               # PHP 语言规范包（同上）
 │   └── harness-front/             # Frontend 语言规范包（同上）
 ├── CONTEXT.md                     # 项目共享上下文
 ├── CHANGELOG.md                   # 变更日志
@@ -192,7 +201,7 @@ huazai-harness-skills/
 3. **[SDD-TDD 方法论](docs/sdd-tdd.md)** — 了解规格驱动 + 测试驱动开发
 4. **[6 阶段流水线](docs/6-stage-pipeline.md)** — 了解完整流水线
 5. **[变更管理](docs/change-management.md)** — 了解变更状态机
-6. **语言规范** — 选择你的语言：[Java](docs/languages/java.md) / [Python](docs/languages/python.md) / [Go](docs/languages/golang.md) / [Frontend](docs/languages/frontend.md)
+6. **语言规范** — 选择你的语言：[Java](docs/languages/java.md) / [Python](docs/languages/python.md) / [Go](docs/languages/golang.md) / [Rust](docs/languages/rust.md) / [PHP](docs/languages/php.md) / [Frontend](docs/languages/frontend.md)
 7. **各技能文档** — 在 `docs/skills/` 目录下
 
 > 📖 **完整文档中心**: [docs/README.md](docs/README.md)

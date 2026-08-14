@@ -4,7 +4,7 @@
     "name": "Huazai Team",
     "url": "https://gitcode.com/huazaiteam"
   },
-  "description": "Harness Engineering 跨语言开发流水线技能包 — 开箱即用的 Java / Python / Go / Frontend 规范体系",
+  "description": "Harness Engineering 跨语言开发流水线技能包 — 开箱即用的 Java / Python / Go / Rust / PHP / Frontend 规范体系",
   "plugins": [
     {
       "name": "huazai-harness-skills",
@@ -20,6 +20,8 @@
         "java",
         "python",
         "golang",
+        "rust",
+        "php",
         "frontend"
       ]
     }

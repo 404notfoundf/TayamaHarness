@@ -13,22 +13,25 @@ description: Java 语言规范包 — 编码规范、工程结构（SDD-TDD/开�
 - **代码规范**: 阿里巴巴 Java 开发手册 + Checkstyle + PMD + SpotBugs
 - **架构约束**: ArchUnit
 
-包含 rules（2 个语言特有 + 3 个通用来自 harness-core）和 skills（14 个），与 `apply-harness` 入口技能配合使用。
+包含 rules（2 个语言特有 + 3 个通用来自 harness-core）和框架专属 skills（4 个）。流水线技能（10 个）由 `apply-harness` 从 `harness-core/skills/` 模板渲染，语言包不再维护副本。
 
-### 流水线技能（9 个）
-| 技能 | 阶段 | 说明 |
-|------|------|------|
-| `harnessing` | ① 需求打磨 | 需求拷问引擎，打磨方案 |
-| `coding-skill` | ② 编码实现 | 按需求卡/规范实现可编译代码 |
-| `unit-test-write` | ③ 单元测试 | 核心逻辑覆盖率 ≥80% |
-| `expert-reviewer` | ④ 专家评审 | 双轴审查，0 严重问题放行 |
-| `unit-test-ci` | ⑤ CI 门禁 | 静态分析+竞态检测+全量测试 |
-| `deploy-verify` | ⑥ 部署验证 | 冒烟/健康检查/关键链路验证 |
-| `arch-review` | 非流水线 | 架构体检，发现摩擦点 |
-| `diagnosing-bugs` | 辅助 | Bug 诊断，稳定复现后分析 |
-| `handoff` | 辅助 | 上下文压缩，交接文档 |
+### 流水线技能（由 apply-harness 渲染，语言包不维护副本）
+| 技能 | 阶段 | 说明 | 模板位置 |
+|------|------|------|---------|
+| `harnessing` | ① 需求打磨 | 需求拷问引擎，打磨方案 | `harness-core/skills/harnessing/` |
+| `coding-skill` | ② 编码实现 | 按需求卡/规范实现可编译代码 | `harness-core/skills/coding-skill/` |
+| `unit-test-write` | ③ 单元测试 | 核心逻辑覆盖率 ≥80% | `harness-core/skills/unit-test-write/` |
+| `expert-reviewer` | ④ 专家评审 | 双轴审查，0 严重问题放行 | `harness-core/skills/expert-reviewer/` |
+| `unit-test-ci` | ⑤ CI 门禁 | 静态分析+竞态检测+全量测试 | `harness-core/skills/unit-test-ci/` |
+| `deploy-verify` | ⑥ 部署验证 | 冒烟/健康检查/关键链路验证 | `harness-core/skills/deploy-verify/` |
+| `arch-review` | 非流水线 | 架构体检，发现摩擦点 | `harness-core/skills/arch-review/` |
+| `diagnosing-bugs` | 辅助 | Bug 诊断，稳定复现后分析 | `harness-core/skills/diagnosing-bugs/` |
+| `handoff` | 辅助 | 上下文压缩，交接文档 | `harness-core/skills/handoff/` |
+| `harness-me` | 辅助（入口） | 灵魂拷问式需求打磨 | `harness-core/skills/harness-me/` |
 
 ### 领域专家技能（4 个，由 expert-reviewer 混合加载，也支持独立 `/` 命令）
+
+> 这些技能随语言包分发，`apply-harness` Step 5 会将其复制到 `.harness/skills/{lang}/`。
 | 技能 | 说明 |
 |------|------|
 | `java-code-review` | Java 并发编程工具封装（线程池工厂/锁/重试/限流/异步） |

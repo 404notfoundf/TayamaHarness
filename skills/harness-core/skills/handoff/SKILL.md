@@ -66,11 +66,12 @@ disable-model-invocation: true
 4. 读取 `.harness/changes/<id>/change.md`
 5. `{{BUILD_CMD}}` — 检查编译状态
 6. `{{TEST_CMD}}` — 检查测试状态
+7. `{{LINT_CMD}}` — 检查 lint 状态
 
 ## 断点续接命令
 ```bash
 {{DEV_CMD}}
-{{TEST_CMD}}
+{{TEST_CMD}} {{RACE_DETECT_ARG}}
 ```
 ```
 

@@ -18,12 +18,14 @@ description: 严谨的 Bug 诊断流程——先建立稳定复现的反馈循�
 
 1. **失败测试** — 在能触达 Bug 的接缝处写单元/集成/E2E 测试（{{TEST_FRAMEWORK}}）
 2. **Curl / HTTP 脚本** — 针对运行中的 dev server
-3. **CLI 调用** — 带 fixture 输入，比对 stdout 与已知正确快照
-4. **Playwright 无头浏览器脚本** — 驱动 UI，断言 DOM/console/network
-5. **重放录制的 trace** — 保存真实请求/事件日志到磁盘，隔离重放
-6. **临时测试桩** — 启动最小子系统（一个服务 + Mock 依赖），单函数调用跑 Bug 路径
-7. **二分法测试桩** — 如果 Bug 在两个已知状态之间出现，自动化"启动状态 X → 检查 → 重复"以便 `git bisect run`
-8. **对比测试** — 同一输入跑旧版 vs 新版，对比输出
+3. **手动操作脚本** — 列出精确的复现步骤（点击顺序、输入值、API 参数），适合 UI/交互类 Bug
+4. **浏览器 DevTools / 调试器** — 捕获 Network/XHR、Console 错误、状态检查（{{DEBUG_TOOL}}）
+5. **CLI 调用** — 带 fixture 输入，比对 stdout 与已知正确快照
+6. **Playwright 无头浏览器脚本** — 驱动 UI，断言 DOM/console/network
+7. **重放录制的 trace** — 保存真实请求/事件日志到磁盘，隔离重放
+8. **临时测试桩** — 启动最小子系统（一个服务 + Mock 依赖），单函数调用跑 Bug 路径
+9. **二分法测试桩** — 如果 Bug 在两个已知状态之间出现，自动化"启动状态 X → 检查 → 重复"以便 `git bisect run`
+10. **对比测试** — 同一输入跑旧版 vs 新版，对比输出
 
 ### 构建反馈循环的核心原则
 

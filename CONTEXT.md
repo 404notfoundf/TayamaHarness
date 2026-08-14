@@ -5,7 +5,7 @@
 
 ## 项目概述
 
-**huazai-harness-skills** 是一套开箱即用的 Harness Engineering 跨语言开发流水线技能包，支持 Java / Python / Go / Frontend 四种语言，涵盖 Spring Boot、Spring Cloud Alibaba、Spring MVC、Quarkus、Micronaut、Vert.x、Dropwizard、Dubbo、Spring AI、Spring AI Alibaba、AgentScope Java、LangChain4j、Semantic Kernel、Genkit Java、Django、FastAPI、Flask、Tornado、TensorFlow、PyTorch、Keras、scikit-learn、XGBoost、Hugging Face Transformers、LangChain、LangGraph、CrewAI、PydanticAI、SmolAgents、OpenAI Agents SDK、Gin、go-zero、Echo、Fiber、Chi、Beego、Go-Kit、Go-Kratos、Gorilla Mux、Kitex、Hertz、Iris、Macaron、Tango、GoFrame、LangChainGo、Google ADK-Go、cloudwego eino、tRPC-Agent-Go、Firebase Genkit、Anyi、React、Vue、Angular、Svelte、Next.js、Nuxt 等 60+ 主流框架和 Maven、Gradle、pip、poetry、uv、go mod、npm、pnpm、yarn、Vite、Webpack、Angular CLI 等主流构建工具。
+**huazai-harness-skills** 是一套开箱即用的 Harness Engineering 跨语言开发流水线技能包，支持 Java / Python / Go / Rust / PHP / Frontend 六种语言，涵盖 Spring Boot、Spring Cloud Alibaba、Spring MVC、Quarkus、Micronaut、Vert.x、Dropwizard、Dubbo、Spring AI、Spring AI Alibaba、AgentScope Java、LangChain4j、Semantic Kernel、Genkit Java、Django、FastAPI、Flask、Tornado、TensorFlow、PyTorch、Keras、scikit-learn、XGBoost、Hugging Face Transformers、LangChain、LangGraph、CrewAI、PydanticAI、SmolAgents、OpenAI Agents SDK、Gin、go-zero、Echo、Fiber、Chi、Beego、Go-Kit、Go-Kratos、Gorilla Mux、Kitex、Hertz、Iris、Macaron、Tango、GoFrame、LangChainGo、Google ADK-Go、cloudwego eino、tRPC-Agent-Go、Firebase Genkit、Anyi、Axum、Actix Web、Rocket、Warp、Poem、Loco、Salvo、Tauri、Iced、egui、Dioxus、Candle、Burn、tch-rs、ort、rlx-models、ADK-Rust、Blockcell、vLLM、Laravel、Laravel AI SDK、Neuron AI、LLPhant、Prism、PocketFlow PHP、Cognesy Instructor PHP、Papiai、ThinkPHP、Hyperf、Yii / Yii 3、Workerman、webman、CodeIgniter (CI) / Slim、WordPress、WooCommerce、Drupal、Joomla、phpcms、dedecms、discuz、Phalcon、CakePHP、Craft CMS、October CMS、OpenCart、GravCMS、Symfony2、Yaf、Swoole、React、Vue、Angular、Svelte、Next.js、Nuxt 等 120+ 主流框架和 Maven、Gradle、pip、poetry、uv、go mod、npm、pnpm、yarn、Vite、Webpack、Angular CLI、cargo、composer 等主流构建工具。
 
 ## 术语表
 
@@ -31,11 +31,13 @@ huazai-harness-skills/
 ├── skills/
 │   ├── apply-harness/       # 入口技能（/apply-harness）
 │   ├── install-skill/       # 技能注册（/install-skill）
-│   ├── harness-core/        # 核心骨架模板
+│   ├── harness-core/        # 核心骨架模板 + 10 个流水线技能模板（唯一事实源）
 │   ├── harness-front/       # 前端语言规范包
 │   ├── harness-golang/      # Go 语言规范包
 │   ├── harness-java/        # Java 语言规范包
-│   └── harness-python/      # Python 语言规范包
+│   ├── harness-python/      # Python 语言规范包
+│   ├── harness-rust/        # Rust 语言规范包
+│   └── harness-php/         # PHP 语言规范包
 ├── CONTEXT.md
 ├── CHANGELOG.md
 ├── LICENSE
@@ -50,6 +52,8 @@ huazai-harness-skills/
 | Java | `skills/harness-java/` | Spring Boot / Spring Cloud Alibaba / Spring MVC / Quarkus / Micronaut / Vert.x / Dropwizard / Dubbo / Spring AI / LangChain4j / Semantic Kernel / AgentScope / Genkit | Maven / Gradle |
 | Python | `skills/harness-python/` | Django / FastAPI / Flask / Tornado / TensorFlow / PyTorch / Keras / scikit-learn / XGBoost / LangChain / LangGraph / CrewAI / PydanticAI / Hugging Face Transformers / OpenAI Agents SDK | pip / Poetry / uv |
 | Go | `skills/harness-golang/` | Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Gorilla Mux / Kitex / Hertz / Iris / GoFrame / LangChainGo / eino / ADK-Go / Genkit / Anyi | go mod |
+| Rust | `skills/harness-rust/` | Axum / Actix Web / Rocket / Warp / Poem / Loco / Salvo / Tauri / Iced / egui / Dioxus / Candle / Burn / tch-rs / ort / rlx-models / ADK-Rust / Blockcell / vLLM | cargo |
+| PHP | `skills/harness-php/` | Laravel / Laravel AI SDK / Neuron AI / LLPhant / Prism / PocketFlow PHP / Cognesy Instructor PHP / Papiai / ThinkPHP / Hyperf / Yii / Yii 3 / Workerman / webman / CodeIgniter (CI) / Slim / WordPress / WooCommerce / Drupal / Joomla / phpcms / dedecms / discuz / Phalcon / CakePHP / Craft CMS / October CMS / OpenCart / GravCMS / Symfony2 / Yaf / Swoole | composer |
 | Frontend | `skills/harness-front/` | Vue 3 / React / Angular / Svelte / Next.js / Nuxt | Vite / Webpack / Angular CLI |
 
 ## 6 阶段流水线

@@ -40,4 +40,6 @@
 | Java | 阿里巴巴 Java 开发手册 + Spring Boot | [文档](languages/java.md) |
 | Python | PEP 8 + Google Style + Flask/FastAPI | [文档](languages/python.md) |
 | Go | Go Code Review + Uber Style + go-zero/Gin | [文档](languages/golang.md) |
+| Rust | Rustfmt + Clippy 严格模式 + Axum/Actix Web | [文档](languages/rust.md) |
+| PHP | PSR-12 + PHPStan level 8 + Laravel/ThinkPHP | [文档](languages/php.md) |
 | Frontend | Vue 3 + TypeScript 严格模式 + Vite | [文档](languages/frontend.md) |

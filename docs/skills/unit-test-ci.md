@@ -34,25 +34,11 @@ stage-5  安全扫描
 
 ### 静态分析
 
-运行代码规范检查工具，确保符合编码规范：
-
-| 语言 | 工具 |
-|------|------|
-| Java | Checkstyle + PMD |
-| Python | flake8 + mypy |
-| Go | golangci-lint |
-| Frontend | ESLint + vue-tsc |
+运行代码规范检查工具，确保符合编码规范。具体工具（`{{LINT_TOOL}}`）和配置因语言/框架而异，详见 `apply-harness` 参数表。
 
 ### 架构约束
 
-确保代码符合工程结构规范：
-
-| 语言 | 工具 |
-|------|------|
-| Java | ArchUnit |
-| Python | 自定义 import-lint |
-| Go | goimports + 自定义检查 |
-| Frontend | ESLint 扁平配置 + 自定义 import 检查 |
+确保代码符合工程结构规范。架构约束工具（`{{ARCH_TEST_TOOL}}`）和检查规则因语言/框架而异，详见 `apply-harness` 参数表。
 
 ### 单元测试 + 覆盖率
 
