@@ -13,11 +13,13 @@ description: 将 .harness/skills/ 下的技能注册到当前 AI 工具（reason
 
 `/apply-harness` 只负责把技能文件**复制**到 `.harness/skills/`，但各 AI 工具**不会自动扫描** `.harness/` 目录来注册斜杠命令。本命令把技能**注册**到工具真正扫描的技能目录。
 
+**常见问题**：许多项目从未生成过 AI 工具的技能目录。例如，即使项目使用 Reasonix，`.reasonix/skills/` 目录可能不存在或为空——这导致 `/harnessing`、`/coding-skill` 等斜杠命令无法被识别。本命令不仅检测 AI 工具，还会**自动创建缺失的目录**并安装技能。
+
 ## 工作流程
 
 ### Step 1: 检测当前 AI 工具
 
-按优先级检测当前运行的 AI 工具，将技能安装到对应目录：
+按优先级检测当前运行的 AI 工具，**若目标目录不存在，则创建它**，将技能安装到对应目录：
 
 | 工具 | 检测依据 | 技能安装目录 | 兼容性说明 |
 |------|---------|-------------|-----------|
@@ -41,7 +43,9 @@ description: 将 .harness/skills/ 下的技能注册到当前 AI 工具（reason
 | **Sourcegraph Cody** | 存在 `.cody/` 目录 | `.cody/`（路径待确认） | ⚠️ 兼容性未确认 |
 | **MarsCode** | 存在 `.mars/` 目录 | `.mars/`（已合并到 Trae） | ⚠️ 兼容性未确认 |
 
-> **检测逻辑**：按上表顺序检测，优先选择 ✅ 标记的工具（原生 SKILL.md 兼容），其次 ⚠️ 标记的工具。选择第一个匹配的目录。若都不匹配，提示用户手动指定目录，或回退到 `npx skills` CLI 安装。
+> **检测逻辑**：按上表顺序检测，优先选择 ✅ 标记的工具（原生 SKILL.md 兼容），其次 ⚠️ 标记的工具。选择第一个匹配的目录。
+>
+> **关键变更**：检测到目标目录后，若该目录不存在，**必须创建它**——`mkdir -p <目标目录>`。不要因为目录不存在就跳过安装。
 
 ### Step 2: 定位技能来源
 
@@ -53,9 +57,18 @@ description: 将 .harness/skills/ 下的技能注册到当前 AI 工具（reason
 └── common/          # 跨语言通用技能（domain-modeling、research、resolving-merge-conflicts）
 ```
 
-### Step 3: 安装技能
+### Step 3: 创建目标目录并安装技能
 
-对每个含 `SKILL.md` 的技能目录 `<skill-name>`，按工具兼容性采取不同方式：
+**首先，确保目标目录存在：**
+
+```bash
+mkdir -p <目标目录>
+```
+例如：`mkdir -p .reasonix/skills/`、`mkdir -p .claude/skills/`、`mkdir -p .cursor/skills/`。
+
+> 不要假设目标目录已经存在。很多项目从未生成过 AI 工具的技能目录，`mkdir -p` 是安全的。
+
+然后，对每个含 `SKILL.md` 的技能目录 `<skill-name>`，按工具兼容性采取不同方式：
 
 **✅ 原生 SKILL.md 工具**（Reasonix、Claude Code、Cline、Cursor、Codex、Qoder、VS Code Agent Skills）
 1. **复制**到目标工具目录：`<工具目录>/<skill-name>/`（完整复制目录，含全部文件）

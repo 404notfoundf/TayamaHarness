@@ -335,20 +335,92 @@ disable-model-invocation: true
     └── eventbus-toolkit/          # 事件总线工具封装（同步/异步/事务事件）
 ```
 
-### Step 5.5: 注册技能到当前 AI 工具
+### Step 5.5: 检测当前 AI 工具并生成技能目录
 
-> 将 `.harness/skills/` 下的技能注册到当前 AI 工具（reasonix / claude-code / codex）可识别的技能目录，使 `/harnessing`、`/harness-me` 等斜杠命令立即可用。
+> 将 `.harness/skills/` 下的技能注册到当前 AI 工具可识别的技能目录，使 `/harnessing`、`/harness-me` 等斜杠命令立即可用。
 
-**本步骤自动尝试注册**。若当前 AI 工具的技能目录可被检测到，技能将自动注册到该目录，Step 8 的输出卡片中 `/install-skill` 可跳过。若检测失败（无法确定工具类型），则跳过注册，提示用户在 Step 8 手动执行 `/install-skill`。
+**本步骤是必需步骤，非可选。** 若检测失败或目录不存在，**必须创建目录**并注册技能。
 
-调用 `install-skill` 技能（或直接执行其逻辑）：
+#### 5.5.1 检测当前 AI 工具
 
-1. **检测当前工具**：按优先级检测 `.reasonix/` → `.claude/` → `.cline/` → `.cursor/` → `.codex/` → `.qoder/` → `.vscode/` → `.windsurf/` → `.continue/` → `.github/` → `.opencode/` → `.trae/` → `.codebuddy/` → `.lingma/` → `.codegeex/` → `.tabnine/` → `.cody/` 目录（或对应环境变量），确定技能安装目录
-2. **定位技能来源**：扫描 `.harness/skills/` 下所有含 `SKILL.md` 的技能目录
-3. **复制安装**：将每个技能目录完整复制到目标工具目录（保持 frontmatter `name` 不变）
-4. **输出摘要**：列出已安装的技能及对应斜杠命令
+按优先级检测当前运行的 AI 工具。检测顺序：**先检查环境变量（精确），再检查目录存在（模糊）。**
 
-> 若自动注册成功，技能命令立即可用；若自动注册失败，继续执行 Step 6-8，在 Step 8 的输出卡片中用户可通过 `/install-skill` 手动注册。
+| 优先级 | 检测条件 | 推断工具 | 目标技能目录 |
+|--------|---------|---------|-------------|
+| 1 | `REASONIX` 环境变量存在 或 `.reasonix/` 目录存在 | **Reasonix** | `.reasonix/skills/` |
+| 2 | `CLAUDE_CODE` 环境变量存在 或 `.claude/` 目录存在 | **Claude Code** | `.claude/skills/` |
+| 3 | `CLINE` 环境变量存在 或 `.cline/` 目录存在 | **Cline / Roo Code** | `.cline/skills/` |
+| 4 | `.cursor/` 目录存在 | **Cursor** | `.cursor/skills/` |
+| 5 | `OPENAI_API_KEY` 环境变量存在 或 `.codex/` 目录存在 | **Codex (OpenAI)** | `.codex/skills/` |
+| 6 | `.qoder/` 目录存在 | **Qoder** | `.qoder/skills/` |
+| 7 | `.vscode/` 目录存在（VS Code 1.98+） | **VS Code Agent Skills** | `.vscode/agent-skills/` |
+| 8 | `.windsurf/` 目录存在 | **Windsurf** | `.windsurf/workflows/` |
+| 9 | `.continue/` 目录存在 | **Continue.dev** | `.continue/skills/` |
+| 10 | `.github/` 目录存在 | **GitHub Copilot** | `.github/skills/` |
+| 11 | `.opencode/` 目录存在 | **OpenCode** | `.opencode/commands/` |
+| 12 | `.trae/` 目录存在 | **Trae** | `.trae/rules/` |
+| 13 | `.codebuddy/` 目录存在 | **CodeBuddy** | `.codebuddy/` |
+| 14 | `.lingma/` 目录存在 | **通义灵码** | `.lingma/` |
+| 15 | `.codegeex/` 目录存在 | **CodeGeeX** | `.codegeex/` |
+| 16 | `.tabnine/` 目录存在 | **Tabnine** | `.tabnine/guidelines/` |
+| 17 | `.cody/` 目录存在 | **Sourcegraph Cody** | `.cody/` |
+| 18 | `.mars/` 目录存在 | **MarsCode** | `.mars/` |
+
+> **检测逻辑**：① 按上表顺序检测；② 优先选择环境变量匹配的工具（精确匹配）；③ 若环境变量未匹配，按优先级检测目录是否存在；④ 选择第一个匹配的，确定目标技能目录。
+
+#### 5.5.2 创建目标目录（若不存在）
+
+确定目标技能目录后，若该目录不存在，**必须创建**：
+
+```bash
+# 例如检测到 Reasonix，目标目录为 .reasonix/skills/
+mkdir -p .reasonix/skills/
+# 或检测到 Claude Code，目标目录为 .claude/skills/
+mkdir -p .claude/skills/
+# 其他工具同理，确保目标技能目录存在
+```
+
+> **关键**：不要因为目录不存在就跳过——创建它。安装引擎的职责之一是"为当前 AI 工具准备好技能基础设施"。
+
+#### 5.5.3 扫描技能来源
+
+扫描 `.harness/skills/` 下所有含 `SKILL.md` 的技能目录：
+
+- 语言特有技能：`.harness/skills/{lang}/`（如 `harnessing`、`coding-skill`、`unit-test-write` 等）
+- 跨语言通用技能：`.harness/skills/common/`（如 `domain-modeling`、`research`、`resolving-merge-conflicts` 等）
+
+#### 5.5.4 复制安装技能
+
+对每个含 `SKILL.md` 的技能目录 `<skill-name>`：
+
+1. 完整复制到 `<目标技能目录>/<skill-name>/`（保持目录结构和所有文件）
+2. 保持 `SKILL.md` 的 frontmatter `name` 不变——斜杠命令名即来自它
+3. 若目标已存在同名技能，**覆盖**（或询问用户是否覆盖）
+
+#### 5.5.5 输出安装摘要
+
+```
+╔══════════════════════════════════════════╗
+║   ✅ 技能已安装到 <工具名>               ║
+╠══════════════════════════════════════════╣
+║  目标目录: .reasonix/skills/             ║
+║  已安装:   N 个技能                      ║
+║  /harnessing        ✅ 可调用            ║
+║  /harness-me        ✅ 可调用            ║
+║  /coding-skill      ✅ 可调用            ║
+║  /unit-test-write   ✅ 可调用            ║
+║  /expert-reviewer   ✅ 可调用            ║
+║  /unit-test-ci      ✅ 可调用            ║
+║  /deploy-verify     ✅ 可调用            ║
+║  /diagnosing-bugs   ✅ 可调用            ║
+║  /arch-review       ✅ 可调用            ║
+║  /handoff           ✅ 可调用            ║
+║  /domain-modeling   ✅ 可调用            ║
+║  ...                                    ║
+╚══════════════════════════════════════════╝
+```
+
+> 若自动注册成功，技能命令立即可用。若全部失败（如所有工具目录均不存在且无法创建），在 Step 8 的输出卡片末尾提示用户手动执行 `/install-skill`。
 
 ### Step 6: 初始化变更追踪
 

@@ -1,0 +1,16 @@
+[
+  {
+    "fingerprint": "task-ac269c51",
+    "summary": "文章已成稿并验证完毕。",
+    "first_seen_iteration": 1,
+    "last_seen_iteration": 1,
+    "count": 1
+  },
+  {
+    "fingerprint": "verification-d56b019e",
+    "summary": "全部验收通过。补齐 verification 证据并完成目标",
+    "first_seen_iteration": 2,
+    "last_seen_iteration": 2,
+    "count": 1
+  }
+]

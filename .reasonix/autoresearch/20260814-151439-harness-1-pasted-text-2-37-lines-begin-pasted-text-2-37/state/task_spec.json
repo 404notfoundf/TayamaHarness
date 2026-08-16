@@ -1,0 +1,28 @@
+{
+  "task_id": "20260814-151439-harness-1-pasted-text-2-37-lines-begin-pasted-text-2-37",
+  "goal": "我想写一篇关于如何一步步抽离这个跨语言 Harness 脚手架项目的1万字星球文章，相关提示词如下：[Pasted text #2 · 37 lines]\n\n--- Begin [Pasted text #2 · 37 lines] ---\n提示词1：我想将当前项目 C:\\code\\java\\huazai-trip-plan\\.harness 下的所有内容，改造为一个开箱即用的命令行工具，参考 grill-\rme（https://github.com/mattpocock/skills） 的使用方式：通过 npx skills@latest add mattpocock/skills 一键安装，在项目根目录执行\r/grill-me 即可应用规范，我希望我们的 Harness 规范也能以类似方式分发和安装，支持快速迁移到其他项目，并且必须兼容 Go、Python\r等跨语言项目。其中：1. Java 规范参考 C:\\code\\java\\huazai-trip-plan\\.harness\\rules，包含 SDD-TDD\r模式、编码规范、工程结构、开发流程规范 2. Python 规范抽离自 C:\\code\\python\\huazai-py-agent，但要支持其他主流 python 框架规范 3.\rGolang 规范抽离自 C:\\code\\go\\src\\huazai-go-im，但要支持其他主流 go 框架规范 4. 上述三种语言的规范均需包含 SDD-TDD\r模式、编码规范、工程结构、开发流程规范四个维度。 仅讨论，请给出可行性实施方案\r提示词2： 还有一个关键的你遗漏了，那就是C:\\code\\java\\huazai-trip-plan\\.harness\\agents\\owner.md，这是灵魂啊，请重新给出新的实施方案\r提示词3：请基于上述讨论以及实施方案进行实现这个项目\r提示词4：请参考 skills.docx 这个文档，检查当前项目实现有没有可以完善的地方，仅讨论\r提示词5：请按照上述改进清单实施，其中 grill-me 改为 harness-\rme，另外内容请参考https://github.com/mattpocock/skills这里的精华实现，要求不能删减当前实现的功能\r提示词6：嗯 新增的这几个技能 skill 能否跟之前的技能 skill 进行关联呢？比如原先的一个次开发涉及到 change review verify\r提示词7：嗯，刚看下了项目结构，harness-xxx\\rules 的内容是否有重复，可以抽离公共部分到 harness-core 呢？\r提示词8：继续讨论，这里的skills，还有哪些可以吸收过来的，https://github.com/mattpocock/skills/tree/v1.2.3/skills/engineering\r提示词9：请按照上述讨论以及建议的先后顺序进行精华 skills 实现，目标就是能和之前的 skills 进行整合关联\r提示词10：接着讨论，每个语言下的 skills 是否还需要进行抽离为公共的 skills\r提示词11：嗯，按照讨论和你给出的建议将立即做和第二阶段做的核心公共逻辑抽离到模板进行实现\r提示词12：我说下我的诉求，1、不限工具，要支持主流的比如 codex、claudecode、resoninx、等等 2、我需要你去实现的 install_skill\r这个能力，而不是让我选择目标项目，我只需在目标项目执行 /install_skill 即可\r提示词13：如果是并行开发的话 只输入命令就不行了吧\r提示词14：有个疑问，如果在实际项目下 change 列表有多个（比如 golang/python 项目中），那么输入 /coding-skill-xxx\r等后续命令怎么确定该处理哪个 change\r提示词15：目前各语言仅支持特定几个框架，请继续拓展到其他业界主流框架的识别支持，比如java框架目前仅支持springboot、构建工具仅支持 maven\r提示词16：感觉支持的框架不够全面，1、java 要支持 dubbo、springcloudalibaba、springai、springaialibaba、agentscope-\rjava、LangChain4j、Semantic Kernel、Genkit Java 2、python 要支持TensorFlow、PyTorch、Keras、scikit-\rlearn、XGBoost、LangChain、LangGraph、CrewAI、PydanticAI、SmolAgents、OpenAI Agents SDK、Hugging Face Transformers、Tornado 3、go\r要支持LangChainGo、Google ADK-Go、cloudwego/eino、tRPC-Agent-Go、Firebase Genkit、Anyi、Beego、Go-Kit、Go-Kratos、Gorilla\rMux、Kitex、Hertz、Iris、Macaron、Tango、Fiber2、goframe 4、另外你只更新了外围的 skill，比如skills/harness-\rjava/go/python/front等语言的 skill 并没有同步更新\r提示词17：还要支持下 rust、php 以及对应语言的主流框架（rust框架：Axum、Actix Web、Rocket、Warp、Poem、Loco、Candle、Burn、 tch-\rrs、ort、rlx-models、ADK-Rust、Blockcell、vLLM、Salvo、Tauri、Iced、egui、Dioxus，php框架：Neuron AI、Laravel AI\rSDK、LLPhant、Prism、PocketFlow PHP、Cognesy Instructor PHP、Papiai、ThinkPHP、Hyperf、Yii / Yii 3、Workerman、CodeIgniter (CI) /\rSlim、WordPress、WooCommerce、Drupal、Joomla、phpcms、dedecms、discuz、phalcon、CakePHP、Craft CMS、October\rCMS、OpenCart、GravCMS、webman、Symfony2、Yaf、Swoole）\r提示词18：目前实现了6大语言的支持，每个harness-语言/skills/下的6大流水线跟harness-core/skills/下的大部分都是重复的，是否可以将语言下的删除掉，还可以保证 /apply-harness 注册\u0026安装的时候可以完整处理呢？请给出一个完整的清理方案，仅讨论\r提示词19：请按照方案 A 进行实施清理工作\n--- End [Pasted text #2 · 37 lines] --- 相关流程图轻用 svg 输出",
+  "scope": null,
+  "non_goals": null,
+  "allowed_operations": {
+    "write": true,
+    "network": false,
+    "publish": false
+  },
+  "success_criteria": [
+    {
+      "id": "objective_evidence",
+      "description": "The goal outcome is supported by direct evidence, such as inspected code, reproduced behavior, source material, or concrete findings.",
+      "required": true,
+      "evidence_ids": [
+        "f1",
+        "f2"
+      ]
+    },
+    {
+      "id": "verification",
+      "description": "The result has relevant verification evidence, such as tests, commands, benchmarks, manual checks, or a documented reason why verification is not applicable.",
+      "required": true,
+      "evidence_ids": null
+    }
+  ]
+}

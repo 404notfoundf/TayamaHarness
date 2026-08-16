@@ -1,0 +1,9 @@
+{
+  "status": "running",
+  "iteration": 1,
+  "current_direction": "本任务交由 AutoResearch 模式处理：这是一次性的提示词文本改写（无长期研究/调试需求），宿主状态存放于 `.reasonix/autores",
+  "stale_count": 1,
+  "pivot_count": 0,
+  "blocked_reason": "",
+  "updated_at": "2026-08-15T02:58:49.7467278Z"
+}
