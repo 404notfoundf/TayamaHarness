@@ -1,0 +1,23 @@
+[
+  {
+    "fingerprint": "task-316b0f88",
+    "summary": "## 结论",
+    "first_seen_iteration": 1,
+    "last_seen_iteration": 1,
+    "count": 1
+  },
+  {
+    "fingerprint": "task-410679b0",
+    "summary": "明白，先不动你的环境。代码侧我能做的都已就位并验证：",
+    "first_seen_iteration": 2,
+    "last_seen_iteration": 2,
+    "count": 1
+  },
+  {
+    "fingerprint": "pivot-dist-270a5ce7",
+    "summary": "收到，不再猜\"你有没有重启\"了——换个方向，直接在你机器上找**可验证的铁证**。三个 pivot 同时做：① 检查 `dist/` 构\ufffd\ufffd",
+    "first_seen_iteration": 3,
+    "last_seen_iteration": 3,
+    "count": 1
+  }
+]

@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="2150" viewBox="0 0 1520 2150" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect x="0" y="0" width="1520" height="2150" fill="#F8FAFC"/>
+  <rect x="20" y="20" width="1480" height="2100" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+
+  <!-- 标题 -->
+  <text x="760" y="56" text-anchor="middle" font-size="26" font-weight="700" fill="#0F172A">PRD 上传/解析 → 校验审核 → 生成 Change 完整链路流程图</text>
+  <text x="760" y="82" text-anchor="middle" font-size="13.5" fill="#64748B">prd-ingestion 前/后端 · 橙=前端 · 蓝=后端 · 绿=MySQL 表 · 紫=MinIO · 接口与表名均按当前代码核实</text>
+
+  <!-- 图例 -->
+  <g>
+    <rect x="60" y="100" width="16" height="16" rx="4" fill="#FFF7ED" stroke="#F59E0B"/>
+    <text x="84" y="113" font-size="12.5" fill="#475569">前端页面 (Vue)</text>
+    <rect x="240" y="100" width="16" height="16" rx="4" fill="#EFF6FF" stroke="#3B82F6"/>
+    <text x="264" y="113" font-size="12.5" fill="#475569">后端接口/Service (Spring Boot)</text>
+    <rect x="520" y="100" width="16" height="16" rx="4" fill="#F0FDF4" stroke="#22C55E"/>
+    <text x="544" y="113" font-size="12.5" fill="#475569">MySQL 表（绿框 = 写入时点）</text>
+    <rect x="820" y="100" width="16" height="16" rx="4" fill="#F5F3FF" stroke="#8B5CF6"/>
+    <text x="844" y="113" font-size="12.5" fill="#475569">MinIO 对象</text>
+    <circle cx="1090" cy="108" r="9" fill="#FEF3C7" stroke="#F59E0B"/>
+    <text x="1104" y="113" font-size="12.5" fill="#475569">判定分支</text>
+  </g>
+
+  <!-- ============ 右侧存储区 ============ -->
+  <!-- MinIO 面板 -->
+  <rect x="810" y="136" width="660" height="228" rx="10" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="1.5"/>
+  <text x="830" y="164" font-size="15" font-weight="700" fill="#6D28D9">MinIO 对象（桶 prd-merged / prd-uploads）</text>
+  <g font-size="12.5" fill="#4C1D95">
+    <text x="830" y="196">M1 · prd-merged / prd-files/{ingestionId}/{title}.md</text>
+    <text x="846" y="214" fill="#6D28D9">← 原文 Markdown 备份（savePrdContent，写失败仅 warn 不阻断解析）</text>
+    <text x="830" y="246">M2 · prd-merged / file-merged/{fileMd5}/{fileName}</text>
+    <text x="846" y="264" fill="#6D28D9">← 文件上传方式的分片合并产物（预签名 URL 供读取）</text>
+    <text x="830" y="296">M3 · prd-uploads / file-chunks/{fileMd5}/{chunkIndex}</text>
+    <text x="846" y="314" fill="#6D28D9">← 分片上传的中间分片（合并成功后清理）</text>
+  </g>
+
+  <!-- MySQL 面板 -->
+  <rect x="810" y="382" width="660" height="1242" rx="10" fill="#F0FDF4" stroke="#22C55E" stroke-width="1.5"/>
+  <text x="830" y="410" font-size="15" font-weight="700" fill="#15803D">MySQL 表 · 写入时点（编号对应左侧步骤）</text>
+
+  <g>
+    <circle cx="836" cy="446" r="11" fill="#22C55E"/><text x="836" y="451" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">1</text>
+    <text x="860" y="444" font-size="13.5" font-weight="700" fill="#166534">prd_ingestion</text>
+    <text x="860" y="462" font-size="11.5" fill="#475569">解析记录：title / content / status / progress / parse_source / error_message（① insert→pending，解析中 update）</text>
+
+    <circle cx="836" cy="536" r="11" fill="#22C55E"/><text x="836" y="541" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">2</text>
+    <text x="860" y="534" font-size="13.5" font-weight="700" fill="#166534">prd_requirement</text>
+    <text x="860" y="552" font-size="11.5" fill="#475569">需求条目 REQ-*：description / priority / related_entities / source_paragraph / notes / sort_order</text>
+
+    <circle cx="836" cy="626" r="11" fill="#22C55E"/><text x="836" y="631" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">3</text>
+    <text x="860" y="624" font-size="13.5" font-weight="700" fill="#166534">prd_data_entity</text>
+    <text x="860" y="642" font-size="11.5" fill="#475569">数据实体（entity_name / description / source_paragraph）+ 子表 prd_data_entity_attribute、prd_data_entity_relation</text>
+
+    <circle cx="836" cy="716" r="11" fill="#22C55E"/><text x="836" y="721" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">4</text>
+    <text x="860" y="714" font-size="13.5" font-weight="700" fill="#166534">prd_interface</text>
+    <text x="860" y="732" font-size="11.5" fill="#475569">接口协议：http_method / path / summary / request_body / response_body / source_paragraph</text>
+
+    <circle cx="836" cy="806" r="11" fill="#22C55E"/><text x="836" y="811" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">5</text>
+    <text x="860" y="804" font-size="13.5" font-weight="700" fill="#166534">prd_architecture_decision</text>
+    <text x="860" y="822" font-size="11.5" fill="#475569">架构决策 AD-*：title / context / decision / consequences / status / source_paragraph</text>
+
+    <circle cx="836" cy="896" r="11" fill="#22C55E"/><text x="836" y="901" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">6</text>
+    <text x="860" y="894" font-size="13.5" font-weight="700" fill="#166534">prd_llm_result</text>
+    <text x="860" y="912" font-size="11.5" fill="#475569">LLM 旁路 JSON（payload_json）— 仅「LLM 提取结果」展示用，不参与文档渲染；LLM 失败则不写</text>
+
+    <circle cx="836" cy="986" r="11" fill="#22C55E"/><text x="836" y="991" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">7</text>
+    <text x="860" y="984" font-size="13.5" font-weight="700" fill="#166534">prd_document（×4，draft / v1）</text>
+    <text x="860" y="1002" font-size="11.5" fill="#475569">doc-bm-* business-model ｜ doc-dm-* data-model ｜ doc-ip-* interface-protocol ｜ doc-ad-* architecture-decision</text>
+
+    <circle cx="836" cy="1076" r="11" fill="#22C55E"/><text x="836" y="1081" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">8</text>
+    <text x="860" y="1074" font-size="13.5" font-weight="700" fill="#166534">prd_document_approval</text>
+    <text x="860" y="1092" font-size="11.5" fill="#475569">每次审批记录：action(approve/reject) / comment / approved_by（追加式，不覆盖历史）</text>
+
+    <circle cx="836" cy="1166" r="11" fill="#22C55E"/><text x="836" y="1171" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">9</text>
+    <text x="860" y="1164" font-size="13.5" font-weight="700" fill="#166534">prd_document.status → approved（UPDATE 同表）</text>
+    <text x="860" y="1182" font-size="11.5" fill="#475569">审批通过后更新文档状态；4 份全部 = approved 时前端才显示「生成 change.md」按钮</text>
+
+    <circle cx="836" cy="1256" r="11" fill="#22C55E"/><text x="836" y="1261" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">A</text>
+    <text x="860" y="1254" font-size="13.5" font-weight="700" fill="#166534">prd_change（status=drafting）</text>
+    <text x="860" y="1272" font-size="11.5" fill="#475569">change 主记录 + change.md 内容（content 字段，按 change 模板渲染）；仅在点击生成按钮时创建</text>
+
+    <circle cx="836" cy="1346" r="11" fill="#22C55E"/><text x="836" y="1351" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">B</text>
+    <text x="860" y="1344" font-size="13.5" font-weight="700" fill="#166534">prd_change_document_ref</text>
+    <text x="860" y="1362" font-size="11.5" fill="#475569">change 与已通过文档的关联（docIds 仅取 approved 的文档）</text>
+
+    <circle cx="836" cy="1436" r="11" fill="#22C55E"/><text x="836" y="1441" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">C</text>
+    <text x="860" y="1434" font-size="13.5" font-weight="700" fill="#166534">prd_pipeline_stage</text>
+    <text x="860" y="1452" font-size="11.5" fill="#475569">流水线 4 阶段：drafting / reviewing / approved / completed（创建时 drafting=active）</text>
+
+    <circle cx="836" cy="1526" r="11" fill="#22C55E"/><text x="836" y="1531" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">D</text>
+    <text x="860" y="1524" font-size="13.5" font-weight="700" fill="#166534">prd_change_log</text>
+    <text x="860" y="1542" font-size="11.5" fill="#475569">变更/流水线日志（「Change 已创建，进入起草阶段…」每条操作追加）</text>
+  </g>
+
+  <!-- ============ 左侧主流程 ============ -->
+  <text x="60" y="122" font-size="15" font-weight="700" fill="#0F172A">主流程（① → ⑰，自上而下）</text>
+
+  <g stroke="#64748B" stroke-width="1.4" fill="none">
+    <line x1="390" y1="204" x2="390" y2="212" marker-end="url(#arr)"/>
+    <line x1="390" y1="288" x2="390" y2="296" marker-end="url(#arr)"/>
+    <line x1="390" y1="372" x2="390" y2="380" marker-end="url(#arr)"/>
+    <line x1="390" y1="456" x2="390" y2="464" marker-end="url(#arr)"/>
+    <line x1="390" y1="540" x2="390" y2="548" marker-end="url(#arr)"/>
+    <line x1="390" y1="624" x2="390" y2="632" marker-end="url(#arr)"/>
+    <line x1="390" y1="708" x2="390" y2="716" marker-end="url(#arr)"/>
+    <line x1="390" y1="792" x2="390" y2="800" marker-end="url(#arr)"/>
+    <line x1="390" y1="876" x2="390" y2="884" marker-end="url(#arr)"/>
+    <line x1="390" y1="960" x2="390" y2="968" marker-end="url(#arr)"/>
+    <line x1="390" y1="1044" x2="390" y2="1052" marker-end="url(#arr)"/>
+    <line x1="390" y1="1128" x2="390" y2="1136" marker-end="url(#arr)"/>
+    <line x1="390" y1="1212" x2="390" y2="1220" marker-end="url(#arr)"/>
+    <line x1="390" y1="1296" x2="390" y2="1304" marker-end="url(#arr)"/>
+    <line x1="390" y1="1380" x2="390" y2="1388" marker-end="url(#arr)"/>
+    <line x1="390" y1="1464" x2="390" y2="1472" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- ① 前端上传/粘贴 -->
+  <rect x="40" y="130" width="730" height="74" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.6"/>
+  <circle cx="66" cy="152" r="11" fill="#F59E0B"/><text x="66" y="157" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">1</text>
+  <text x="88" y="156" font-size="15" font-weight="700" fill="#7C2D12">前端 · PRD 导入页（PrdImportView）</text>
+  <text x="88" y="178" font-size="12" fill="#475569">粘贴 Markdown 文本，或上传文件（较大时按 5MB 分片 → POST /api/v1/file/upload/chunk → merge）</text>
+
+  <!-- ② 点击解析 -->
+  <rect x="40" y="214" width="730" height="74" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.6"/>
+  <circle cx="66" cy="236" r="11" fill="#F59E0B"/><text x="66" y="241" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">2</text>
+  <text x="88" y="240" font-size="15" font-weight="700" fill="#7C2D12">点击「解析」→ prdStore.ingest()</text>
+  <text x="88" y="262" font-size="12" fill="#475569">携带 projectId / title / content（或 fileMd5，由后端从 MinIO 读原文）发起解析请求</text>
+
+  <!-- ③ 后端入口 -->
+  <rect x="40" y="298" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="320" r="11" fill="#3B82F6"/><text x="66" y="325" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">3</text>
+  <text x="88" y="324" font-size="15" font-weight="700" fill="#1E3A8A">后端入口 · POST /api/v1/prd/ingest（PrdController → PrdIngestionService.ingest）</text>
+  <text x="88" y="346" font-size="12" fill="#475569">校验项目上下文 → 取内容 → 开始解析（进度回写 prd_ingestion）</text>
+
+  <!-- ④ 初始化记录 + 备份 -->
+  <rect x="40" y="382" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="404" r="11" fill="#3B82F6"/><text x="66" y="409" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">4</text>
+  <text x="88" y="408" font-size="15" font-weight="700" fill="#1E3A8A">初始化解析记录 + 原文备份</text>
+  <text x="88" y="430" font-size="12" fill="#475569">写入 ① prd_ingestion（status=pending）｜备份 M1 prd-merged/prd-files/{ingestionId}/{title}.md</text>
+
+  <!-- ⑤ 模板匹配 -->
+  <rect x="40" y="466" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="488" r="11" fill="#3B82F6"/><text x="66" y="493" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">5</text>
+  <text x="88" y="492" font-size="15" font-weight="700" fill="#1E3A8A">Hybrid 第一步：模板匹配（templateRegistry.match）</text>
+  <text x="88" y="514" font-size="12" fill="#475569">命中模板 → 直接出结构化结果与文档（跳过 ⑥⑦）；未命中 → 走 ⑥ LLM + ⑦ 章节算法</text>
+  <circle cx="776" cy="476" r="9" fill="#FEF3C7" stroke="#F59E0B"/><text x="762" y="470" text-anchor="end" font-size="11" fill="#92400E">命中模板⇒跳过 ⑥ ⑦</text>
+
+  <!-- ⑥ LLM 解析 -->
+  <rect x="40" y="550" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="572" r="11" fill="#3B82F6"/><text x="66" y="577" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">6</text>
+  <text x="88" y="576" font-size="15" font-weight="700" fill="#1E3A8A">Hybrid 第二步：LLM 解析（aiService.parse）</text>
+  <text x="88" y="598" font-size="12" fill="#475569">成功 → 写入 ⑥ prd_llm_result（旁路，仅展示）｜失败 → ① parse_source=section_hierarchy（回退标记）</text>
+
+  <!-- ⑦ 章节层级算法 -->
+  <rect x="40" y="634" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="656" r="11" fill="#3B82F6"/><text x="66" y="661" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">7</text>
+  <text x="88" y="660" font-size="15" font-weight="700" fill="#1E3A8A">章节层级算法（确定性，LLM 成败均执行）</text>
+  <text x="88" y="682" font-size="12" fill="#475569">classifyBySectionHierarchy：按 Markdown 章节树归类段落 → 得到结构化结果（写库见 ⑧）</text>
+
+  <!-- ⑧ 结构化写库 -->
+  <rect x="40" y="718" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="740" r="11" fill="#3B82F6"/><text x="66" y="745" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">8</text>
+  <text x="88" y="744" font-size="15" font-weight="700" fill="#1E3A8A">结构化结果写库（4 张表）</text>
+  <text x="88" y="766" font-size="12" fill="#475569">写入 ② prd_requirement ③ prd_data_entity(+attribute,+relation) ④ prd_interface ⑤ prd_architecture_decision；更新 ① 状态与 parse_source</text>
+
+  <!-- ⑨ 生成文档 -->
+  <rect x="40" y="802" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="824" r="11" fill="#3B82F6"/><text x="66" y="829" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">9</text>
+  <text x="88" y="828" font-size="15" font-weight="700" fill="#1E3A8A">generateDocuments → 生成 4 份 Markdown 文档</text>
+  <text x="88" y="850" font-size="12" fill="#475569">按模板渲染（PrdTemplate）→ 写入 ⑦ prd_document ×4（doc-bm / doc-dm / doc-ip / doc-ad，draft / v1）</text>
+
+  <!-- ⑩ 完成解析 -->
+  <rect x="40" y="886" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="908" r="11" fill="#3B82F6"/><text x="66" y="913" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">A</text>
+  <text x="88" y="912" font-size="15" font-weight="700" fill="#1E3A8A">解析完成 · status=completed</text>
+  <text x="88" y="934" font-size="12" fill="#475569">更新 ① prd_ingestion（completed / 100%）｜前端轮询 GET /api/v1/prd/ingest/{id}/progress 至 100%</text>
+
+  <!-- ⑪ 进入校验面板 -->
+  <rect x="40" y="970" width="730" height="74" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.6"/>
+  <circle cx="66" cy="992" r="11" fill="#F59E0B"/><text x="66" y="997" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">B</text>
+  <text x="88" y="996" font-size="15" font-weight="700" fill="#7C2D12">进入校验面板（ReviewView）</text>
+  <text x="88" y="1018" font-size="12" fill="#475569">跳转 /review?ingestionId={id}（或从项目视图进入）— 此页只读展示，不写任何表</text>
+
+  <!-- ⑫ 加载文档 -->
+  <rect x="40" y="1054" width="730" height="74" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.6"/>
+  <circle cx="66" cy="1076" r="11" fill="#F59E0B"/><text x="66" y="1081" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">C</text>
+  <text x="88" y="1080" font-size="15" font-weight="700" fill="#7C2D12">加载 4 份文档待审核</text>
+  <text x="88" y="1102" font-size="12" fill="#475569">GET /api/v1/documents?ingestionId=… → 读 ⑦ prd_document，展示左 PRD 原文｜右 提取结果/按模板渲染</text>
+
+  <!-- ⑬ 逐份审批 -->
+  <rect x="40" y="1138" width="730" height="74" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.6"/>
+  <circle cx="66" cy="1160" r="11" fill="#F59E0B"/><text x="66" y="1165" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">D</text>
+  <text x="88" y="1164" font-size="15" font-weight="700" fill="#7C2D12">逐份审核（可通过 / 驳回）</text>
+  <text x="88" y="1186" font-size="12" fill="#475569">POST /api/v1/documents/{docId}/approval → 写入 ⑧ prd_document_approval，更新 ⑨ prd_document.status=approved</text>
+
+  <!-- ⑭ 全部通过显示按钮 -->
+  <rect x="40" y="1222" width="730" height="74" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.6"/>
+  <circle cx="66" cy="1244" r="11" fill="#F59E0B"/><text x="66" y="1249" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">E</text>
+  <text x="88" y="1248" font-size="15" font-weight="700" fill="#7C2D12">4 份全部 approved → 显示「生成 change.md 并进入流水线」按钮</text>
+  <text x="88" y="1270" font-size="12" fill="#475569">allApproved = documents.every(status=approved)，任一未通过/驳回则不显示</text>
+
+  <!-- ⑮ 点击生成 -->
+  <rect x="40" y="1306" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="1328" r="11" fill="#3B82F6"/><text x="66" y="1333" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">F</text>
+  <text x="88" y="1332" font-size="15" font-weight="700" fill="#1E3A8A">点击按钮 → POST /api/v1/changes（ChangeController → ChangeService.createChange）</text>
+  <text x="88" y="1354" font-size="12" fill="#475569">唯一创建入口：仅人工点击触发；参数 = ingestionId + 已 approved 文档 docIds（写下表 ⑩⑪⑫⑬）</text>
+
+  <!-- ⑯ Change 落库 -->
+  <rect x="40" y="1390" width="730" height="74" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.6"/>
+  <circle cx="66" cy="1412" r="11" fill="#3B82F6"/><text x="66" y="1417" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">G</text>
+  <text x="88" y="1416" font-size="15" font-weight="700" fill="#1E3A8A">Change 落库（4 张表）</text>
+  <text x="88" y="1438" font-size="12" fill="#475569">写入 ⑩ prd_change（drafting + change.md）⑪ prd_change_document_ref ⑫ prd_pipeline_stage（drafting=active）⑬ prd_change_log</text>
+
+  <!-- ⑰ 进入流水线 -->
+  <rect x="40" y="1474" width="730" height="74" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.6"/>
+  <circle cx="66" cy="1496" r="11" fill="#F59E0B"/><text x="66" y="1501" text-anchor="middle" font-size="12" fill="#FFFFFF" font-weight="700">H</text>
+  <text x="88" y="1500" font-size="15" font-weight="700" fill="#7C2D12">进入流水线（PipelineView）</text>
+  <text x="88" y="1522" font-size="12" fill="#475569">跳转 /project/{projectId}/pipeline/{changeId} → 看板展示阶段（读 ⑩⑫⑬），后续操作写 ⑬ prd_change_log</text>
+
+  <!-- ============ 底部排障速查 ============ -->
+  <rect x="40" y="1600" width="1440" height="480" rx="10" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.6"/>
+  <text x="64" y="1630" font-size="16" font-weight="700" fill="#B91C1C">🔍 排障速查（每阶段该看到什么 / 查哪张表）</text>
+  <g font-size="12.5" fill="#7F1D1D">
+    <text x="64" y="1664">1️⃣ 解析后：SELECT * FROM prd_ingestion WHERE ingestion_id = '{id}' → status 应为 completed；parse_source=llm 或 section_hierarchy</text>
+    <text x="80" y="1686">结构化表 prd_requirement / prd_data_entity / prd_interface / prd_architecture_decision 应有对应 ingestion_id 记录</text>
+    <text x="64" y="1724">2️⃣ 校验面板文档缺失/内容为空：SELECT doc_id, type, status FROM prd_document WHERE ingestion_id = '{id}' → 应恰好 4 条 draft；</text>
+    <text x="80" y="1746">content 与 original_prd_content 是否为空（空 ⇒ 模板渲染或原文读取问题，出在 ⑨）</text>
+    <text x="64" y="1784">3️⃣ 审批后无反应：SELECT * FROM prd_document_approval WHERE doc_id = '{docId}' → 有无记录；SELECT status FROM prd_document WHERE doc_id = '{docId}' → 应=approved</text>
+    <text x="64" y="1822">4️⃣ 点「生成 change.md」失败/重复：SELECT change_id, status FROM prd_change WHERE ingestion_id = '{id}' → 应只有一条 drafting（重复点击复用）；</text>
+    <text x="80" y="1844">确认 4 份文档全部 approved 且无 rejected；再看 prd_pipeline_stage / prd_change_log 是否初始化</text>
+    <text x="64" y="1882">5️⃣ 常见黑盒点：LLM 结果只进 prd_llm_result（左侧展示），文档内容永远来自确定性 ⑦ + 模板渲染 → 文档不对先查结构化表而非 LLM；</text>
+    <text x="80" y="1904">change.md 只在 ⑮ 按钮点击时生成，解析阶段不再自动创建（旧版本会在解析后自动建，历史 prd_change 脏数据需手动清理）</text>
+    <text x="64" y="1942">6️⃣ 接口清单：GET /{id}/progress（进度）· GET /{id}/result（结果）· GET /api/v1/documents（列表）· POST /api/v1/documents/{docId}/approval（审批）</text>
+    <text x="80" y="1964">POST /api/v1/changes（生成 change）· GET /api/v1/change/{changeId}（change 详情）· POST /api/v1/pipeline/{changeId}/advance（推进阶段）</text>
+  </g>
+</svg>

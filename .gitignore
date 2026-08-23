@@ -18,3 +18,14 @@ skills.docx
 # Logs
 logs/
 *.log
+
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Environment
+.env
+!.env.example

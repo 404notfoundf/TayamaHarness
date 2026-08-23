@@ -1,0 +1,37 @@
+[
+  {
+    "fingerprint": "network-c05d83d9",
+    "summary": "看到 Network 的响应了，全部正常！现在问题出在前端。帮我确认一件事：",
+    "first_seen_iteration": 1,
+    "last_seen_iteration": 1,
+    "count": 1
+  },
+  {
+    "fingerprint": "api-9cce4ad0",
+    "summary": "API 全部正常返回，后端没问题。问题在前端，但我需要你帮我看一个东西：",
+    "first_seen_iteration": 2,
+    "last_seen_iteration": 2,
+    "count": 1
+  },
+  {
+    "fingerprint": "task-04df1cad",
+    "summary": "好，我跑通了整个代码流程。跟你说实话：",
+    "first_seen_iteration": 3,
+    "last_seen_iteration": 3,
+    "count": 1
+  },
+  {
+    "fingerprint": "task-964d849c",
+    "summary": "改好了。核心改动：",
+    "first_seen_iteration": 4,
+    "last_seen_iteration": 4,
+    "count": 1
+  },
+  {
+    "fingerprint": "network-frontend-api-2053ec8c",
+    "summary": "已经改好了，你不需要给我看更多 Network 面板了。**问题在 frontend 代码，不在 API 响应里。**",
+    "first_seen_iteration": 5,
+    "last_seen_iteration": 5,
+    "count": 1
+  }
+]

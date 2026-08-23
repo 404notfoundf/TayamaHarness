@@ -1,0 +1,353 @@
+@import 'tailwindcss';
+
+@source '../../views';
+@source '../../components';
+
+/* ============================================================
+   Harness Flow — PRD Ingestion Platform 设计系统
+   专业、清晰的桌面端设计风格，面向产品经理/架构师/开发者
+   ============================================================ */
+
+:root {
+  --primary: #2563eb;
+  --primary-soft: #eff6ff;
+  --primary-dark: #1d4ed8;
+  --success: #16a34a;
+  --success-soft: #f0fdf4;
+  --warning: #f59e0b;
+  --warning-soft: #fffbeb;
+  --danger: #dc2626;
+  --danger-soft: #fef2f2;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --ink: #1e293b;
+  --sub: #64748b;
+  --line: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.04);
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', Helvetica, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ---- 通用组件类 ---- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* ---- 按钮 ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--bg);
+}
+.btn-success {
+  background: var(--success);
+  color: #fff;
+  border-color: var(--success);
+}
+.btn-success:hover:not(:disabled) {
+  background: #15803d;
+}
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+.btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+/* ---- 标签 ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  gap: 4px;
+}
+.badge-draft {
+  background: var(--warning-soft);
+  color: #b45309;
+}
+.badge-review {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.badge-approved {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.badge-rejected {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---- 状态指示器 ---- */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-dot.draft {
+  background: var(--warning);
+}
+.status-dot.review {
+  background: var(--primary);
+}
+.status-dot.approved {
+  background: var(--success);
+}
+.status-dot.rejected {
+  background: var(--danger);
+}
+
+/* ---- 输入框 ---- */
+.input {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--card);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+.input::placeholder {
+  color: #94a3b8;
+}
+
+/* ---- 空状态 ---- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  color: var(--sub);
+  text-align: center;
+  gap: 8px;
+}
+.empty-state .icon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+.empty-state .title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.empty-state .desc {
+  font-size: 13px;
+  max-width: 360px;
+}
+
+/* ---- 加载动画 ---- */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--line);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- 上传拖拽区 ---- */
+.dropzone {
+  border: 2px dashed var(--line);
+  border-radius: var(--radius-lg);
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--card);
+}
+.dropzone:hover,
+.dropzone.drag-over {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+.dropzone .icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.dropzone .title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.dropzone .hint {
+  font-size: 13px;
+  color: var(--sub);
+  margin-top: 4px;
+}
+
+/* ---- 对比视图 ---- */
+/* ---- 看板 ---- */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+.kanban-column {
+  min-width: 200px;
+  background: #f1f5f9;
+  border-radius: var(--radius-lg);
+  padding: 12px;
+}
+.kanban-column .column-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+}
+.kanban-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+.kanban-card:hover {
+  box-shadow: var(--shadow);
+}
+/* 定位高亮（来自流水线详情「查看看板（定位当前变更）」跳转）：绿色边框 + 浅绿背景 + 外发光，避免与上方 Tailwind 类冲突 */
+.kanban-card-focus {
+  border-color: #16a34a;
+  background-color: #f0fdf4;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.35);
+}
+.kanban-card-focus:hover {
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.5);
+}
+.kanban-card .card-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.kanban-card .card-meta {
+  font-size: 11px;
+  color: var(--sub);
+}
+
+/* ---- 追溯树 ---- */
+.trace-tree {
+  font-size: 13px;
+}
+.trace-tree .tree-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.trace-tree .tree-node:hover {
+  background: var(--bg);
+}
+.trace-tree .tree-node .tree-icon {
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.trace-tree .tree-children {
+  margin-left: 24px;
+  border-left: 1px solid var(--line);
+  padding-left: 8px;
+}
+.tree-connector {
+  border-left: 1px solid var(--line);
+  margin-left: 12px;
+  padding-left: 12px;
+}

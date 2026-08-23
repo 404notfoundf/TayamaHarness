@@ -1,0 +1,92 @@
+# PRD 前置转换后端服务基础配置
+spring:
+  application:
+    name: prd-ingestion-server
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:harness_prd_ingestion}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: 5
+      connection-timeout: 5000
+      idle-timeout: 300000
+      max-lifetime: 600000
+      pool-name: prd-ingestion-pool
+
+  # Jackson 日期序列化
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+  # 启动时自动执行 SQL 初始化脚本（幂等：CREATE IF NOT EXISTS + ON DUPLICATE KEY UPDATE）
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      continue-on-error: true
+
+# 管理端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+
+# 服务器配置
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api/v1
+
+# 应用自定义配置
+prd:
+  ingestion:
+    # 是否启用异步解析模拟（false 时直接同步返回结果）
+    async-enabled: false
+    # 默认格式
+    default-format: markdown
+
+# MinIO 对象存储
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://127.0.0.1:9000}
+  access-key: ${MINIO_ACCESS_KEY:zdtAU0RhYrLEnUNxclCO}
+  secret-key: ${MINIO_SECRET_KEY:fgkIq1EIm5q0qaHxASU5SP0l58xzzfLUd4z5Z6HK}
+  bucket-uploads: ${MINIO_BUCKET_UPLOADS:prd-uploads}
+  bucket-merged: ${MINIO_BUCKET_MERGED:prd-merged}
+
+# AI/LLM 解析配置
+ai:
+  # 是否启用 LLM 解析（false 则仅使用模板 + 关键词匹配）
+  enabled: ${AI_ENABLED:true}
+  # 开发调试时使用 mock 模式（不真正调用 LLM API）；生产环境应设为 false 并配置 AI_API_KEY
+  mock: ${AI_MOCK:false}
+  # LLM API 端点（OpenAI 兼容格式）
+  api-url: ${AI_API_URL:https://token.sensenova.cn/v1/chat/completions}
+  # API 密钥（生产环境务必通过环境变量 AI_API_KEY 设置）
+  api-key: ${AI_API_KEY:sk-sDsVvAHTbnrOXh4CiZRmcB4BwmmHlN4g}
+  # 模型名称
+  model: ${AI_MODEL:deepseek-v4-flash}
+  # 请求超时秒数
+  timeout: ${AI_TIMEOUT:60}
+  # 最大 token 数
+  max-tokens: ${AI_MAX_TOKENS:4096}
+  # 温度参数
+  temperature: ${AI_TEMPERATURE:0.0}
+  # 是否在日志中打印完整 API Key（默认脱敏，仅排查问题时临时设 AI_LOG_FULL_API_KEY=true）
+  log-full-api-key: ${AI_LOG_FULL_API_KEY:false}
+  # 推理强度：none 关闭思考型模型深度思考（sensenova/glm 推荐）；设为空则不传该参数（兼容 OpenAI）
+  reasoning-effort: ${AI_REASONING_EFFORT:none}
+  # 短内容判定阈值（字符数），低于此值的 PRD 内容走增强解析
+  short-content-threshold: ${AI_SHORT_CONTENT_THRESHOLD:200}

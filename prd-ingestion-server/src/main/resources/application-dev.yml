@@ -1,0 +1,64 @@
+# PRD 前置转换后端服务 - dev 环境配置
+spring:
+
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:harness_prd_ingestion}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: 5
+      connection-timeout: 5000
+      idle-timeout: 300000
+      max-lifetime: 600000
+      pool-name: prd-ingestion-pool
+
+  # Jackson 日期序列化
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+  # 启动时自动执行 SQL 初始化脚本
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      continue-on-error: true
+
+# 管理端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+
+# 服务器配置
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api/v1
+
+# 日志（显式声明 INFO 级别与格式，确保 [ingest-api]/[ingest]/[parse] 链路日志不被全局配置压低）
+logging:
+  level:
+    root: INFO
+    com.huazai.prd.ingestion: INFO
+    org.springframework.jdbc.datasource.init: DEBUG   # 查看 SQL 初始化是否执行
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+
+# 应用自定义配置
+prd:
+  ingestion:
+    # 是否启用异步解析模拟（false 时直接同步返回结果）
+    async-enabled: false
+    # 默认格式
+    default-format: markdown

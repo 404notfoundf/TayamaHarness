@@ -1,0 +1,16 @@
+[
+  {
+    "fingerprint": "task-d19e13cc",
+    "summary": "## 修复总结",
+    "first_seen_iteration": 1,
+    "last_seen_iteration": 1,
+    "count": 1
+  },
+  {
+    "fingerprint": "task-f88fd77c",
+    "summary": "所有任务已完成。以下是当前状态总结：",
+    "first_seen_iteration": 2,
+    "last_seen_iteration": 2,
+    "count": 1
+  }
+]
