@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 950" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="prd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="branch1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="branch2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="branch3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="doc1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="doc2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="doc3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="doc4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1100" height="950" fill="url(#bg)" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="550" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">4 文档拆分核心算法</text>
+  <text x="550" y="58" text-anchor="middle" font-size="12" fill="#94a3b8">PRD → 业务模型 / 数据模型 / 接口协议 / 架构决策 · 三层混合解析策略</text>
+
+  <!-- ============ 输入：PRD 文档 ============ -->
+  <rect x="380" y="78" width="340" height="56" rx="28" fill="url(#prd)" filter="url(#shadow)"/>
+  <text x="550" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">📄 PRD 原始文档</text>
+  <text x="550" y="122" text-anchor="middle" font-size="10" fill="#c7d2fe">Markdown / DOCX / TXT · 章节标题层级结构</text>
+
+  <!-- 输入 → 预处理 -->
+  <line x1="550" y1="134" x2="550" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 预处理 -->
+  <rect x="350" y="172" width="400" height="40" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="550" y="198" text-anchor="middle" font-size="11" fill="#475569">预处理：按空行分割段落 → 提取标题层级 → 识别章节结构</text>
+
+  <!-- 预处理 → 三条分支 -->
+  <line x1="550" y1="212" x2="550" y2="240" stroke="#64748b" stroke-width="2"/>
+  <line x1="550" y1="240" x2="200" y2="280" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="550" y1="240" x2="550" y2="280" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="550" y1="240" x2="900" y2="280" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ============ 三条解析路径 ============ -->
+
+  <!-- 路径一：模板匹配 -->
+  <rect x="60" y="285" width="280" height="180" rx="8" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="1.5"/>
+  <text x="200" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#0284c7">① 模板匹配（优先）</text>
+  <text x="200" y="330" text-anchor="middle" font-size="10" fill="#475569">DomainTemplateRegistry</text>
+
+  <rect x="80" y="345" width="240" height="36" rx="5" fill="#fff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="200" y="367" text-anchor="middle" font-size="10" fill="#1e40af">OAuth 登录模板 → 需求/实体/接口/决策</text>
+
+  <rect x="80" y="388" width="240" height="36" rx="5" fill="#fff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="200" y="410" text-anchor="middle" font-size="10" fill="#1e40af">支付模板 → 需求/实体/接口/决策</text>
+
+  <rect x="80" y="428" width="240" height="28" rx="5" fill="#fff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="200" y="447" text-anchor="middle" font-size="10" fill="#1e40af">共 8 个预设模板（CRUD/审批/搜索…）</text>
+
+  <!-- 路径二：LLM 解析 -->
+  <rect x="380" y="285" width="340" height="180" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="1.5"/>
+  <text x="550" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#d97706">② LLM 解析（可选）</text>
+  <text x="550" y="330" text-anchor="middle" font-size="10" fill="#475569">AiService · OpenAI 兼容接口</text>
+
+  <rect x="400" y="345" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="550" y="360" text-anchor="middle" font-size="10" fill="#92400e">发送 Prompt + PRD 全文 → 结构化 JSON</text>
+  <text x="550" y="375" text-anchor="middle" font-size="9" fill="#b45309">（仅用于左侧面板展示，不用于文档渲染）</text>
+
+  <rect x="400" y="388" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="550" y="410" text-anchor="middle" font-size="10" fill="#92400e">由 ai.enabled 配置控制</text>
+
+  <rect x="400" y="428" width="300" height="28" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="550" y="447" text-anchor="middle" font-size="10" fill="#92400e">失败时静默降级，不影响主流程</text>
+
+  <!-- 路径三：章节层级算法（兜底） -->
+  <rect x="720" y="285" width="320" height="180" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+  <text x="880" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#059669">③ 章节层级算法（兜底）</text>
+
+  <rect x="740" y="330" width="280" height="30" rx="5" fill="#fff" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="880" y="349" text-anchor="middle" font-size="10" fill="#065f46">PrdSectionParser.parse()</text>
+
+  <text x="750" y="370" font-size="10" fill="#475569">→ 按 H1-H6 标题层级构建章节树</text>
+  <text x="750" y="386" font-size="10" fill="#475569">→ SectionTypeClassifier 加权评分</text>
+  <text x="750" y="402" font-size="10" fill="#475569">→ 评分 &lt; 5 则继承父节点类型</text>
+  <text x="750" y="418" font-size="10" fill="#475569">→ 非标题正文归入当前章节</text>
+  <text x="750" y="434" font-size="10" fill="#475569">→ 文档开头零散段落归虚拟根</text>
+
+  <!-- 三条路径合并 -->
+  <line x1="200" y1="465" x2="200" y2="500" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="550" y1="465" x2="550" y2="500" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="880" y1="465" x2="880" y2="500" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="200" y1="500" x2="880" y2="500" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="550" y1="500" x2="550" y2="530" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 合并后 = 4 个 Extractor -->
+  <rect x="300" y="535" width="500" height="42" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="550" y="555" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">4 个正交提取器（Extractor）并行执行</text>
+  <text x="550" y="570" text-anchor="middle" font-size="10" fill="#64748b">每个提取器从章节树中定位所属章节，提取结构化数据</text>
+
+  <!-- 提取器 → 4 个文档 -->
+  <line x1="550" y1="577" x2="550" y2="610" stroke="#64748b" stroke-width="2"/>
+  <line x1="550" y1="610" x2="160" y2="650" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="550" y1="610" x2="410" y2="650" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="550" y1="610" x2="690" y2="650" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="550" y1="610" x2="940" y2="650" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 文档 1：业务模型 -->
+  <rect x="50" y="655" width="220" height="140" rx="8" fill="url(#doc1)" filter="url(#shadow)"/>
+  <text x="160" y="680" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">📋 业务模型文档</text>
+  <text x="160" y="700" text-anchor="middle" font-size="10" fill="#ede9fe">RequirementExtractor</text>
+  <text x="160" y="720" text-anchor="middle" font-size="10" fill="#ede9fe">用户故事（User Story）</text>
+  <text x="160" y="738" text-anchor="middle" font-size="10" fill="#ede9fe">验收标准 · 优先级</text>
+  <text x="160" y="756" text-anchor="middle" font-size="10" fill="#ede9fe">非功能需求</text>
+  <text x="160" y="774" text-anchor="middle" font-size="10" fill="#ede9fe">边界情况</text>
+
+  <!-- 文档 2：数据模型 -->
+  <rect x="300" y="655" width="220" height="140" rx="8" fill="url(#doc2)" filter="url(#shadow)"/>
+  <text x="410" y="680" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">💾 数据模型文档</text>
+  <text x="410" y="700" text-anchor="middle" font-size="10" fill="#fce7f3">DataEntityExtractor</text>
+  <text x="410" y="720" text-anchor="middle" font-size="10" fill="#fce7f3">数据实体定义</text>
+  <text x="410" y="738" text-anchor="middle" font-size="10" fill="#fce7f3">属性列表（名称 + 类型）</text>
+  <text x="410" y="756" text-anchor="middle" font-size="10" fill="#fce7f3">实体间关系</text>
+  <text x="410" y="774" text-anchor="middle" font-size="10" fill="#fce7f3">CRUD 推导</text>
+
+  <!-- 文档 3：接口协议 -->
+  <rect x="550" y="655" width="220" height="140" rx="8" fill="url(#doc3)" filter="url(#shadow)"/>
+  <text x="660" y="680" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">🔌 接口协议文档</text>
+  <text x="660" y="700" text-anchor="middle" font-size="10" fill="#d1fae5">InterfaceExtractor</text>
+  <text x="660" y="720" text-anchor="middle" font-size="10" fill="#d1fae5">HTTP 方法 + 路径</text>
+  <text x="660" y="738" text-anchor="middle" font-size="10" fill="#d1fae5">请求/响应格式</text>
+  <text x="660" y="756" text-anchor="middle" font-size="10" fill="#d1fae5">接口说明</text>
+  <text x="660" y="774" text-anchor="middle" font-size="10" fill="#d1fae5">从数据实体派生</text>
+
+  <!-- 文档 4：架构决策 -->
+  <rect x="800" y="655" width="220" height="140" rx="8" fill="url(#doc4)" filter="url(#shadow)"/>
+  <text x="910" y="680" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">🏗️ 架构决策文档</text>
+  <text x="910" y="700" text-anchor="middle" font-size="10" fill="#ffedd5">ArchDecisionExtractor</text>
+  <text x="910" y="720" text-anchor="middle" font-size="10" fill="#ffedd5">技术选型</text>
+  <text x="910" y="738" text-anchor="middle" font-size="10" fill="#ffedd5">架构决策记录（ADR）</text>
+  <text x="910" y="756" text-anchor="middle" font-size="10" fill="#ffedd5">决策理由</text>
+  <text x="910" y="774" text-anchor="middle" font-size="10" fill="#ffedd5">状态：已接受/已提议</text>
+
+  <!-- 文档 → 模板渲染 -->
+  <line x1="160" y1="795" x2="160" y2="825" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="410" y1="795" x2="410" y2="825" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="660" y1="795" x2="660" y2="825" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="910" y1="795" x2="910" y2="825" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 模板渲染 -->
+  <rect x="50" y="830" width="1000" height="40" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="550" y="850" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">模板渲染引擎</text>
+  <text x="550" y="865" text-anchor="middle" font-size="10" fill="#64748b">Markdown 模板 + {{PLACEHOLDER}} 变量替换 → 4 篇 Wiki 文档写入数据库</text>
+
+  <!-- 底部说明 -->
+  <rect x="50" y="885" width="1000" height="50" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="60" y="904" font-size="10" fill="#64748b">设计原则：</text>
+  <text x="60" y="920" font-size="10" fill="#94a3b8">① 模板优先 → LLM 增强 → 章节算法兜底，逐级降级，不中断流程</text>
+  <text x="560" y="920" font-size="10" fill="#94a3b8">② 4 个提取器正交无依赖，每个仅从章节树中提取所属类型的内容</text>
+  <text x="60" y="936" font-size="10" fill="#94a3b8">③ LLM 结果仅用于左侧面板展示，文档渲染始终使用确定性算法</text>
+  <text x="560" y="936" font-size="10" fill="#94a3b8">④ 提取不出的字段返回空值，不硬凑不伪造</text>
+</svg>

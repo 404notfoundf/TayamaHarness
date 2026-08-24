@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="fe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="be" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="ext" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="db" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1200" height="900" fill="url(#bg)" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="600" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">Harness Flow — 系统架构设计</text>
+  <text x="600" y="58" text-anchor="middle" font-size="12" fill="#94a3b8">PRD Ingestion Platform · 架构总览</text>
+
+  <!-- ============ 第一层：前端 ============ -->
+  <rect x="30" y="75" width="1140" height="170" rx="10" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="50" y="98" font-size="13" font-weight="bold" fill="#6366f1">前端 Vue 3 SPA</text>
+
+  <!-- 前端组件 -->
+  <rect x="50" y="110" width="150" height="52" rx="8" fill="url(#fe)" filter="url(#shadow)"/>
+  <text x="125" y="133" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">PrdImportView</text>
+  <text x="125" y="150" text-anchor="middle" font-size="10" fill="#c7d2fe">PRD 导入 / 上传</text>
+
+  <rect x="220" y="110" width="150" height="52" rx="8" fill="url(#fe)" filter="url(#shadow)"/>
+  <text x="295" y="133" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">ReviewView</text>
+  <text x="295" y="150" text-anchor="middle" font-size="10" fill="#c7d2fe">4 文档校验面板</text>
+
+  <rect x="390" y="110" width="150" height="52" rx="8" fill="url(#fe)" filter="url(#shadow)"/>
+  <text x="465" y="133" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">PipelineView</text>
+  <text x="465" y="150" text-anchor="middle" font-size="10" fill="#c7d2fe">流水线详情</text>
+
+  <rect x="560" y="110" width="150" height="52" rx="8" fill="url(#fe)" filter="url(#shadow)"/>
+  <text x="635" y="133" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">KanbanView</text>
+  <text x="635" y="150" text-anchor="middle" font-size="10" fill="#c7d2fe">需求看板</text>
+
+  <rect x="730" y="110" width="150" height="52" rx="8" fill="url(#fe)" filter="url(#shadow)"/>
+  <text x="805" y="133" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">TemplateView</text>
+  <text x="805" y="150" text-anchor="middle" font-size="10" fill="#c7d2fe">模板管理</text>
+
+  <rect x="900" y="110" width="150" height="52" rx="8" fill="url(#fe)" filter="url(#shadow)"/>
+  <text x="975" y="133" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">MemberView</text>
+  <text x="975" y="150" text-anchor="middle" font-size="10" fill="#c7d2fe">成员管理</text>
+
+  <!-- 状态管理层 -->
+  <rect x="50" y="175" width="1080" height="55" rx="6" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1"/>
+  <text x="70" y="195" font-size="11" font-weight="bold" fill="#6366f1">状态管理层</text>
+  <text x="70" y="212" font-size="10" fill="#64748b">Pinia Stores（auth · prd · document · change · pipeline · template）</text>
+  <text x="500" y="212" font-size="10" fill="#64748b">→</text>
+  <text x="520" y="212" font-size="10" fill="#64748b">Services（API 封装）</text>
+  <text x="680" y="212" font-size="10" fill="#64748b">→</text>
+  <text x="700" y="212" font-size="10" fill="#64748b">utils/request.ts（JWT + X-Project-Id 自动注入）</text>
+
+  <!-- 前端 → 后端 箭头 -->
+  <line x1="600" y1="245" x2="600" y2="278" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="615" y="265" font-size="10" fill="#3b82f6">HTTP REST / JSON</text>
+
+  <!-- ============ 第二层：后端 ============ -->
+  <rect x="30" y="285" width="1140" height="290" rx="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="50" y="308" font-size="13" font-weight="bold" fill="#0ea5e9">后端 Spring Boot 3</text>
+
+  <!-- Controller 层 -->
+  <rect x="50" y="320" width="1100" height="50" rx="6" fill="#e0f2fe" stroke="#bae6fd" stroke-width="1"/>
+  <text x="70" y="340" font-size="11" font-weight="bold" fill="#0284c7">Controller 层（REST API /api/v1）</text>
+  <text x="70" y="357" font-size="10" fill="#475569">PrdController · ChangeController · DocumentController · FileUploadController · PipelineController · ProjectController · TemplateController · KanbanController · AuthController</text>
+
+  <!-- Controller → Service 箭头 -->
+  <line x1="600" y1="370" x2="600" y2="390" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Service 层 -->
+  <rect x="50" y="395" width="660" height="110" rx="6" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="70" y="415" font-size="11" font-weight="bold" fill="#0284c7">Service 层（核心业务逻辑）</text>
+
+  <rect x="65" y="425" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="137" y="445" text-anchor="middle" font-size="10" fill="#1e40af">PrdIngestionService</text>
+
+  <rect x="220" y="425" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="292" y="445" text-anchor="middle" font-size="10" fill="#1e40af">DocumentService</text>
+
+  <rect x="375" y="425" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="447" y="445" text-anchor="middle" font-size="10" fill="#1e40af">ChangeService</text>
+
+  <rect x="530" y="425" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="602" y="445" text-anchor="middle" font-size="10" fill="#1e40af">PipelineService</text>
+
+  <rect x="65" y="465" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="137" y="485" text-anchor="middle" font-size="10" fill="#1e40af">FileUploadService</text>
+
+  <rect x="375" y="465" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="447" y="485" text-anchor="middle" font-size="10" fill="#1e40af">TemplateService</text>
+
+  <rect x="530" y="465" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="602" y="485" text-anchor="middle" font-size="10" fill="#1e40af">ProjectService</text>
+
+  <rect x="220" y="465" width="145" height="32" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="292" y="485" text-anchor="middle" font-size="10" fill="#1e40af">AuthService</text>
+
+  <!-- 右侧：解析引擎 -->
+  <rect x="730" y="395" width="420" height="110" rx="6" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="750" y="415" font-size="11" font-weight="bold" fill="#d97706">解析引擎（混合策略）</text>
+
+  <rect x="745" y="425" width="125" height="32" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="807" y="445" text-anchor="middle" font-size="10" fill="#92400e">SectionParser</text>
+
+  <rect x="880" y="425" width="125" height="32" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="942" y="445" text-anchor="middle" font-size="10" fill="#92400e">SectionClassifier</text>
+
+  <rect x="1015" y="425" width="125" height="32" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="1077" y="445" text-anchor="middle" font-size="10" fill="#92400e">DomainTemplateRegistry</text>
+
+  <rect x="745" y="465" width="125" height="32" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="807" y="485" text-anchor="middle" font-size="10" fill="#92400e">4 个 Extractor</text>
+
+  <rect x="880" y="465" width="125" height="32" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="942" y="485" text-anchor="middle" font-size="10" fill="#92400e">ChangeComposer</text>
+
+  <rect x="1015" y="465" width="125" height="32" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="1077" y="485" text-anchor="middle" font-size="10" fill="#92400e">AiService（可选）</text>
+
+  <!-- Service → Repository 箭头 -->
+  <line x1="600" y1="505" x2="600" y2="525" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Repository 层 -->
+  <rect x="50" y="530" width="1100" height="32" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="70" y="550" font-size="11" font-weight="bold" fill="#475569">Repository 层（JdbcTemplate · 手写 SQL · 17 张表）</text>
+
+  <!-- ============ 第三层：外部依赖 ============ -->
+  <rect x="30" y="590" width="1140" height="115" rx="10" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="50" y="613" font-size="13" font-weight="bold" fill="#10b981">外部依赖</text>
+
+  <rect x="50" y="625" width="260" height="65" rx="8" fill="url(#db)" filter="url(#shadow)"/>
+  <text x="180" y="650" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">MySQL 8.0+</text>
+  <text x="180" y="668" text-anchor="middle" font-size="10" fill="#a7f3d0">主数据库 · 17 张业务表</text>
+  <text x="180" y="682" text-anchor="middle" font-size="10" fill="#a7f3d0">存储解析结果 · 文档 · 变更 · 流水线</text>
+
+  <rect x="340" y="625" width="260" height="65" rx="8" fill="url(#ext)" filter="url(#shadow)"/>
+  <text x="470" y="650" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">MinIO（S3 兼容）</text>
+  <text x="470" y="668" text-anchor="middle" font-size="10" fill="#fef3c7">分片上传 · 文件存储</text>
+  <text x="470" y="682" text-anchor="middle" font-size="10" fill="#fef3c7">PRD 内容备份</text>
+
+  <rect x="630" y="625" width="260" height="65" rx="8" fill="url(#be)" filter="url(#shadow)"/>
+  <text x="760" y="650" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AI / LLM API</text>
+  <text x="760" y="668" text-anchor="middle" font-size="10" fill="#bae6fd">OpenAI 兼容接口</text>
+  <text x="760" y="682" text-anchor="middle" font-size="10" fill="#bae6fd">可选解析增强</text>
+
+  <rect x="920" y="625" width="230" height="65" rx="8" fill="url(#fe)" filter="url(#shadow)"/>
+  <text x="1035" y="650" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">JWT 认证</text>
+  <text x="1035" y="668" text-anchor="middle" font-size="10" fill="#c7d2fe">jjwt 无状态认证</text>
+  <text x="1035" y="682" text-anchor="middle" font-size="10" fill="#c7d2fe">Authorization Header</text>
+
+  <!-- 基础设施 -->
+  <rect x="30" y="720" width="1140" height="55" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="600" y="742" text-anchor="middle" font-size="11" font-weight="bold" fill="#64748b">基础设施</text>
+  <text x="600" y="760" text-anchor="middle" font-size="10" fill="#94a3b8">Spring Boot 3.4 · Java 21 · Vue 3 + TypeScript + Vite · Pinia · MySQL 8.0 · MinIO · JWT</text>
+
+  <!-- 图例 -->
+  <rect x="30" y="788" width="1140" height="95" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="50" y="810" font-size="11" font-weight="bold" fill="#475569">图例</text>
+
+  <rect x="50" y="822" width="16" height="16" rx="3" fill="url(#fe)"/>
+  <text x="72" y="835" font-size="10" fill="#475569">前端组件（Vue 页面）</text>
+
+  <rect x="220" y="822" width="16" height="16" rx="3" fill="url(#be)"/>
+  <text x="242" y="835" font-size="10" fill="#475569">后端服务 / 外部依赖</text>
+
+  <rect x="400" y="822" width="16" height="16" rx="3" fill="#fef3c7" stroke="#fcd34d" stroke-width="1"/>
+  <text x="422" y="835" font-size="10" fill="#475569">解析引擎</text>
+
+  <rect x="520" y="822" width="16" height="16" rx="3" fill="url(#db)"/>
+  <text x="542" y="835" font-size="10" fill="#475569">数据库</text>
+
+  <rect x="50" y="848" width="16" height="16" rx="3" fill="url(#ext)"/>
+  <text x="72" y="861" font-size="10" fill="#475569">MinIO 对象存储</text>
+
+  <line x1="220" y1="856" x2="280" y2="856" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="290" y="860" font-size="10" fill="#475569">HTTP 请求</text>
+
+  <line x1="420" y1="856" x2="480" y2="856" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="490" y="860" font-size="10" fill="#475569">调用/数据流</text>
+</svg>

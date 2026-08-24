@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 950" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="input" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="composer" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#10b981"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1100" height="950" fill="url(#bg)" rx="12"/>
+
+  <!-- 标题 -->
+  <text x="550" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">Change 核心算法设计</text>
+  <text x="550" y="58" text-anchor="middle" font-size="12" fill="#94a3b8">ChangeComposer · 从 4 文档到 Change.md · 流水线生命周期</text>
+
+  <!-- ============ 输入：4 文档 + PRD 原文 ============ -->
+  <text x="550" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">输入</text>
+
+  <rect x="80" y="95" width="200" height="42" rx="6" fill="#a78bfa" filter="url(#shadow)"/>
+  <text x="180" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">📋 业务模型</text>
+  <text x="180" y="130" text-anchor="middle" font-size="9" fill="#ede9fe">需求列表 + 优先级</text>
+
+  <rect x="300" y="95" width="200" height="42" rx="6" fill="#f472b6" filter="url(#shadow)"/>
+  <text x="400" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">💾 数据模型</text>
+  <text x="400" y="130" text-anchor="middle" font-size="9" fill="#fce7f3">实体 + 属性 + 关系</text>
+
+  <rect x="520" y="95" width="200" height="42" rx="6" fill="#34d399" filter="url(#shadow)"/>
+  <text x="620" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">🔌 接口协议</text>
+  <text x="620" y="130" text-anchor="middle" font-size="9" fill="#d1fae5">方法 + 路径 + 格式</text>
+
+  <rect x="740" y="95" width="200" height="42" rx="6" fill="#fb923c" filter="url(#shadow)"/>
+  <text x="840" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">🏗️ 架构决策</text>
+  <text x="840" y="130" text-anchor="middle" font-size="9" fill="#ffedd5">技术选型</text>
+
+  <rect x="355" y="148" width="390" height="30" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="550" y="168" text-anchor="middle" font-size="10" fill="#475569">+ PRD 原始内容（用于原文回溯和噪音过滤）</text>
+
+  <!-- 输入 → ChangeComposer -->
+  <line x1="550" y1="178" x2="550" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ============ ChangeComposer ============ -->
+  <rect x="200" y="215" width="700" height="280" rx="10" fill="url(#composer)" filter="url(#shadow)"/>
+  <text x="550" y="243" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">ChangeComposer — 合成器</text>
+  <text x="550" y="262" text-anchor="middle" font-size="10" fill="#fef3c7">纯 Java 规则引擎 · 不可变类 · 宁缺毋滥</text>
+
+  <!-- 8 个合成模块 -->
+  <rect x="230" y="278" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="380" y="300" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeUserStory()</text>
+  <text x="380" y="312" text-anchor="middle" font-size="9" fill="#b45309">用户故事：需求列表 + 总括句 + 噪音过滤</text>
+
+  <rect x="570" y="278" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="720" y="300" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeOutOfScope()</text>
+  <text x="720" y="312" text-anchor="middle" font-size="9" fill="#b45309">非目标：从 PRD 原文推导</text>
+
+  <rect x="230" y="322" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="380" y="344" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeAcceptanceCriteria()</text>
+  <text x="380" y="356" text-anchor="middle" font-size="9" fill="#b45309">验收标准：从需求描述推导</text>
+
+  <rect x="570" y="322" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="720" y="344" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeEdgeCases()</text>
+  <text x="720" y="356" text-anchor="middle" font-size="9" fill="#b45309">边界情况：从数据字段推导</text>
+
+  <rect x="230" y="366" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="380" y="388" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeNonFunctional()</text>
+  <text x="380" y="400" text-anchor="middle" font-size="9" fill="#b45309">非功能需求：性能/安全/可用性</text>
+
+  <rect x="570" y="366" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="720" y="388" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeTestStrategy()</text>
+  <text x="720" y="400" text-anchor="middle" font-size="9" fill="#b45309">测试策略：从接口+边界推导</text>
+
+  <rect x="230" y="410" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="380" y="432" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeTaskBreakdown()</text>
+  <text x="380" y="444" text-anchor="middle" font-size="9" fill="#b45309">任务拆解：从实体+需求推导</text>
+
+  <rect x="570" y="410" width="300" height="36" rx="5" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="720" y="432" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">composeTestCases() + composeProgress()</text>
+  <text x="720" y="444" text-anchor="middle" font-size="9" fill="#b45309">验收用例 + 流水线进度</text>
+
+  <!-- 核心策略 -->
+  <rect x="230" y="458" width="640" height="28" rx="4" fill="#fff" stroke="#fde68a" stroke-width="1"/>
+  <text x="550" y="477" text-anchor="middle" font-size="10" fill="#92400e">每个推导条目带出处（REQ 编号 / 接口路径 / 架构决策标题），可回溯</text>
+
+  <!-- 合成器 → Change.md -->
+  <line x1="550" y1="495" x2="550" y2="530" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ============ Change 输出 ============ -->
+  <rect x="300" y="535" width="500" height="50" rx="8" fill="url(#input)" filter="url(#shadow)"/>
+  <text x="550" y="558" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">📄 Change.md 生成</text>
+  <text x="550" y="575" text-anchor="middle" font-size="10" fill="#c7d2fe">状态：drafting · 可重新生成（覆盖，不创建新 Change）</text>
+
+  <!-- Change → 流水线 -->
+  <line x1="550" y1="585" x2="550" y2="620" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ============ 流水线生命周期 ============ -->
+  <rect x="100" y="625" width="900" height="200" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="550" y="648" text-anchor="middle" font-size="13" font-weight="bold" fill="#475569">流水线生命周期</text>
+
+  <!-- 阶段节点 -->
+  <rect x="130" y="665" width="170" height="55" rx="27" fill="url(#stg1)" filter="url(#shadow)"/>
+  <text x="215" y="692" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">📝 草案</text>
+  <text x="215" y="708" text-anchor="middle" font-size="10" fill="#e2e8f0">drafting</text>
+
+  <line x1="300" y1="692" x2="340" y2="692" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="350" y="665" width="170" height="55" rx="27" fill="url(#stg2)" filter="url(#shadow)"/>
+  <text x="435" y="692" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">🔍 评审</text>
+  <text x="435" y="708" text-anchor="middle" font-size="10" fill="#bfdbfe">reviewing</text>
+
+  <line x1="520" y1="692" x2="560" y2="692" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="570" y="665" width="170" height="55" rx="27" fill="url(#stg3)" filter="url(#shadow)"/>
+  <text x="655" y="692" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">✅ 已批准</text>
+  <text x="655" y="708" text-anchor="middle" font-size="10" fill="#fef3c7">approved</text>
+
+  <line x1="740" y1="692" x2="780" y2="692" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="790" y="665" width="180" height="55" rx="27" fill="url(#stg4)" filter="url(#shadow)"/>
+  <text x="880" y="692" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">🎉 已完成</text>
+  <text x="880" y="708" text-anchor="middle" font-size="10" fill="#a7f3d0">completed</text>
+
+  <!-- 操作 -->
+  <rect x="130" y="740" width="840" height="70" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="760" font-size="11" font-weight="bold" fill="#475569">支持的操作</text>
+
+  <rect x="150" y="770" width="140" height="28" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="220" y="789" text-anchor="middle" font-size="10" fill="#475569">推进阶段（Advance）</text>
+
+  <rect x="300" y="770" width="140" height="28" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="370" y="789" text-anchor="middle" font-size="10" fill="#475569">编辑 Change 内容</text>
+
+  <rect x="450" y="770" width="140" height="28" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="520" y="789" text-anchor="middle" font-size="10" fill="#475569">重新生成（覆盖）</text>
+
+  <rect x="600" y="770" width="140" height="28" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="670" y="789" text-anchor="middle" font-size="10" fill="#475569">查看操作日志</text>
+
+  <rect x="750" y="770" width="140" height="28" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="820" y="789" text-anchor="middle" font-size="10" fill="#475569">复制 Change 内容</text>
+
+  <!-- 管线映射 → 看板 -->
+  <line x1="550" y1="825" x2="550" y2="855" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 看板映射 -->
+  <rect x="100" y="860" width="900" height="42" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="550" y="878" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">看板映射</text>
+  <text x="550" y="895" text-anchor="middle" font-size="10" fill="#64748b">drafting → PRD 导入列 · reviewing → 文档校验列 · approved/coding/testing/verifying → 设计评审列 · completed → 已完成列</text>
+
+  <!-- 底部说明 -->
+  <rect x="50" y="915" width="1000" height="25" rx="4" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1"/>
+  <text x="60" y="932" font-size="10" fill="#6366f1">设计原则：① 8 个合成模块正交独立，推导不出则返回空值 ② 噪音过滤（base64 图片/纯表格行/数据 URI） ③ 可回溯：每个条目带出处 ④ 重新生成覆盖旧内容，不创建新 ID</text>
+</svg>
