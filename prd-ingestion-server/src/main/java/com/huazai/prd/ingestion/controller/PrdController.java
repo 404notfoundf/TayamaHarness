@@ -1,6 +1,7 @@
 package com.huazai.prd.ingestion.controller;
 
 import com.huazai.prd.ingestion.config.ProjectContext;
+import com.huazai.prd.ingestion.model.prd.ConfirmCandidateRequest;
 import com.huazai.prd.ingestion.model.prd.IngestionProgress;
 import com.huazai.prd.ingestion.model.prd.PrdIngestRequest;
 import com.huazai.prd.ingestion.model.prd.PrdIngestResponse;
@@ -88,6 +89,28 @@ public class PrdController {
                     .body(BaseResponse.error("NOT_FOUND", "解析记录不存在"));
         }
         return ResponseEntity.ok(BaseResponse.ok(progress));
+    }
+
+    /**
+     * POST /api/v1/prd/ingest/{ingestionId}/confirm - 人工确认候选条目（proposed → confirmed / accepted）。
+     */
+    @PostMapping("/ingest/{ingestionId}/confirm")
+    @PreAuthorize("isAuthenticated() && @authz.hasProjectRole('owner', 'maintainer', 'contributor')")
+    public ResponseEntity<BaseResponse<Integer>> confirmCandidate(@PathVariable String ingestionId,
+                                                                   @RequestBody ConfirmCandidateRequest request) {
+        if (request == null || request.getType() == null || request.getType().isBlank()
+                || request.getId() == null || request.getId().isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body(BaseResponse.error("INVALID_REQUEST", "type 与 id 不能为空"));
+        }
+        int updated = service.confirmCandidate(ingestionId, request.getType(), request.getId());
+        if (updated <= 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(BaseResponse.error("NOT_FOUND", "未找到候选条目或确认失败"));
+        }
+        LOG.info("[confirm-api] ingestionId={}, type={}, id={}, updated={}",
+                ingestionId, request.getType(), request.getId(), updated);
+        return ResponseEntity.ok(BaseResponse.ok(updated));
     }
 
     /**

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { usePipelineStore } from '@/stores/pipeline'
 import { useChangeStore } from '@/stores/change'
 import { useDocumentStore } from '@/stores/document'
+import { confirmCandidate } from '@/services/prd'
 import type { WikiDocument } from '@/models/document'
 import { MOCK_PIPELINE_STATUS, MOCK_CHANGE_LOGS, MOCK_CHANGE_DETAIL } from '@/constants/mock'
 
@@ -67,6 +68,27 @@ let copyTimer: number | undefined
 const editing = ref(false)
 const editContent = ref('')
 const saving = ref(false)
+
+// 重新生成 change 的状态
+const regenerating = ref(false)
+
+const handleRegenerate = async () => {
+  const changeId = currentChangeId
+  if (!changeId) return
+  if (!window.confirm('重新生成将覆盖当前 change.md 内容，确定继续？')) return
+  regenerating.value = true
+  try {
+    await changeStore.regenerateChange(changeId)
+    changeDetail.value = changeStore.currentChange || changeDetail.value
+    // 重新拉取变更日志（后端已写入"Change 内容已重新生成"记录）
+    await pipelineStore.fetchChangeLogs(changeId)
+    changeLogs.value = pipelineStore.changeLogs.length > 0 ? pipelineStore.changeLogs : MOCK_CHANGE_LOGS
+  } catch (e) {
+    alert('重新生成失败: ' + (e as Error).message)
+  } finally {
+    regenerating.value = false
+  }
+}
 
 const copyContent = async () => {
   const text = changeDetail.value?.content
@@ -231,6 +253,83 @@ const docModalExtraction = computed(() => {
   return { label: '需求', items: pick('requirements', docModalDoc.value?.requirements) }
 })
 
+// 候选条目人工确认（与 ReviewView 一致的 proposed → confirmed 工作流）
+const confirming = ref(false)
+
+const candidateTypeOf = (docType: string) => {
+  switch (docType) {
+    case 'business-model': return 'requirement'
+    case 'data-model': return 'entity'
+    case 'interface-protocol': return 'interface'
+    case 'architecture-decision': return 'decision'
+    default: return ''
+  }
+}
+
+const candidateIdOf = (docType: string, item: any) => {
+  switch (docType) {
+    case 'business-model': return String(item?.id ?? '')
+    case 'data-model': return String(item?.name ?? '')
+    case 'interface-protocol': return `${item?.method}|${item?.path}`
+    case 'architecture-decision': return String(item?.id ?? '')
+    default: return ''
+  }
+}
+
+const isPendingCandidate = (docType: string, item: any) => {
+  if (docType === 'architecture-decision') {
+    return (item?.status || 'proposed') === 'proposed'
+  }
+  return (item?.candidateStatus || '') === 'proposed'
+}
+
+// 是否可一键确认：候选状态且存在可落库的条目标识（LLM 建议条目只展示不可确认）
+const isConfirmable = (docType: string, item: any) =>
+  isPendingCandidate(docType, item) && candidateIdOf(docType, item) !== ''
+
+// 条目状态徽标：proposed→⚠️；confirmed/accepted→✅；LLM 建议（无状态）→🧠
+const badgeOf = (docType: string, item: any) => {
+  if (docType === 'architecture-decision') {
+    if (item?.status === 'accepted') return { kind: 'ok', label: '✅ 已确认' }
+    if (item?.status === 'proposed' && !!item?.id) return { kind: 'warn', label: '⚠️ 规则推导待确认' }
+    return { kind: 'muted', label: '🧠 提取建议' }
+  }
+  if (item?.candidateStatus === 'confirmed') return { kind: 'ok', label: '✅ 原文提取' }
+  if (item?.candidateStatus === 'proposed') return { kind: 'warn', label: '⚠️ 规则推导待确认' }
+  return { kind: 'muted', label: '🧠 提取建议' }
+}
+
+const badgeClass = (docType: string, item: any) => {
+  const kind = badgeOf(docType, item).kind
+  return kind === 'warn' ? 'cand-badge' : kind === 'ok' ? 'cand-badge-ok' : 'cand-badge-muted'
+}
+
+const badgeLabel = (docType: string, item: any) => badgeOf(docType, item).label
+
+const confirmItem = async (item: any) => {
+  const doc = docModalDoc.value
+  if (!doc?.ingestionId || !doc.type) {
+    alert('无法确认：缺少 ingestionId')
+    return
+  }
+  const type = candidateTypeOf(doc.type)
+  const cid = candidateIdOf(doc.type, item)
+  if (!type || !cid) {
+    alert('无法确认：缺少条目标识')
+    return
+  }
+  confirming.value = true
+  try {
+    await confirmCandidate(doc.ingestionId, type, cid)
+    await docStore.fetchDocument(doc.docId)
+    docModalDoc.value = docStore.currentDoc
+  } catch (e) {
+    alert('确认失败: ' + (e as Error).message)
+  } finally {
+    confirming.value = false
+  }
+}
+
 // 文档类型图标 / 状态文案 helper（弹窗与列表行共用）
 const docIcon = (type?: string) =>
   type === 'business-model' ? '📋' : type === 'data-model' ? '💾' : type === 'interface-protocol' ? '🔌' : '🏗️'
@@ -349,6 +448,10 @@ onMounted(async () => {
               <!-- 编辑按钮：drafting/reviewing 阶段可编辑 -->
               <button v-if="!editing && (currentStage === 'drafting' || currentStage === 'reviewing')" class="btn btn-ghost btn-sm" @click="startEdit">
                 ✏️ 编辑
+              </button>
+              <!-- 重新生成按钮：drafting/reviewing 阶段可点击 -->
+              <button v-if="currentStage === 'drafting' || currentStage === 'reviewing'" class="btn btn-ghost btn-sm" :disabled="regenerating" @click="handleRegenerate">
+                {{ regenerating ? '⏳ 重新生成中...' : '🔄 重新生成' }}
               </button>
               <button class="btn btn-ghost btn-sm" :disabled="!changeDetail?.content" @click="copyContent">
                 {{ copied ? '✓ 已复制' : '📋 一键复制' }}
@@ -470,6 +573,10 @@ onMounted(async () => {
                         <template v-if="docModalDoc?.type === 'data-model'">
                           <div v-for="(e, i) in (docModalExtraction.items as any[])" :key="i" class="mb-3 pb-3 border-b border-slate-100 last:border-0">
                             <div class="font-semibold text-indigo-700">▣ {{ e.name }}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                              <span :class="badgeClass(docModalDoc?.type || '', e)">{{ badgeLabel(docModalDoc?.type || '', e) }}</span>
+                              <button v-if="isConfirmable(docModalDoc?.type || '', e)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(e)">确认</button>
+                            </div>
                             <div v-if="e.description" class="text-sm text-slate-600 mt-0.5">{{ e.description }}</div>
                             <div v-if="e.attributes && e.attributes.length" class="mt-1 text-xs">
                               <span v-for="(a, ai) in e.attributes" :key="ai" class="inline-block bg-slate-100 rounded px-1.5 py-0.5 mr-1 mb-1">{{ a.name }}: {{ a.type }}</span>
@@ -479,6 +586,10 @@ onMounted(async () => {
                         <template v-else-if="docModalDoc?.type === 'interface-protocol'">
                           <div v-for="(it, i) in (docModalExtraction.items as any[])" :key="i" class="mb-2 pb-2 border-b border-slate-100 last:border-0">
                             <span class="font-mono text-sm font-bold text-indigo-700">{{ it.method }}</span>
+                            <div class="flex items-center gap-2 mt-1">
+                              <span :class="badgeClass(docModalDoc?.type || '', it)">{{ badgeLabel(docModalDoc?.type || '', it) }}</span>
+                              <button v-if="isConfirmable(docModalDoc?.type || '', it)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(it)">确认</button>
+                            </div>
                             <span class="font-mono text-sm text-slate-800 ml-1">{{ it.path }}</span>
                             <div v-if="it.summary" class="text-xs text-slate-500 mt-0.5">{{ it.summary }}</div>
                           </div>
@@ -486,12 +597,20 @@ onMounted(async () => {
                         <template v-else-if="docModalDoc?.type === 'architecture-decision'">
                           <div v-for="(a, i) in (docModalExtraction.items as any[])" :key="i" class="mb-2 pb-2 border-b border-slate-100 last:border-0">
                             <div class="font-semibold text-indigo-700 text-sm">📌 {{ a.title }}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                              <span :class="badgeClass(docModalDoc?.type || '', a)">{{ badgeLabel(docModalDoc?.type || '', a) }}</span>
+                              <button v-if="isConfirmable(docModalDoc?.type || '', a)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(a)">确认</button>
+                            </div>
                             <div v-if="a.decision" class="text-xs text-slate-600 mt-0.5">{{ a.decision }}</div>
                           </div>
                         </template>
                         <template v-else>
                           <div v-for="(r, i) in (docModalExtraction.items as any[])" :key="i" class="mb-2 pb-2 border-b border-slate-100 last:border-0">
                             <div class="text-sm text-slate-700"><span class="font-mono text-xs text-slate-400 mr-1">{{ r.id }}</span>{{ r.description }}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                              <span :class="badgeClass(docModalDoc?.type || '', r)">{{ badgeLabel(docModalDoc?.type || '', r) }}</span>
+                              <button v-if="isConfirmable(docModalDoc?.type || '', r)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(r)">确认</button>
+                            </div>
                           </div>
                         </template>
                       </div>
@@ -586,6 +705,41 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.cand-badge {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: #fef3c7;
+  color: #b45309;
+}
+.cand-badge-ok {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: #dcfce7;
+  color: #15803d;
+}
+.cand-badge-muted {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #475569;
+}
+.btn-xs {
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 8px;
+}
 /* ---- 文档内容弹窗（与模板管理「新建模板」弹窗保持同一套视觉） ---- */
 .modal-fade-enter-active,
 .modal-fade-leave-active {

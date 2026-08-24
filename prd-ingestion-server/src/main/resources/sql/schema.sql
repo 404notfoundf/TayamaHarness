@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS prd_requirement (
     source_paragraph  TEXT           NULL COMMENT '原始 PRD 段落引用',
     notes             TEXT           NULL COMMENT '备注',
     sort_order        INT            NOT NULL DEFAULT 0 COMMENT '排序序号',
+    candidate_status  VARCHAR(16)    NOT NULL DEFAULT 'confirmed' COMMENT '候选状态（confirmed=原文提取/proposed=规则推导待确认）',
     created_at        DATETIME(3)    NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     updated_at        DATETIME(3)    NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
 
@@ -150,6 +151,7 @@ CREATE TABLE IF NOT EXISTS prd_data_entity (
     entity_name     VARCHAR(128)   NOT NULL COMMENT '实体名称',
     description     TEXT           NULL COMMENT '实体描述',
     source_paragraph TEXT          NULL COMMENT '来源 PRD 段落',
+    candidate_status VARCHAR(16)    NOT NULL DEFAULT 'confirmed' COMMENT '候选状态（confirmed=原文提取/proposed=规则推导待确认）',
     sort_order      INT            NOT NULL DEFAULT 0 COMMENT '排序序号',
     created_at      DATETIME(3)    NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     updated_at      DATETIME(3)    NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
@@ -204,6 +206,7 @@ CREATE TABLE IF NOT EXISTS prd_interface (
     response_body   TEXT           NULL COMMENT '响应体描述',
     notes           TEXT           NULL COMMENT '备注',
     source_paragraph TEXT          NULL COMMENT '来源 PRD 段落',
+    candidate_status VARCHAR(16)    NOT NULL DEFAULT 'confirmed' COMMENT '候选状态（confirmed=原文提取/proposed=规则推导待确认）',
     sort_order      INT            NOT NULL DEFAULT 0 COMMENT '排序序号',
     created_at      DATETIME(3)    NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     updated_at      DATETIME(3)    NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',

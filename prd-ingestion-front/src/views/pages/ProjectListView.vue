@@ -3,7 +3,7 @@
     <header class="page-header">
       <h1>项目管理</h1>
       <div class="header-actions">
-        <button class="btn btn-secondary" @click="router.push('/users')">👥 用户管理</button>
+        <button class="btn btn-secondary" @click="router.push('/users')">👥 团队用户管理</button>
         <button class="btn btn-primary" @click="onOpenCreate">+ 新建项目</button>
         <span class="user-info">
           <span class="user-name">{{ auth.displayName }}</span>

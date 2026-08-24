@@ -25,7 +25,8 @@ export const useChangeStore = defineStore('change', () => {
     try {
       const detail = await api.createChange(payload)
       currentChange.value = detail
-      changes.value = [{
+      // 追加到列表头部，不覆盖旧数据
+      const newSummary: ChangeSummary = {
         changeId: detail.changeId,
         title: detail.title,
         status: detail.status,
@@ -33,7 +34,8 @@ export const useChangeStore = defineStore('change', () => {
         documentRefs: detail.documentRefs,
         createdAt: detail.createdAt,
         updatedAt: detail.updatedAt,
-      }]
+      }
+      changes.value = [newSummary, ...changes.value]
     } catch (e) {
       error.value = (e as Error).message
     } finally {
@@ -83,6 +85,32 @@ export const useChangeStore = defineStore('change', () => {
     }
   }
 
+  // ⑤ 重新生成 change 内容（覆盖已有，不新建 changeId）
+  const regenerateChange = async (changeId: string) => {
+    error.value = ''
+    loading.value = true
+    if (useMock) {
+      await new Promise((r) => setTimeout(r, 500))
+      // mock 模拟重新生成：更新 content 时间戳
+      if (currentChange.value) {
+        currentChange.value = {
+          ...currentChange.value,
+          updatedAt: new Date().toISOString(),
+        }
+      }
+      loading.value = false
+      return
+    }
+    try {
+      currentChange.value = await api.regenerateChange(changeId)
+    } catch (e) {
+      error.value = (e as Error).message
+      throw e
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     changes,
     currentChange,
@@ -92,5 +120,6 @@ export const useChangeStore = defineStore('change', () => {
     loadChanges,
     fetchChange,
     updateChange,
+    regenerateChange,
   }
 })

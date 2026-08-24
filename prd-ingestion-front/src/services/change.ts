@@ -28,3 +28,10 @@ export const updateChange = async (changeId: string, content: string) => {
   if (!res.data) throw new Error('更新失败')
   return res.data
 }
+
+// ⑤ 重新生成 change 内容（覆盖已有，不新建 changeId）
+export const regenerateChange = async (changeId: string) => {
+  const res = await post<BaseResponse<ChangeDetail>>(`/api/v1/changes/${changeId}/regenerate`)
+  if (!res.data) throw new Error('重新生成失败')
+  return res.data
+}

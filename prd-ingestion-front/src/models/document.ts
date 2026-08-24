@@ -20,6 +20,7 @@ export type DataEntity = {
   sourceParagraph?: string
   attributes?: EntityAttribute[]
   relations?: EntityRelation[]
+  candidateStatus?: string
 }
 export type RequirementEntity = {
   id: string
@@ -28,6 +29,7 @@ export type RequirementEntity = {
   relatedEntities?: string[]
   sourceParagraph?: string
   notes?: string
+  candidateStatus?: string
 }
 export type InterfaceProtocol = {
   method: string
@@ -36,6 +38,7 @@ export type InterfaceProtocol = {
   requestBody?: string
   responseBody?: string
   notes?: string
+  candidateStatus?: string
 }
 export type ArchitectureDecision = {
   id?: string

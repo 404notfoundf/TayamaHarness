@@ -6,6 +6,7 @@ import com.huazai.prd.ingestion.repository.PrdIngestionRepository;
 import com.huazai.prd.ingestion.repository.TemplateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -32,18 +33,19 @@ public class PrdIngestionService {
     private final FileUploadService fileUploadService;
     private final AiProperties aiProperties;
     private final DomainTemplateRegistry templateRegistry;
-    private final AiService aiService;
+    private final Optional<AiService> aiService;
     private final TemplateRepository templateRepository;
 
     public PrdIngestionService(PrdIngestionRepository repo, FileUploadService fileUploadService,
                                AiProperties aiProperties,
-                               DomainTemplateRegistry templateRegistry, AiService aiService,
+                               DomainTemplateRegistry templateRegistry,
+                               @Autowired(required = false) AiService aiService,
                                TemplateRepository templateRepository) {
         this.repo = repo;
         this.fileUploadService = fileUploadService;
         this.aiProperties = aiProperties;
         this.templateRegistry = templateRegistry;
-        this.aiService = aiService;
+        this.aiService = Optional.ofNullable(aiService);
         this.templateRepository = templateRepository;
     }
 
@@ -184,7 +186,7 @@ public class PrdIngestionService {
                 try {
                     // 直接传完整 PRD 内容给 LLM，不做截断——base64 图片占 93% 内容，截断后只剩 2600 字符
                     // LLM 需要看到完整上下文才能准确提取需求
-                    llmResult = aiService.parse(content);
+                    llmResult = aiService.map(s -> s.parse(content)).orElse(null);
                 } catch (RuntimeException e) {
                     // LLM 网络超时/服务不可用：必须兜底到章节层级算法，
                     // 否则 reparse 会先在 deleteParsedData 删光数据后中断，导致拆分结果永久丢失。
@@ -201,7 +203,7 @@ public class PrdIngestionService {
                     // LLM 调用异常或未返回有效结果：仅在未成功时标记回退章节算法，
                     // 避免 LLM 成功后 parse_source 被误覆盖为 section_hierarchy。
                     LOG.warn("[parse] ingestionId={}, LLM 解析失败, 回退到章节层级算法", ingestionId);
-                    String aiError = aiService.getLastError();
+                    String aiError = aiService.map(AiService::getLastError).orElse(null);
                     repo.updateParseMeta(ingestionId, "section_hierarchy",
                             "LLM 解析未返回有效结果：" + (aiError != null && !aiError.isBlank() ? aiError : "未知原因"));
                 }
@@ -210,173 +212,71 @@ public class PrdIngestionService {
             }
         }
 
-        // ---- 第三步：章节层级感知的关键词匹配（加权评分 + 标题层级继承） ----
-        repo.updateStatus(ingestionId, "parsing", 15, "正在章节层级解析...");
-        // 解析来源标记：LLM 成功时标记 llm（供前端展示旁路的 LLM 提取结果），失败/未启用时标记章节算法；
-        // 无论哪种，下方章节算法都会用确定性数据写库并渲染文档。
+        // ---- 第三步：章节树流水线（确定性解析；LLM 成败与否都执行，保证四份文档可完整拆解） ----
+        repo.updateStatus(ingestionId, "parsing", 15, "正在章节树解析...");
+        // 解析来源标记：LLM 成功时标记 llm（供前端展示旁路的 LLM 提取结果）；失败/未启用标记 section_hierarchy。
         repo.updateParseSource(ingestionId, llmSucceeded ? "llm" : "section_hierarchy");
         if (llmSucceeded) {
             repo.updateParseMeta(ingestionId, "llm", null);
         }
 
-        // 使用章节层级 + 加权评分算法（标题树 + 父继承 + 加权评分，优于旧版 binary containsAny）
-        String[] owners = classifyBySectionHierarchy(paraList);
+        // 章节树 → 4 个正交生成器（业务模型/数据模型/接口协议/架构决策）
+        java.util.List<SectionNode> tree = PrdSectionParser.parse(paraList);
+        ParseOutcome outcome = new ParseOutcome();
+        outcome.requirements.addAll(RequirementExtractor.extract(tree));
+        outcome.dataEntities.addAll(DataEntityExtractor.extract(tree));
+        outcome.interfaces.addAll(InterfaceExtractor.extract(tree, outcome.dataEntities));
+        outcome.archDecisions.addAll(ArchDecisionExtractor.extract(tree));
 
-        // 解析需求（business-model 段落）
+        repo.updateStatus(ingestionId, "extracting", 40, "正在落库提取结果...");
+        // 需求（业务模型）：同一特性章节聚合为一条需求，避免段落直抄碎片
         int reqOrder = 0;
         int reqCounter = 0;
-        for (int i = 0; i < paraList.size(); i++) {
-            String para = paraList.get(i);
-            if (isSkipParagraph(para.trim())) continue;
-            if (isNoiseParagraph(para.trim())) continue;
-            if ("business-model".equals(owners[i])) {
-                reqCounter++;
-                String reqId = "REQ-" + key + "-" + String.format("%03d", reqCounter);
-                String priority = detectPriority(para);
-                String desc = cleanReqDescription(para);
-                repo.insertRequirement(projectId, ingestionId, reqId, truncate(desc, 500), priority,
-                        "[]", para, "", reqOrder++);
-            }
+        for (RequirementEntity req : outcome.requirements) {
+            reqCounter++;
+            String reqId = "REQ-" + key + "-" + String.format("%03d", reqCounter);
+            repo.insertRequirement(projectId, ingestionId, reqId, truncate(req.getDescription(), 500),
+                    req.getPriority(), "[]", req.getSourceParagraph(), req.getNotes(), reqOrder++,
+                    req.getCandidateStatus());
         }
-
-        repo.updateStatus(ingestionId, "extracting", 40, "正在提取数据实体...");
         LOG.info("[parse] ingestionId={}, 需求解析完成: {} 条", ingestionId, reqCounter);
 
-        // 解析数据实体（data-model 段落）——增强提取
+        // 数据实体（数据模型）：数据模型章节 confirmed + 业务候选 proposed
         int entityOrder = 0;
-        StringBuilder dataModelSection = new StringBuilder();
-        for (int i = 0; i < paraList.size(); i++) {
-            if ("data-model".equals(owners[i])) {
-                dataModelSection.append(paraList.get(i)).append("\n\n");
+        for (DataEntity e : outcome.dataEntities) {
+            long entityId = repo.insertDataEntity(projectId, ingestionId, e.getName(),
+                    truncate(e.getDescription(), 500), entityOrder++, e.getSourceParagraph(), e.getCandidateStatus());
+            int attrOrder = 0;
+            for (DataEntity.Attribute attr : (e.getAttributes() == null ? Collections.<DataEntity.Attribute>emptyList() : e.getAttributes())) {
+                repo.insertEntityAttribute(entityId, attr.getName(), attr.getType(), attr.getDescription(), attrOrder++);
+            }
+            int relOrder = 0;
+            for (DataEntity.Relation rel : (e.getRelations() == null ? Collections.<DataEntity.Relation>emptyList() : e.getRelations())) {
+                repo.insertEntityRelation(entityId, rel.getTarget(), rel.getType(), rel.getDescription(), relOrder++);
             }
         }
-        if (dataModelSection.length() > 0) {
-            // 尝试从 Markdown 表格和结构化文本中提取实体
-            java.util.List<ExtractedEntity> entities = extractEntitiesFromKeywords(dataModelSection.toString());
-            for (ExtractedEntity ee : entities) {
-                long entityId = repo.insertDataEntity(projectId, ingestionId, ee.name, ee.description, entityOrder++);
-                int attrOrder = 0;
-                for (ExtractedEntity.Attribute attr : ee.attributes) {
-                    repo.insertEntityAttribute(entityId, attr.name, attr.type, attr.description, attrOrder++);
-                }
-                int relOrder = 0;
-                for (ExtractedEntity.Relation rel : ee.relations) {
-                    repo.insertEntityRelation(entityId, rel.target, rel.type, rel.description, relOrder++);
-                }
-            }
-        }
-
-        // 如果没找到实体，尝试从"状态说明"等章节内容提取实体名和属性
-        if (entityOrder == 0) {
-            for (int i = 0; i < paraList.size(); i++) {
-                if ("data-model".equals(owners[i])) {
-                    String para = paraList.get(i);
-                    String extracted = extractEntityName(para);
-                    if (extracted != null && !extracted.startsWith("Entity") && isMeaningfulEntityName(extracted)) {
-                        long entityId = repo.insertDataEntity(projectId, ingestionId, extracted, truncate(para, 200), entityOrder++);
-                        repo.insertEntityAttribute(entityId, "id", "String", "唯一标识", 0);
-                        repo.insertEntityAttribute(entityId, "createdAt", "DateTime", "创建时间", 1);
-                        // 尝试从段落中提取属性
-                        java.util.List<ExtractedEntity.Attribute> attrs = extractAttributesFromText(para);
-                        int attrOrder = 2;
-                        for (ExtractedEntity.Attribute a : attrs) {
-                            repo.insertEntityAttribute(entityId, a.name, a.type, a.description, attrOrder++);
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
-        // 最终兜底：仍无实体时，从业务模型章节的真实内容提取业务名词（如"新闻发布中心"），
-        // 避免把章节标题（如"产品特性"）或写死的占位文案当成实体
-        if (entityOrder == 0) {
-            java.util.List<String[]> candidates = extractEntityCandidatesFromBusiness(paraList, owners);
-            if (!candidates.isEmpty()) {
-                for (String[] cand : candidates) {
-                    long entityId = repo.insertDataEntity(projectId, ingestionId, cand[0], cand[1], entityOrder++);
-                    repo.insertEntityAttribute(entityId, "id", "String", "唯一标识", 0);
-                    repo.insertEntityAttribute(entityId, "createdAt", "DateTime", "创建时间", 1);
-                }
-            } else {
-                String entityName = guessEntityNameFromRequirements(paraList, owners);
-                if (isMeaningfulEntityName(entityName)) {
-                    long entityId = repo.insertDataEntity(projectId, ingestionId, entityName, "PRD 中定义的主要业务实体", 0);
-                    repo.insertEntityAttribute(entityId, "id", "String", "唯一标识", 0);
-                }
-            }
-        }
-
-        repo.updateStatus(ingestionId, "extracting", 60, "正在提取接口协议...");
         LOG.info("[parse] ingestionId={}, 数据实体解析完成: {} 个", ingestionId, entityOrder);
 
-        // 解析接口（interface-protocol 段落）——避免随机猜测
+        // 接口协议：接口章节 confirmed + 实体 CRUD 推导候选 proposed
+        repo.updateStatus(ingestionId, "extracting", 60, "正在提取接口协议...");
         int ifOrder = 0;
-        for (int i = 0; i < paraList.size(); i++) {
-            String para = paraList.get(i);
-            if (isSkipParagraph(para.trim())) continue;
-            if (isNoiseParagraph(para.trim())) continue;
-            if ("interface-protocol".equals(owners[i])) {
-                String method = detectHttpMethod(para);
-                String path = extractPath(para);
-                // 如果路径是随机生成的且首页为0，跳过
-                if (path.contains("/api/v1/endpoint") && ifOrder == 0) {
-                    continue;
-                }
-                repo.insertInterface(projectId, ingestionId, method, path, truncate(para, 200),
-                        "", "", "", ifOrder++);
-            }
+        for (InterfaceProtocol ip : outcome.interfaces) {
+            repo.insertInterface(projectId, ingestionId, ip.getMethod(), ip.getPath(), truncate(ip.getSummary(), 200),
+                    ip.getRequestBody(), ip.getResponseBody(), ip.getNotes(), ifOrder++, ip.getSourceParagraph(),
+                    ip.getCandidateStatus());
         }
-
-        repo.updateStatus(ingestionId, "generating", 80, "正在生成架构决策...");
         LOG.info("[parse] ingestionId={}, 接口解析完成: {} 个", ingestionId, ifOrder);
 
-        // 解析架构决策（architecture-decision 段落）——提取有意义的标题
+        // 架构决策：非功能需求章节推导为候选 ADR（proposed），避免空模板
+        repo.updateStatus(ingestionId, "generating", 80, "正在生成架构决策...");
         int adCounter = 0;
-        java.util.List<Integer> adConsumed = new java.util.ArrayList<>();
-        for (int i = 0; i < paraList.size(); i++) {
-            String para = paraList.get(i);
-            if (isSkipParagraph(para.trim())) continue;
-            if (isNoiseParagraph(para.trim())) continue;
-            if ("architecture-decision".equals(owners[i])) {
-                adCounter++;
-                adConsumed.add(i);
-                String adId = "AD-" + key + "-" + String.format("%03d", adCounter);
-                String adTitle = extractAdTitle(para);
-                repo.insertArchDecision(projectId, ingestionId, adId, adTitle,
-                        truncate(para, 300), truncate(para, 500), "[]", "proposed", adCounter - 1);
-            }
+        for (ArchitectureDecision ad : outcome.archDecisions) {
+            adCounter++;
+            String adId = "AD-" + key + "-" + String.format("%03d", adCounter);
+            repo.insertArchDecision(projectId, ingestionId, adId, ad.getTitle(),
+                    truncate(ad.getContext(), 300), truncate(ad.getDecision(), 500),
+                    toJsonArray(ad.getConsequences()), ad.getStatus(), adCounter - 1, ad.getSourceParagraph());
         }
-
-        // 通用兜底：架构决策段落数量不足时，从所有段落中扫描含架构决策关键词的段落
-        if (adCounter < 3) {
-            java.util.regex.Pattern adPattern = java.util.regex.Pattern.compile(
-                    "(架构|技术选型|系统设计|设计决策|设计思路|设计原则|技术方案|方案选型|技术评估|" +
-                    "技术对比|决策|选型|高可用|扩展性|安全设计|性能设计|部署方案|" +
-                    "Architecture|ADR|技术栈|框架选型|中间件|缓存方案|消息队列)");
-            java.util.Set<Integer> consumed = new java.util.HashSet<>(adConsumed);
-            for (int i = 0; i < paraList.size(); i++) {
-                if (adCounter >= 3) break;
-                if (consumed.contains(i)) continue;
-                String para = paraList.get(i).trim();
-                if (para.isEmpty() || isSkipParagraph(para) || isNoiseParagraph(para)) continue;
-                if (para.startsWith("#")) continue;
-                if (para.length() < 20 || para.length() > 2000) continue;
-                java.util.regex.Matcher m = adPattern.matcher(para);
-                if (m.find()) {
-                    adCounter++;
-                    consumed.add(i);
-                    String adId = "AD-" + key + "-" + String.format("%03d", adCounter);
-                    // 尝试提取标题：取段落中第一个关键词附近的句子
-                    int kwPos = m.start();
-                    String adTitle2 = extractAdTitleFromParagraph(para, kwPos);
-                    repo.insertArchDecision(projectId, ingestionId, adId, adTitle2,
-                            truncate(para, 300), truncate(para, 500), "[]", "proposed", adCounter - 1);
-                }
-            }
-        }
-
-        repo.updateStatus(ingestionId, "generating", 90, "正在生成文档...");
         LOG.info("[parse] ingestionId={}, 架构决策解析完成: {} 条", ingestionId, adCounter);
 
         // 生成文档
@@ -384,6 +284,17 @@ public class PrdIngestionService {
 
         repo.updateStatus(ingestionId, "completed", 100, "解析完成");
         LOG.info("[parse] ingestionId={}, 解析全部完成, status=completed", ingestionId);
+    }
+
+    private static String toJsonArray(java.util.List<String> items) {
+        if (items == null || items.isEmpty()) {
+            return "[]";
+        }
+        try {
+            return OBJECT_MAPPER.writeValueAsString(items);
+        } catch (Exception ex) {
+            return "[]";
+        }
     }
 
     /**
@@ -592,12 +503,20 @@ public class PrdIngestionService {
         }
     }
 
+    private static boolean isProposed(String candidateStatus) {
+        return "proposed".equals(candidateStatus);
+    }
+
     /** 需求列表 → Markdown 数据块（模板填充用）。 */
     static String buildRequirementsBlock(List<RequirementEntity> requirements) {
         if (requirements == null || requirements.isEmpty()) return "";
         StringBuilder b = new StringBuilder();
         for (RequirementEntity req : requirements) {
-            b.append("### ").append(req.getId()).append(" [").append(req.getPriority()).append("]\n\n");
+            b.append("### ").append(req.getId()).append(" [").append(req.getPriority()).append("]");
+            if (isProposed(req.getCandidateStatus())) {
+                b.append(" ⚠️ 候选（规则推导，需人工确认）");
+            }
+            b.append("\n\n");
             b.append(normalizeNewlines(req.getDescription())).append("\n\n");
             if (req.getSourceParagraph() != null && !req.getSourceParagraph().isEmpty()) {
                 b.append("> **来源**: ").append(normalizeNewlines(truncate(req.getSourceParagraph(), 200))).append("\n\n");
@@ -611,7 +530,11 @@ public class PrdIngestionService {
         if (dataEntities == null || dataEntities.isEmpty()) return "";
         StringBuilder b = new StringBuilder();
         for (DataEntity entity : dataEntities) {
-            b.append("### ").append(normalizeNewlines(entity.getName())).append("\n\n");
+            b.append("### ").append(normalizeNewlines(entity.getName()));
+            if (isProposed(entity.getCandidateStatus())) {
+                b.append(" ⚠️ 候选（规则推导，需人工确认）");
+            }
+            b.append("\n\n");
             b.append(normalizeNewlines(entity.getDescription())).append("\n\n");
             if (entity.getSourceParagraph() != null && !entity.getSourceParagraph().isEmpty()) {
                 b.append("> **来源**: ").append(normalizeNewlines(truncate(entity.getSourceParagraph(), 200))).append("\n\n");
@@ -643,7 +566,11 @@ public class PrdIngestionService {
         if (interfaces == null || interfaces.isEmpty()) return "";
         StringBuilder b = new StringBuilder();
         for (InterfaceProtocol iface : interfaces) {
-            b.append("### ").append(iface.getMethod()).append(" ").append(normalizeNewlines(iface.getPath())).append("\n\n");
+            b.append("### ").append(iface.getMethod()).append(" ").append(normalizeNewlines(iface.getPath()));
+            if (isProposed(iface.getCandidateStatus())) {
+                b.append(" ⚠️ 候选（规则推导，需人工确认）");
+            }
+            b.append("\n\n");
             b.append(normalizeNewlines(nullSafe(iface.getSummary()))).append("\n\n");
             if (iface.getSourceParagraph() != null && !iface.getSourceParagraph().isEmpty()) {
                 b.append("> **来源**: ").append(normalizeNewlines(truncate(iface.getSourceParagraph(), 200))).append("\n\n");
@@ -664,7 +591,13 @@ public class PrdIngestionService {
         StringBuilder b = new StringBuilder();
         for (ArchitectureDecision arch : archDecisions) {
             b.append("### ").append(arch.getId()).append(": ").append(nullSafe(arch.getTitle())).append("\n\n");
-            b.append("**状态**: ").append(normalizeNewlines(nullSafe(arch.getStatus()))).append("\n\n");
+            String statusLabel = nullSafe(arch.getStatus());
+            if ("proposed".equals(arch.getStatus())) {
+                statusLabel += " ⚠️ 候选（规则推导，需人工确认）";
+            } else if ("accepted".equals(arch.getStatus())) {
+                statusLabel += " ✅ 已确认";
+            }
+            b.append("**状态**: ").append(normalizeNewlines(statusLabel)).append("\n\n");
             if (arch.getContext() != null && !arch.getContext().isEmpty()) {
                 b.append("**背景**:\n\n").append(normalizeNewlines(arch.getContext())).append("\n\n");
             }
@@ -714,94 +647,15 @@ public class PrdIngestionService {
      * 同一段落只归属一个类型。</p>
      */
     static boolean matchesDocType(String para, String docType) {
-        switch (docType) {
-            case "business-model":
-                // 覆盖标准PRD模板的全部章节标题：简介、目的、范围、用户角色、产品概述、功能模块等
-                return containsAny(para,
-                        "功能概述", "功能模块", "功能点", "功能摘要", "产品特性",
-                        "用户故事", "User Story", "Feature", "业务流程",
-                        "用户场景", "需求描述", "补充说明", "状态说明", "特性说明",
-                        "简介", "目的", "范围", "用户角色", "产品概述",
-                        "目标", "总体流程", "相关文档", "附件", "风险分析",
-                        "其它产品需求", "其它需求");
-            case "data-model":
-                return containsAny(para,
-                        "实体", "Entity", "数据模型", "数据结构", "数据字典", "表结构",
-                        "字段", "主键", "外键", "E-R", "ER 图", "数据表", "Schema", "数据库",
-                        "核心模型", "存储方案");
-            case "interface-protocol":
-                return containsAny(para,
-                        "接口", "API", "端点", "HTTP", "REST", "/api/",
-                        "请求参数", "请求方式", "请求体", "响应体", "响应码", "状态码", "URL", "报文", "方法名",
-                        "对外接口", "通信协议", "模块间通信");
-            case "architecture-decision":
-                return containsAny(para,
-                        "架构", "技术选型", "系统设计", "性能需求", "性能指标", "监控需求",
-                        "兼容性需求", "非功能需求", "安全需求", "容量", "扩展性", "高可用", "SLA", "部署架构",
-                        "Architecture", "架构决策", "ADR", "部署");
-            default:
-                return false;
-        }
+        return SectionTypeClassifier.matchesDocType(para, docType);
     }
 
     /** 判断文本是否包含任意一个关键词。 */
     private static boolean containsAny(String text, String... keywords) {
-        for (String kw : keywords) {
-            if (text != null && text.contains(kw)) {
-                return true;
-            }
-        }
-        return false;
+        return SectionTypeClassifier.containsAny(text, keywords);
     }
 
-    // ========== 章节层级 + 加权关键词评分分类 ==========
-
-    /** 四类文档的关键词权重表（用于章节层级加权评分，替代 binary containsAny）。 */
-    private static final Map<String, Map<String, Integer>> TYPE_KEYWORD_WEIGHTS = buildTypeKeywordWeights();
-
-    private static Map<String, Map<String, Integer>> buildTypeKeywordWeights() {
-        Map<String, Map<String, Integer>> map = new java.util.LinkedHashMap<>();
-        // business-model
-        Map<String, Integer> bm = new java.util.LinkedHashMap<>();
-        bm.put("功能概述", 10); bm.put("功能模块", 10); bm.put("产品特性", 10);
-        bm.put("用户故事", 8);  bm.put("User Story", 8); bm.put("业务流程", 8);
-        bm.put("用户角色", 8);  bm.put("产品概述", 8);   bm.put("功能点", 8);
-        bm.put("简介", 5);      bm.put("目的", 5);       bm.put("范围", 5);
-        bm.put("需求描述", 6);  bm.put("需求分析", 6);   bm.put("用户场景", 6);
-        bm.put("特性说明", 6);  bm.put("补充说明", 5);   bm.put("状态说明", 5);
-        bm.put("目标", 5);      bm.put("总体流程", 6);   bm.put("风险分析", 5);
-        bm.put("相关文档", 3);  bm.put("附件", 3);       bm.put("Feature", 6);
-        map.put("business-model", bm);
-        // data-model
-        Map<String, Integer> dm = new java.util.LinkedHashMap<>();
-        dm.put("数据模型", 10); dm.put("数据字典", 10);  dm.put("E-R", 10);
-        dm.put("ER 图", 10);    dm.put("表结构", 10);    dm.put("数据结构", 8);
-        dm.put("实体", 8);      dm.put("Entity", 8);     dm.put("数据库", 8);
-        dm.put("Schema", 8);    dm.put("主键", 8);       dm.put("外键", 8);
-        dm.put("字段", 6);      dm.put("字段定义", 8);   dm.put("核心模型", 8);
-        dm.put("存储方案", 8);  dm.put("数据表", 6);
-        map.put("data-model", dm);
-        // interface-protocol
-        Map<String, Integer> ip = new java.util.LinkedHashMap<>();
-        ip.put("对外接口", 10); ip.put("通信协议", 10);  ip.put("请求参数", 10);
-        ip.put("请求体", 10);   ip.put("响应体", 10);    ip.put("响应码", 8);
-        ip.put("状态码", 8);    ip.put("请求方式", 8);   ip.put("方法名", 8);
-        ip.put("接口", 8);     ip.put("API", 8);        ip.put("HTTP", 8);
-        ip.put("REST", 8);     ip.put("/api/", 8);      ip.put("URL", 6);
-        ip.put("报文", 6);     ip.put("模块间通信", 8);  ip.put("端点", 6);
-        map.put("interface-protocol", ip);
-        // architecture-decision
-        Map<String, Integer> ad = new java.util.LinkedHashMap<>();
-        ad.put("技术选型", 10); ad.put("部署架构", 10);  ad.put("架构决策", 10);
-        ad.put("ADR", 10);      ad.put("非功能需求", 10);ad.put("非功能性需求", 10);
-        ad.put("架构", 8);      ad.put("非功能性", 8);
-        ad.put("系统设计", 8);  ad.put("高可用", 8);     ad.put("性能需求", 8);
-        ad.put("安全需求", 8);  ad.put("性能指标", 8);   ad.put("监控需求", 8);
-        ad.put("兼容性需求", 8);ad.put("扩展性", 8);    ad.put("容量", 6);
-        ad.put("SLA", 6);       ad.put("Architecture", 8); ad.put("部署", 6);
-        map.put("architecture-decision", ad);
-        return java.util.Collections.unmodifiableMap(map);
-    }
+    // ========== 章节层级 + 加权关键词评分分类（词表与评分逻辑统一下沉到 SectionTypeClassifier） ==========
 
     /**
      * 对一段文本计算四类文档的加权关键词评分，返回评分最高的类型及分数。
@@ -809,28 +663,7 @@ public class PrdIngestionService {
      * @return 类型名 + 分数，若所有类型均为 0 分则返回 ["business-model", 0]
      */
     static Map.Entry<String, Integer> scoreDocType(String text) {
-        if (text == null || text.isBlank()) {
-            return Map.entry("business-model", 0);
-        }
-        String best = "business-model";
-        int bestScore = 0;
-        // 按优先级：data-model > interface-protocol > architecture-decision > business-model
-        for (String type : new String[]{"data-model", "interface-protocol", "architecture-decision", "business-model"}) {
-            Map<String, Integer> weights = TYPE_KEYWORD_WEIGHTS.get(type);
-            if (weights == null) continue;
-            int score = 0;
-            for (Map.Entry<String, Integer> kw : weights.entrySet()) {
-                if (text.contains(kw.getKey())) {
-                    score += kw.getValue();
-                }
-            }
-            // 相同分数时优先级高的类型胜出（即先出现的类型）
-            if (score > bestScore) {
-                bestScore = score;
-                best = type;
-            }
-        }
-        return Map.entry(best, bestScore);
+        return SectionTypeClassifier.scoreDocType(text);
     }
 
     /**
@@ -914,12 +747,7 @@ public class PrdIngestionService {
      * 优先级：data-model &gt; interface-protocol &gt; architecture-decision &gt; business-model。
      */
     static String bestDocType(String para) {
-        for (String type : new String[]{"data-model", "interface-protocol", "architecture-decision", "business-model"}) {
-            if (matchesDocType(para, type)) {
-                return type;
-            }
-        }
-        return null;
+        return SectionTypeClassifier.bestDocType(para);
     }
 
     /**
@@ -1093,6 +921,13 @@ public class PrdIngestionService {
         response.setArchitectureDecisions(repo.findArchDecisions(ingestionId));
         response.setDocuments(repo.findDocumentSummaries(ingestionId));
         return response;
+    }
+
+    /**
+     * 人工确认一条候选条目：proposed → confirmed / accepted，返回受影响行数。
+     */
+    public int confirmCandidate(String ingestionId, String type, String id) {
+        return repo.confirmCandidate(ingestionId, type, id);
     }
 
     /**
@@ -1345,7 +1180,7 @@ public class PrdIngestionService {
         }
         return result;
     }
-    private static java.util.List<String[]> extractTableRows(String[] lines) {
+    static java.util.List<String[]> extractTableRows(String[] lines) {
         java.util.List<String[]> rows = new java.util.ArrayList<>();
         for (String line : lines) {
             line = line.trim();
@@ -1366,7 +1201,7 @@ public class PrdIngestionService {
     /**
      * 尝试从表格前的段落中推断实体名。
      */
-    private static String guessEntityNameBeforeTable(String[] lines, java.util.List<String[]> tableRows) {
+    static String guessEntityNameBeforeTable(String[] lines, java.util.List<String[]> tableRows) {
         int tableStart = -1;
         for (int i = 0; i < lines.length; i++) {
             if (lines[i].trim().startsWith("|")) {

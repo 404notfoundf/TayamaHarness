@@ -7,6 +7,7 @@ import com.huazai.prd.ingestion.config.AiProperties;
 import com.huazai.prd.ingestion.model.prd.PrdParseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,8 +26,11 @@ import java.util.Map;
  *
  * <p>调用 LLM API（OpenAI 兼容格式）对 PRD 内容进行结构化分析，
  * 输出 JSON 格式的需求、实体、接口、架构决策。</p>
+ * <p>仅在 {@code ai.enabled=true} 时创建该 Bean；当 {@code ai.enabled=false} 时
+ * 跳过创建，PrdIngestionService 使用 {@link Optional} 安全处理。</p>
  */
 @Service
+@ConditionalOnProperty(name = "ai.enabled", havingValue = "true", matchIfMissing = true)
 public class AiService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AiService.class);

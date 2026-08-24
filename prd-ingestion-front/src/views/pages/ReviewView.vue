@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { usePrdStore } from '@/stores/prd'
 import { useDocumentStore } from '@/stores/document'
 import { useChangeStore } from '@/stores/change'
+import { confirmCandidate } from '@/services/prd'
 import type { WikiDocument } from '@/models/document'
 
 const route = useRoute()
@@ -19,13 +20,15 @@ const editLog = ref('')
 const showEditor = ref(false)
 const comment = ref('')
 const approvalLoading = ref(false)
+const confirming = ref(false)
 const generating = ref(false)
 const reparsing = ref(false)
 
-// 当前 ingestionId（复用 onMounted 的查找逻辑）
+// 当前 ingestionId（复用 onMounted 的查找逻辑；路由无 ingestionId 参数，优先取已加载文档自带的批次号）
 const currentIngestionId = computed(() => {
   return (route.params.ingestionId as string) ||
     (route.query.ingestionId as string) ||
+    docStore.documents[0]?.ingestionId ||
     prdStore.ingestionId ||
     ''
 })
@@ -118,7 +121,7 @@ const handleReparse = async () => {
     await docStore.loadDocuments(id)
     // 重置到第一个文档 tab
     if (docStore.documents.length > 0) {
-      activeTab.value = docStore.documents[0].type
+      activeTab.value = docStore.documents[0]?.type ?? 'business-model'
     }
   } catch (e) {
     alert('重新解析失败: ' + (e as Error).message)
@@ -249,6 +252,83 @@ const llmExtraction = computed<{ label: string; items: unknown[] } | null>(() =>
   }
 })
 
+// ---- 候选条目人工确认 ----
+
+// 文档类型 → 确认接口的 type 参数（与后端 confirmCandidate 约定一致）
+const candidateTypeOf = (docType: string) => {
+  switch (docType) {
+    case 'business-model': return 'requirement'
+    case 'data-model': return 'entity'
+    case 'interface-protocol': return 'interface'
+    case 'architecture-decision': return 'decision'
+    default: return ''
+  }
+}
+
+// 条目 → 确认接口的 id 参数（接口为 method|path 复合键）
+const candidateIdOf = (docType: string, item: any) => {
+  switch (docType) {
+    case 'business-model': return String(item?.id ?? '')
+    case 'data-model': return String(item?.name ?? '')
+    case 'interface-protocol': return `${item?.method}|${item?.path}`
+    case 'architecture-decision': return String(item?.id ?? '')
+    default: return ''
+  }
+}
+
+// 是否仍处于候选待确认状态（proposed）
+const isPendingCandidate = (docType: string, item: any) => {
+  if (docType === 'architecture-decision') {
+    return (item?.status || 'proposed') === 'proposed'
+  }
+  return (item?.candidateStatus || '') === 'proposed'
+}
+
+// 是否可一键确认：必须是候选状态，且存在可落库的条目标识
+//（LLM 旁路建议条目无 ad_id / candidateStatus，只展示不可确认）
+const isConfirmable = (docType: string, item: any) =>
+  isPendingCandidate(docType, item) && candidateIdOf(docType, item) !== ''
+
+// 条目状态徽标：proposed→⚠️ 候选待确认；confirmed/accepted→✅；LLM 建议（无状态）→🧠
+const badgeOf = (docType: string, item: any) => {
+  if (docType === 'architecture-decision') {
+    if (item?.status === 'accepted') return { kind: 'ok', label: '✅ 已确认' }
+    if (item?.status === 'proposed' && !!item?.id) return { kind: 'warn', label: '⚠️ 规则推导待确认' }
+    return { kind: 'muted', label: '🧠 提取建议' }
+  }
+  if (item?.candidateStatus === 'confirmed') return { kind: 'ok', label: '✅ 原文提取' }
+  if (item?.candidateStatus === 'proposed') return { kind: 'warn', label: '⚠️ 规则推导待确认' }
+  return { kind: 'muted', label: '🧠 提取建议' }
+}
+
+const badgeClass = (docType: string, item: any) => {
+  const kind = badgeOf(docType, item).kind
+  return kind === 'warn' ? 'cand-badge' : kind === 'ok' ? 'cand-badge-ok' : 'cand-badge-muted'
+}
+
+const badgeLabel = (docType: string, item: any) => badgeOf(docType, item).label
+
+// 确认一条候选：proposed → confirmed，确认后重新拉取结果
+const confirmItem = async (item: any) => {
+  const ingestionId = currentIngestionId.value
+  const type = candidateTypeOf(currentDoc.value?.type || '')
+  const cid = candidateIdOf(currentDoc.value?.type || '', item)
+  if (!ingestionId || !type || !cid) {
+    alert('无法确认：缺少 ingestionId 或条目标识')
+    return
+  }
+  confirming.value = true
+  try {
+    await confirmCandidate(ingestionId, type, cid)
+    await prdStore.fetchResult(ingestionId)
+    await docStore.loadDocuments(ingestionId)
+  } catch (e) {
+    alert('确认失败: ' + (e as Error).message)
+  } finally {
+    confirming.value = false
+  }
+}
+
 const statusBadge = (status: string) => {
   const map: Record<string, string> = {
     draft: 'badge badge-draft',
@@ -368,6 +448,10 @@ onMounted(async () => {
                   <template v-if="currentDoc.type === 'data-model'">
                     <div v-for="(e, i) in (llmExtraction.items as any[])" :key="i" class="mb-3 pb-3 border-b border-slate-100 last:border-0">
                       <div class="font-semibold text-indigo-700">▣ {{ e.name }}</div>
+                      <div class="flex items-center gap-2 mt-1">
+                        <span :class="badgeClass(currentDoc.type, e)">{{ badgeLabel(currentDoc.type, e) }}</span>
+                        <button v-if="isConfirmable(currentDoc.type, e)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(e)">确认</button>
+                      </div>
                       <div v-if="e.description" class="text-sm text-slate-600 mt-0.5">{{ e.description }}</div>
                       <div v-if="e.attributes && e.attributes.length" class="mt-1 text-xs">
                         <span v-for="(a, ai) in e.attributes" :key="ai" class="inline-block bg-slate-100 rounded px-1.5 py-0.5 mr-1 mb-1">{{ a.name }}: {{ a.type }}</span>
@@ -377,6 +461,10 @@ onMounted(async () => {
                   <template v-else-if="currentDoc.type === 'interface-protocol'">
                     <div v-for="(it, i) in (llmExtraction.items as any[])" :key="i" class="mb-2 pb-2 border-b border-slate-100 last:border-0">
                       <span class="font-mono text-sm font-bold text-indigo-700">{{ it.method }}</span>
+                      <div class="flex items-center gap-2 mt-1">
+                        <span :class="badgeClass(currentDoc.type, it)">{{ badgeLabel(currentDoc.type, it) }}</span>
+                        <button v-if="isConfirmable(currentDoc.type, it)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(it)">确认</button>
+                      </div>
                       <span class="font-mono text-sm text-slate-800 ml-1">{{ it.path }}</span>
                       <div v-if="it.summary" class="text-xs text-slate-500 mt-0.5">{{ it.summary }}</div>
                     </div>
@@ -384,12 +472,20 @@ onMounted(async () => {
                   <template v-else-if="currentDoc.type === 'architecture-decision'">
                     <div v-for="(a, i) in (llmExtraction.items as any[])" :key="i" class="mb-2 pb-2 border-b border-slate-100 last:border-0">
                       <div class="font-semibold text-indigo-700 text-sm">📌 {{ a.title }}</div>
+                      <div class="flex items-center gap-2 mt-1">
+                        <span :class="badgeClass(currentDoc.type, a)">{{ badgeLabel(currentDoc.type, a) }}</span>
+                        <button v-if="isConfirmable(currentDoc.type, a)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(a)">确认</button>
+                      </div>
                       <div v-if="a.decision" class="text-xs text-slate-600 mt-0.5">{{ a.decision }}</div>
                     </div>
                   </template>
                   <template v-else>
                     <div v-for="(r, i) in (llmExtraction.items as any[])" :key="i" class="mb-2 pb-2 border-b border-slate-100 last:border-0">
                       <div class="text-sm text-slate-700"><span class="font-mono text-xs text-slate-400 mr-1">{{ r.id }}</span>{{ r.description }}</div>
+                      <div class="flex items-center gap-2 mt-1">
+                        <span :class="badgeClass(currentDoc.type, r)">{{ badgeLabel(currentDoc.type, r) }}</span>
+                        <button v-if="isConfirmable(currentDoc.type, r)" class="btn btn-success btn-xs" :disabled="confirming" @click="confirmItem(r)">确认</button>
+                      </div>
                     </div>
                   </template>
                 </div>
@@ -481,6 +577,41 @@ onMounted(async () => {
 .badge-error {
   background: #fee2e2;
   color: #b91c1c;
+}
+.cand-badge {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: #fef3c7;
+  color: #b45309;
+}
+.cand-badge-ok {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: #dcfce7;
+  color: #15803d;
+}
+.cand-badge-muted {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #475569;
+}
+.btn-xs {
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 8px;
 }
 .extraction-scroll {
   max-height: 520px;

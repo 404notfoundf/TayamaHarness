@@ -9,6 +9,7 @@ public class DataEntity {
     private String name;
     private String description;
     private String sourceParagraph;
+    private String candidateStatus;          // confirmed | proposed（见 CandidateStatus）
     private List<Attribute> attributes;
     private List<Relation> relations;
 
@@ -22,6 +23,8 @@ public class DataEntity {
     public void setAttributes(List<Attribute> attributes) { this.attributes = attributes; }
     public List<Relation> getRelations() { return relations; }
     public void setRelations(List<Relation> relations) { this.relations = relations; }
+    public String getCandidateStatus() { return candidateStatus; }
+    public void setCandidateStatus(String candidateStatus) { this.candidateStatus = candidateStatus; }
 
     public static class Attribute {
         private String name;

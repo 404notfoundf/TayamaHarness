@@ -29,3 +29,14 @@ export const reparsePrd = async (ingestionId: string) => {
   if (!res.data) throw new Error('重新解析失败')
   return res.data
 }
+
+// ⑤ 人工确认候选条目（proposed → confirmed / accepted）
+// type ∈ requirement | entity | interface | decision
+// id 分别为 req_id / entity_name / 「method|path」/ ad_id
+export const confirmCandidate = async (ingestionId: string, type: string, id: string) => {
+  const res = await post<BaseResponse<number>>(`/api/v1/prd/ingest/${ingestionId}/confirm`, {
+    body: { type, id },
+  })
+  if (!res.data) throw new Error('确认失败')
+  return res.data
+}

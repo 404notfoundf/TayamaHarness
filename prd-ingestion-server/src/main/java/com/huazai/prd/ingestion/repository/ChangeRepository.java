@@ -90,10 +90,28 @@ public class ChangeRepository {
         return results.isEmpty() ? null : results.get(0);
     }
 
+    public String findIngestionId(String changeId) {
+        List<String> results = jdbc.query(
+                "SELECT ingestion_id FROM prd_change WHERE change_id=? LIMIT 1",
+                (rs, row) -> rs.getString("ingestion_id"), changeId);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public String findProjectId(String changeId) {
+        List<String> results = jdbc.query(
+                "SELECT project_id FROM prd_change WHERE change_id=? LIMIT 1",
+                (rs, row) -> rs.getString("project_id"), changeId);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
     // ---- Document Refs ----
     public void insertDocumentRef(String changeId, String docId, String docType, String docTitle, String docStatus, String projectId) {
         jdbc.update("INSERT INTO prd_change_document_ref (change_id, doc_id, doc_type, doc_title, doc_status, project_id) VALUES (?,?,?,?,?,?)",
                 changeId, docId, docType, docTitle, docStatus, projectId);
+    }
+
+    public void deleteDocumentRefs(String changeId) {
+        jdbc.update("DELETE FROM prd_change_document_ref WHERE change_id=?", changeId);
     }
 
     public List<ChangeSummary.DocumentRef> findDocumentRefs(String changeId) {

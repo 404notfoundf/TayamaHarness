@@ -6,6 +6,7 @@ import io.minio.MinioClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +36,7 @@ public class MinioConfig {
     private String bucketMerged;
 
     @Bean
+    @ConditionalOnProperty(name = "minio.enabled", havingValue = "true", matchIfMissing = true)
     public MinioClient minioClient() {
         LOG.info("Initializing MinIO client: endpoint={}, bucketUploads={}, bucketMerged={}",
                 endpoint, bucketUploads, bucketMerged);

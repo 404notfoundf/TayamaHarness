@@ -86,4 +86,18 @@ public class ChangeController {
         }
         return ResponseEntity.ok(BaseResponse.ok(detail));
     }
+
+    /**
+     * POST /api/v1/changes/{changeId}/regenerate - 重新生成 Change 内容（覆盖已有 change，不新建 changeId）。
+     */
+    @PostMapping("/{changeId}/regenerate")
+    @PreAuthorize("isAuthenticated() && @authz.hasProjectRole('owner', 'maintainer', 'contributor')")
+    public ResponseEntity<BaseResponse<ChangeDetail>> regenerateChange(@PathVariable String changeId) {
+        ChangeDetail detail = service.regenerateChange(changeId);
+        if (detail == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(BaseResponse.error("NOT_FOUND", "Change 不存在或缺少 ingestionId 关联"));
+        }
+        return ResponseEntity.ok(BaseResponse.ok(detail));
+    }
 }

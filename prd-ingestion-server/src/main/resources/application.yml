@@ -60,6 +60,8 @@ prd:
 
 # MinIO 对象存储
 minio:
+  # 是否启用 MinIO 存储（false 时跳过文件上传和持久化）
+  enabled: ${MINIO_ENABLED:true}
   endpoint: ${MINIO_ENDPOINT:http://127.0.0.1:9000}
   access-key: ${MINIO_ACCESS_KEY:zdtAU0RhYrLEnUNxclCO}
   secret-key: ${MINIO_SECRET_KEY:fgkIq1EIm5q0qaHxASU5SP0l58xzzfLUd4z5Z6HK}
@@ -69,7 +71,7 @@ minio:
 # AI/LLM 解析配置
 ai:
   # 是否启用 LLM 解析（false 则仅使用模板 + 关键词匹配）
-  enabled: ${AI_ENABLED:true}
+  enabled: ${AI_ENABLED:false}
   # 开发调试时使用 mock 模式（不真正调用 LLM API）；生产环境应设为 false 并配置 AI_API_KEY
   mock: ${AI_MOCK:false}
   # LLM API 端点（OpenAI 兼容格式）

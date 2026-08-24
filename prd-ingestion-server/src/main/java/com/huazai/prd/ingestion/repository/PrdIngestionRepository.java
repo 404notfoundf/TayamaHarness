@@ -128,8 +128,14 @@ public class PrdIngestionRepository {
     // ---- Requirements ----
     public void insertRequirement(String projectId, String ingestionId, String reqId, String description, String priority,
                                    String relatedEntities, String sourceParagraph, String notes, int sortOrder) {
-        jdbc.update("INSERT INTO prd_requirement (project_id, ingestion_id, req_id, description, priority, related_entities, source_paragraph, notes, sort_order) VALUES (?,?,?,?,?,?,?,?,?)",
-                projectId, ingestionId, reqId, description, priority, relatedEntities, sourceParagraph, notes, sortOrder);
+        insertRequirement(projectId, ingestionId, reqId, description, priority, relatedEntities, sourceParagraph, notes, sortOrder, "confirmed");
+    }
+
+    public void insertRequirement(String projectId, String ingestionId, String reqId, String description, String priority,
+                                   String relatedEntities, String sourceParagraph, String notes, int sortOrder,
+                                   String candidateStatus) {
+        jdbc.update("INSERT INTO prd_requirement (project_id, ingestion_id, req_id, description, priority, related_entities, source_paragraph, notes, sort_order, candidate_status) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                projectId, ingestionId, reqId, description, priority, relatedEntities, sourceParagraph, notes, sortOrder, candidateStatus);
     }
 
     /**
@@ -162,7 +168,7 @@ public class PrdIngestionRepository {
 
     public List<RequirementEntity> findRequirements(String ingestionId) {
         return jdbc.query(
-                "SELECT req_id, description, priority, related_entities, source_paragraph, notes FROM prd_requirement WHERE ingestion_id=? ORDER BY sort_order",
+                "SELECT req_id, description, priority, related_entities, source_paragraph, notes, candidate_status FROM prd_requirement WHERE ingestion_id=? ORDER BY sort_order",
                 (rs, row) -> {
                     RequirementEntity r = new RequirementEntity();
                     r.setId(rs.getString("req_id"));
@@ -171,6 +177,7 @@ public class PrdIngestionRepository {
                     // JSON array stored as string
                     r.setSourceParagraph(rs.getString("source_paragraph"));
                     r.setNotes(rs.getString("notes"));
+                    r.setCandidateStatus(rs.getString("candidate_status"));
                     return r;
                 }, ingestionId);
     }
@@ -181,10 +188,15 @@ public class PrdIngestionRepository {
     }
 
     public long insertDataEntity(String projectId, String ingestionId, String name, String description, int sortOrder, String sourceParagraph) {
+        return insertDataEntity(projectId, ingestionId, name, description, sortOrder, sourceParagraph, "confirmed");
+    }
+
+    public long insertDataEntity(String projectId, String ingestionId, String name, String description, int sortOrder,
+                                 String sourceParagraph, String candidateStatus) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(conn -> {
             PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO prd_data_entity (project_id, ingestion_id, entity_name, description, source_paragraph, sort_order) VALUES (?,?,?,?,?,?)",
+                    "INSERT INTO prd_data_entity (project_id, ingestion_id, entity_name, description, source_paragraph, sort_order, candidate_status) VALUES (?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, projectId);
             ps.setString(2, ingestionId);
@@ -192,6 +204,7 @@ public class PrdIngestionRepository {
             ps.setString(4, description);
             ps.setString(5, sourceParagraph);
             ps.setInt(6, sortOrder);
+            ps.setString(7, candidateStatus);
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -209,12 +222,13 @@ public class PrdIngestionRepository {
 
     public List<DataEntity> findDataEntities(String ingestionId) {
         return jdbc.query(
-                "SELECT id, entity_name, description, source_paragraph FROM prd_data_entity WHERE ingestion_id=? ORDER BY sort_order",
+                "SELECT id, entity_name, description, source_paragraph, candidate_status FROM prd_data_entity WHERE ingestion_id=? ORDER BY sort_order",
                 (rs, row) -> {
                     DataEntity e = new DataEntity();
                     e.setName(rs.getString("entity_name"));
                     e.setDescription(rs.getString("description"));
                     e.setSourceParagraph(rs.getString("source_paragraph"));
+                    e.setCandidateStatus(rs.getString("candidate_status"));
                     long entityId = rs.getLong("id");
                     e.setAttributes(findAttributes(entityId));
                     e.setRelations(findRelations(entityId));
@@ -254,13 +268,19 @@ public class PrdIngestionRepository {
 
     public void insertInterface(String projectId, String ingestionId, String method, String path, String summary,
                                  String requestBody, String responseBody, String notes, int sortOrder, String sourceParagraph) {
-        jdbc.update("INSERT INTO prd_interface (project_id, ingestion_id, http_method, path, summary, request_body, response_body, notes, source_paragraph, sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                projectId, ingestionId, method, path, summary, requestBody, responseBody, notes, sourceParagraph, sortOrder);
+        insertInterface(projectId, ingestionId, method, path, summary, requestBody, responseBody, notes, sortOrder, sourceParagraph, "confirmed");
+    }
+
+    public void insertInterface(String projectId, String ingestionId, String method, String path, String summary,
+                                 String requestBody, String responseBody, String notes, int sortOrder, String sourceParagraph,
+                                 String candidateStatus) {
+        jdbc.update("INSERT INTO prd_interface (project_id, ingestion_id, http_method, path, summary, request_body, response_body, notes, source_paragraph, sort_order, candidate_status) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                projectId, ingestionId, method, path, summary, requestBody, responseBody, notes, sourceParagraph, sortOrder, candidateStatus);
     }
 
     public List<InterfaceProtocol> findInterfaces(String ingestionId) {
         return jdbc.query(
-                "SELECT http_method, path, summary, request_body, response_body, notes, source_paragraph FROM prd_interface WHERE ingestion_id=? ORDER BY sort_order",
+                "SELECT http_method, path, summary, request_body, response_body, notes, source_paragraph, candidate_status FROM prd_interface WHERE ingestion_id=? ORDER BY sort_order",
                 (rs, row) -> {
                     InterfaceProtocol i = new InterfaceProtocol();
                     i.setMethod(rs.getString("http_method"));
@@ -270,8 +290,38 @@ public class PrdIngestionRepository {
                     i.setResponseBody(rs.getString("response_body"));
                     i.setNotes(rs.getString("notes"));
                     i.setSourceParagraph(rs.getString("source_paragraph"));
+                    i.setCandidateStatus(rs.getString("candidate_status"));
                     return i;
                 }, ingestionId);
+    }
+
+    // ---- Candidate confirmation ----
+
+    /**
+     * 人工确认一条候选条目：proposed → confirmed。
+     * type ∈ requirement | entity | interface | decision；
+     * id 分别为 req_id / entity_name / method|path / ad_id（接口用复合键）。
+     * 返回受影响行数。
+     */
+    public int confirmCandidate(String ingestionId, String type, String id) {
+        switch (type) {
+            case "requirement":
+                return jdbc.update("UPDATE prd_requirement SET candidate_status='confirmed' WHERE ingestion_id=? AND req_id=?",
+                        ingestionId, id);
+            case "entity":
+                return jdbc.update("UPDATE prd_data_entity SET candidate_status='confirmed' WHERE ingestion_id=? AND entity_name=?",
+                        ingestionId, id);
+            case "interface":
+                String[] parts = id.split("\\|", 2);
+                if (parts.length < 2) return 0;
+                return jdbc.update("UPDATE prd_interface SET candidate_status='confirmed' WHERE ingestion_id=? AND http_method=? AND path=?",
+                        ingestionId, parts[0], parts[1]);
+            case "decision":
+                return jdbc.update("UPDATE prd_architecture_decision SET status='accepted' WHERE ingestion_id=? AND ad_id=?",
+                        ingestionId, id);
+            default:
+                return 0;
+        }
     }
 
     // ---- Architecture Decisions ----

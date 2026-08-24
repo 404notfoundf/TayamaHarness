@@ -7,6 +7,7 @@ import io.minio.http.Method;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,12 +30,12 @@ public class FileUploadService {
     /** 分片默认大小 5MB */
     public static final long DEFAULT_CHUNK_SIZE = 5 * 1024 * 1024L;
 
-    private final MinioClient minioClient;
+    private MinioClient minioClient;
     private final String bucketUploads;
     private final String bucketMerged;
     private final FileUploadRepository repo;
 
-    public FileUploadService(MinioClient minioClient,
+    public FileUploadService(@Autowired(required = false) MinioClient minioClient,
                              FileUploadRepository repo,
                              @Value("${minio.bucket-uploads:prd-uploads}") String bucketUploads,
                              @Value("${minio.bucket-merged:prd-merged}") String bucketMerged) {
@@ -47,6 +48,10 @@ public class FileUploadService {
 
     /** 初始化存储桶 */
     private void initBucketsAndCleanup() {
+        if (minioClient == null) {
+            LOG.info("MinIO 未启用，跳过存储桶初始化");
+            return;
+        }
         for (String bucket : new String[]{bucketUploads, bucketMerged}) {
             try {
                 boolean exists = minioClient.bucketExists(
@@ -66,6 +71,9 @@ public class FileUploadService {
      * 上传一个分片到 MinIO。
      */
     public Map<String, Object> uploadChunk(String fileMd5, String fileName, int chunkIndex, int totalChunks, MultipartFile file) {
+        if (minioClient == null) {
+            throw new RuntimeException("MinIO 未启用，无法上传分片");
+        }
         try {
             // 从当前请求上下文（X-Project-Id header → ProjectContext）取项目 ID
             String projectId = ProjectContext.get();
@@ -134,6 +142,9 @@ public class FileUploadService {
      * 合并后返回预签名 URL 供后续读取。</p>
      */
     public Map<String, Object> mergeChunks(String fileMd5, String fileName) {
+        if (minioClient == null) {
+            throw new RuntimeException("MinIO 未启用，无法合并分片");
+        }
         // 1. 更新状态为合并中
         repo.updateFileStatus(fileMd5, "MERGING");
 
@@ -202,6 +213,9 @@ public class FileUploadService {
      * 从 MinIO 读取已合并文件的内容（文本）。
      */
     public String readFileContent(String fileMd5) {
+        if (minioClient == null) {
+            throw new RuntimeException("MinIO 未启用，无法读取文件");
+        }
         String minioObject = repo.findMinioObject(fileMd5);
         if (minioObject == null) {
             throw new RuntimeException("文件未找到或尚未合并: " + fileMd5);
@@ -238,6 +252,10 @@ public class FileUploadService {
      * @param content     PRD 原始 Markdown 文本
      */
     public void savePrdContent(String ingestionId, String title, String content) {
+        if (minioClient == null) {
+            LOG.info("[savePrdContent] MinIO 未启用，跳过保存: ingestionId={}", ingestionId);
+            return;
+        }
         if (ingestionId == null || content == null || content.isBlank()) {
             LOG.warn("[savePrdContent] 跳过保存：参数不完整，ingestionId={}, contentLength={}",
                     ingestionId, content == null ? 0 : content.length());
@@ -277,6 +295,7 @@ public class FileUploadService {
 
     /** 清理已合并的分片 */
     private void cleanupChunks(List<String> chunkObjectNames) {
+        if (minioClient == null) return;
         for (String obj : chunkObjectNames) {
             try {
                 minioClient.removeObject(

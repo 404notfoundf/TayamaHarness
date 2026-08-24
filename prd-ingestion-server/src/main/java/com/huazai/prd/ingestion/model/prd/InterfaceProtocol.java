@@ -11,6 +11,7 @@ public class InterfaceProtocol {
     private String responseBody;
     private String sourceParagraph;
     private String notes;
+    private String candidateStatus;          // confirmed | proposed（见 CandidateStatus）
 
     public String getMethod() { return method; }
     public void setMethod(String method) { this.method = method; }
@@ -26,4 +27,6 @@ public class InterfaceProtocol {
     public void setNotes(String notes) { this.notes = notes; }
     public String getSourceParagraph() { return sourceParagraph; }
     public void setSourceParagraph(String sourceParagraph) { this.sourceParagraph = sourceParagraph; }
+    public String getCandidateStatus() { return candidateStatus; }
+    public void setCandidateStatus(String candidateStatus) { this.candidateStatus = candidateStatus; }
 }

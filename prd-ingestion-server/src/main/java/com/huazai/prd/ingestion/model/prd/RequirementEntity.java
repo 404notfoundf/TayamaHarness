@@ -12,6 +12,7 @@ public class RequirementEntity {
     private List<String> relatedEntities;
     private String sourceParagraph;
     private String notes;
+    private String candidateStatus;          // confirmed | proposed（见 CandidateStatus）
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -25,4 +26,6 @@ public class RequirementEntity {
     public void setSourceParagraph(String sourceParagraph) { this.sourceParagraph = sourceParagraph; }
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+    public String getCandidateStatus() { return candidateStatus; }
+    public void setCandidateStatus(String candidateStatus) { this.candidateStatus = candidateStatus; }
 }

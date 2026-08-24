@@ -43,11 +43,20 @@ public class SchemaMigrationRunner implements ApplicationRunner {
                 "ALTER TABLE prd_interface ADD COLUMN source_paragraph TEXT NULL COMMENT '来源 PRD 段落' AFTER notes");
         migrations.put("source_paragraph_ad",
                 "ALTER TABLE prd_architecture_decision ADD COLUMN source_paragraph TEXT NULL COMMENT '来源 PRD 段落' AFTER status");
+        migrations.put("candidate_status_requirement",
+                "ALTER TABLE prd_requirement ADD COLUMN candidate_status VARCHAR(16) NOT NULL DEFAULT 'confirmed' COMMENT '候选状态（confirmed=原文提取/proposed=规则推导待确认）' AFTER notes");
+        migrations.put("candidate_status_entity",
+                "ALTER TABLE prd_data_entity ADD COLUMN candidate_status VARCHAR(16) NOT NULL DEFAULT 'confirmed' COMMENT '候选状态（confirmed=原文提取/proposed=规则推导待确认）' AFTER source_paragraph");
+        migrations.put("candidate_status_interface",
+                "ALTER TABLE prd_interface ADD COLUMN candidate_status VARCHAR(16) NOT NULL DEFAULT 'confirmed' COMMENT '候选状态（confirmed=原文提取/proposed=规则推导待确认）' AFTER source_paragraph");
 
         apply("prd_ingestion", "parse_source", migrations.get("parse_source"));
         apply("prd_data_entity", "source_paragraph", migrations.get("source_paragraph_entity"));
         apply("prd_interface", "source_paragraph", migrations.get("source_paragraph_interface"));
         apply("prd_architecture_decision", "source_paragraph", migrations.get("source_paragraph_ad"));
+        apply("prd_requirement", "candidate_status", migrations.get("candidate_status_requirement"));
+        apply("prd_data_entity", "candidate_status", migrations.get("candidate_status_entity"));
+        apply("prd_interface", "candidate_status", migrations.get("candidate_status_interface"));
     }
 
     /**

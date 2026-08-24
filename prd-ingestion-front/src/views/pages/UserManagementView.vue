@@ -118,7 +118,7 @@ onMounted(loadUsers)
 <template>
   <div class="user-mgmt-page">
     <div class="page-header">
-      <h2>用户管理</h2>
+      <h2>团队用户管理</h2>
       <button class="btn btn-primary" @click="showAddDialog = true">+ 添加用户</button>
     </div>
 

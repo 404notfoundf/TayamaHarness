@@ -2,6 +2,8 @@ package com.huazai.prd.ingestion.controller;
 
 import com.huazai.prd.ingestion.model.response.BaseResponse;
 import com.huazai.prd.ingestion.service.FileUploadService;
+import io.minio.MinioClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,20 @@ import java.util.Map;
 public class FileUploadController {
 
     private final FileUploadService uploadService;
+    private final MinioClient minioClient;
 
-    public FileUploadController(FileUploadService uploadService) {
+    public FileUploadController(FileUploadService uploadService,
+                                 @Autowired(required = false) MinioClient minioClient) {
         this.uploadService = uploadService;
+        this.minioClient = minioClient;
+    }
+
+    /**
+     * MinIO 未启用时的统一错误响应。
+     */
+    private ResponseEntity<BaseResponse<Map<String, Object>>> minioDisabled() {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(BaseResponse.error("MINIO_DISABLED", "MinIO 未启用，无法执行文件操作"));
     }
 
     /**
@@ -47,6 +60,8 @@ public class FileUploadController {
             @RequestParam("chunkIndex") int chunkIndex,
             @RequestParam("totalChunks") int totalChunks) {
 
+        if (minioClient == null) return minioDisabled();
+
         if (file.isEmpty()) {
             return ResponseEntity.badRequest()
                     .body(BaseResponse.error("INVALID_REQUEST", "分片文件不能为空"));
@@ -64,6 +79,8 @@ public class FileUploadController {
     public ResponseEntity<BaseResponse<Map<String, Object>>> mergeChunks(
             @RequestParam("fileMd5") String fileMd5,
             @RequestParam("fileName") String fileName) {
+
+        if (minioClient == null) return minioDisabled();
 
         String status = uploadService.getFileStatus(fileMd5);
         if (status == null) {
@@ -87,6 +104,8 @@ public class FileUploadController {
     public ResponseEntity<BaseResponse<Map<String, Object>>> getUploadProgress(
             @RequestParam("fileMd5") String fileMd5,
             @RequestParam("totalChunks") int totalChunks) {
+
+        if (minioClient == null) return minioDisabled();
         Map<String, Object> progress = uploadService.getUploadProgress(fileMd5, totalChunks);
         return ResponseEntity.ok(BaseResponse.ok(progress));
     }
