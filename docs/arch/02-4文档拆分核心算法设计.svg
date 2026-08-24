@@ -101,17 +101,18 @@
   <text x="550" y="447" text-anchor="middle" font-size="10" fill="#92400e">失败时静默降级，不影响主流程</text>
 
   <!-- 路径三：章节层级算法（兜底） -->
-  <rect x="720" y="285" width="320" height="180" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
-  <text x="880" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#059669">③ 章节层级算法（兜底）</text>
+  <rect x="740" y="285" width="320" height="180" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+  <text x="900" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#059669">③ 章节层级算法（兜底）</text>
 
-  <rect x="740" y="330" width="280" height="30" rx="5" fill="#fff" stroke="#a7f3d0" stroke-width="1"/>
-  <text x="880" y="349" text-anchor="middle" font-size="10" fill="#065f46">PrdSectionParser.parse()</text>
+  <rect x="760" y="330" width="280" height="30" rx="5" fill="#fff" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="900" y="349" text-anchor="middle" font-size="10" fill="#065f46">PrdSectionParser.parse()</text>
 
-  <text x="750" y="370" font-size="10" fill="#475569">→ 按 H1-H6 标题层级构建章节树</text>
-  <text x="750" y="386" font-size="10" fill="#475569">→ SectionTypeClassifier 加权评分</text>
-  <text x="750" y="402" font-size="10" fill="#475569">→ 评分 &lt; 5 则继承父节点类型</text>
-  <text x="750" y="418" font-size="10" fill="#475569">→ 非标题正文归入当前章节</text>
-  <text x="750" y="434" font-size="10" fill="#475569">→ 文档开头零散段落归虚拟根</text>
+  <text x="770" y="380" font-size="10" fill="#475569">→ 按 H1-H6 标题层级构建章节树</text>
+  <text x="770" y="394" font-size="10" fill="#475569">→ SectionTypeClassifier 加权评分</text>
+  <text x="770" y="408" font-size="10" fill="#475569">→ 评分 &lt; 5 则继承父节点类型</text>
+  <text x="770" y="422" font-size="10" fill="#475569">→ 非标题正文归入当前章节</text>
+  <text x="770" y="436" font-size="10" fill="#475569">→ 文档开头零散段落归虚拟根</text>
+  <text x="770" y="450" font-size="10" fill="#475569">→ 无标题时创建合成章节（一句话需求兜底）</text>
 
   <!-- 三条路径合并 -->
   <line x1="200" y1="465" x2="200" y2="500" stroke="#64748b" stroke-width="1.5"/>
@@ -180,10 +181,10 @@
   <text x="550" y="865" text-anchor="middle" font-size="10" fill="#64748b">Markdown 模板 + {{PLACEHOLDER}} 变量替换 → 4 篇 Wiki 文档写入数据库</text>
 
   <!-- 底部说明 -->
-  <rect x="50" y="885" width="1000" height="50" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="50" y="885" width="1000" height="60" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
   <text x="60" y="904" font-size="10" fill="#64748b">设计原则：</text>
   <text x="60" y="920" font-size="10" fill="#94a3b8">① 模板优先 → LLM 增强 → 章节算法兜底，逐级降级，不中断流程</text>
   <text x="560" y="920" font-size="10" fill="#94a3b8">② 4 个提取器正交无依赖，每个仅从章节树中提取所属类型的内容</text>
   <text x="60" y="936" font-size="10" fill="#94a3b8">③ LLM 结果仅用于左侧面板展示，文档渲染始终使用确定性算法</text>
-  <text x="560" y="936" font-size="10" fill="#94a3b8">④ 提取不出的字段返回空值，不硬凑不伪造</text>
+  <text x="560" y="936" font-size="10" fill="#94a3b8">④ 提取不出的字段返回空值或候选兜底，不硬凑不伪造</text>
 </svg>

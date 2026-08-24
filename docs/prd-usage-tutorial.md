@@ -6,6 +6,130 @@ Harness Flow 是一套 PRD（产品需求文档）智能解析与变更管理平
 
 ---
 
+## 〇、环境准备与启动
+
+### 0.1 依赖软件
+
+| 软件 | 版本要求 | 说明 |
+|------|---------|------|
+| JDK | 21 LTS | 后端运行环境 |
+| Maven | 3.9+ | 后端构建工具 |
+| MySQL | 8.0 | 数据库（首次启动自动建表） |
+| MinIO | 最新 | 对象存储（文件上传可选，通过配置开关） |
+| Node.js | 18+ | 前端运行环境 |
+| npm / pnpm | 9+ / 8+ | 前端包管理 |
+
+### 0.2 环境变量配置
+
+系统通过环境变量控制所有配置，以下是完整的环境变量列表：
+
+#### 数据库配置
+
+| 环境变量 | 默认值 | 说明 |
+|---------|--------|------|
+| `DB_HOST` | `127.0.0.1` | MySQL 主机地址 |
+| `DB_PORT` | `3306` | MySQL 端口 |
+| `DB_NAME` | `harness_prd_ingestion` | 数据库名 |
+| `DB_USERNAME` | `root` | 数据库用户名 |
+| `DB_PASSWORD` | — | 数据库密码 |
+| `DB_POOL_SIZE` | `10` | 连接池大小 |
+
+#### 服务配置
+
+| 环境变量 | 默认值 | 说明 |
+|---------|--------|------|
+| `SERVER_PORT` | `8080` | 后端服务端口 |
+| `SPRING_PROFILES_ACTIVE` | `dev` | Spring 激活配置（dev/prod） |
+
+#### MinIO 对象存储
+
+| 环境变量 | 默认值 | 说明 |
+|---------|--------|------|
+| `MINIO_ENABLED` | `true` | 是否启用 MinIO（设为 `false` 可跳过文件上传） |
+| `MINIO_ENDPOINT` | `http://127.0.0.1:9000` | MinIO 服务地址 |
+| `MINIO_ACCESS_KEY` | — | MinIO 访问密钥 |
+| `MINIO_SECRET_KEY` | — | MinIO 秘密密钥 |
+| `MINIO_BUCKET_UPLOADS` | `prd-uploads` | 上传分片存储桶 |
+| `MINIO_BUCKET_MERGED` | `prd-merged` | 合并文件存储桶 |
+
+#### AI / LLM 解析
+
+| 环境变量 | 默认值 | 说明 |
+|---------|--------|------|
+| `AI_ENABLED` | `false` | 是否启用 LLM 解析（推荐开启以提升解析质量） |
+| `AI_MOCK` | `false` | 是否启用 mock 模式（调试用，不真实调用 LLM） |
+| `AI_API_URL` | `https://token.sensenova.cn/v1/chat/completions` | LLM API 端点（OpenAI 兼容格式） |
+| `AI_API_KEY` | — | LLM API 密钥 |
+| `AI_MODEL` | `deepseek-v4-flash` | 模型名称 |
+| `AI_TIMEOUT` | `60` | 请求超时（秒） |
+| `AI_TEMPERATURE` | `0.0` | 温度参数（0.0 最稳定） |
+| `AI_MAX_TOKENS` | `4096` | 最大输出 token 数 |
+
+#### 前端环境变量
+
+在 `prd-ingestion-front/` 目录下创建 `.env` 文件（参考 `.env.example`）：
+
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| `VITE_API_TIMEOUT` | `180000` | API 请求超时（毫秒），需大于后端 `AI_TIMEOUT + 15 秒` |
+
+### 0.3 启动后端
+
+```bash
+# 1. 创建数据库（MySQL 8.0）
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS harness_prd_ingestion DEFAULT CHARSET utf8mb4;"
+
+# 2. 设置环境变量（以 Windows 为例）
+set DB_PASSWORD=your_password
+set MINIO_ACCESS_KEY=your_minio_access_key
+set MINIO_SECRET_KEY=your_minio_secret_key
+
+# 3. 编译并启动
+cd prd-ingestion-server
+mvn clean package -DskipTests
+java -jar target/prd-ingestion-server-*.jar
+```
+
+> 首次启动时，系统会自动执行 `schema.sql` 创建所有数据表（幂等：已存在则跳过）。
+> 启动成功后访问 `http://localhost:8080/api/v1/actuator/health` 确认服务状态。
+
+### 0.4 启动 MinIO（可选）
+
+如果本地没有 MinIO 环境，可以将 `MINIO_ENABLED` 设为 `false` 跳过文件上传功能。
+
+如果需要本地 MinIO：
+
+```bash
+# Docker 方式启动（Windows 需先安装 Docker Desktop）
+docker run -d -p 9000:9000 -p 9001:9001 ^
+  -e MINIO_ROOT_USER=minioadmin ^
+  -e MINIO_ROOT_PASSWORD=minioadmin ^
+  minio/minio server /data --console-address ":9001"
+```
+
+### 0.5 启动前端
+
+```bash
+cd prd-ingestion-front
+
+# 安装依赖
+npm install
+
+# 开发模式启动（默认端口 5173，自动代理后端请求）
+npm run dev
+```
+
+> 前端默认通过 Vite 代理将 `/api` 请求转发到后端 `http://localhost:8080`。
+> 开发模式访问 `http://localhost:5173` 即可。
+
+### 0.6 验证启动
+
+1. 后端健康检查：`http://localhost:8080/api/v1/actuator/health` → 返回 `{"status":"UP"}`
+2. 前端页面：`http://localhost:5173` → 显示登录页面
+3. 默认注册第一个用户即为系统管理员
+
+---
+
 ## 一、系统概述
 
 ### 1.1 核心流程

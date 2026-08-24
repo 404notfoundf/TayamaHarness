@@ -83,3 +83,14 @@
 | 评审没有依据 | review.md 逐项对照 change.md 检查 |
 | 上线后出问题不知道是否该回滚 | verify.md 记录验证结果和回滚预案 |
 | 多轮对话上下文丢失 | 变更卡 + 交接文档可以续接工作 |
+
+## 在 PRD 智能解析平台中的实现
+
+本仓库中的 PRD 智能解析平台（Harness Flow）实现了上述变更管理方法论的数据库驱动版本：
+
+- 使用 `prd_change`、`prd_pipeline_stage`、`prd_change_log` 等数据库表取代文件系统
+- 流水线状态：`drafting` → `reviewing` → `approved` → `completed`
+- 支持重新生成（覆盖，不创建新 ChangeId）
+- 操作日志记录每次变更操作，在需求看板弹窗中展示时间线
+
+详见 [PRD 平台变更管理](change-management-prd.md)。

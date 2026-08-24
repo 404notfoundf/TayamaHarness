@@ -69,3 +69,28 @@ npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
 ```
 
 AI 自动检测项目语言，生成 `.harness/` 目录并应用完整规范体系。
+
+## 参考实现：PRD 智能解析平台
+
+本仓库包含一个完整的参考实现——**PRD 智能解析平台（Harness Flow）**，展示了 Harness Engineering 方法论在 PRD 文档处理领域的落地。
+
+### 架构亮点
+
+| 维度 | 说明 |
+|------|------|
+| **前端** | Vue 3 + TypeScript + Pinia，7 个页面组件覆盖全部业务流程 |
+| **后端** | Spring Boot 3.4 + JDK 21，12 个 REST 控制器 + 8 个业务服务 |
+| **解析引擎** | 三层混合策略：模板匹配 → LLM 解析 → 章节层级算法（兜底） |
+| **Change 合成** | 8 个正交模块从 4 文档合成 Change.md，宁缺毋滥 |
+| **可开关组件** | AI 和 MinIO 可通过配置关闭，系统以降级模式运行 |
+| **看板** | 4 列看板 + 分页 + 操作日志时间线 + 文档详情子弹窗 |
+
+### 相关文档
+
+- [PRD 平台架构详解](prd-platform-architecture.md)
+- [PRD 平台变更管理](change-management-prd.md)
+- [PRD 平台 API 文档](prd-platform-api.md)
+- [使用教程](prd-usage-tutorial.md)
+- [架构图](arch/01-项目架构设计.svg)
+- [4 文档拆分算法](arch/02-4文档拆分核心算法设计.svg)
+- [Change 算法](arch/03-change核心算法设计.svg)

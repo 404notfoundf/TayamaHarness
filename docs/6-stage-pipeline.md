@@ -90,3 +90,35 @@ drafting → reviewing → approved → coding → testing → reviewing → ci 
 ```
 
 详见 [变更管理](change-management.md)。
+
+## 在 PRD 智能解析平台中的体现
+
+本仓库中的 PRD 智能解析平台（Harness Flow）实现了 6 阶段流水线的子集——一种**4 阶段流水线**，专门用于 PRD 文档的解析和变更管理：
+
+| 阶段 | 对应技能 | 说明 |
+|------|---------|------|
+| ① 文档导入 | `prd-ingest` | 上传 PRD 文档 → 解析为 4 篇 Wiki 文档 |
+| ② 文档校验 | — | 人工校验 4 篇文档内容，确认候选条目 |
+| ③ 变更合成 | `change-composer` | 从 4 文档合成 Change.md，8 个模块正交推导 |
+| ④ 变更管理 | `pipeline` | 流水线：drafting → reviewing → approved → completed |
+
+### 与 Harness 方法论流水线的对应关系
+
+| Harness 流水线阶段 | PRD 平台阶段 | 说明 |
+|-------------------|-------------|------|
+| ① 需求分析 (`harnessing`) | ① 文档导入 + ② 文档校验 | 先写规格，AI 辅助解析，人工确认 |
+| ② 编码实现 (`coding-skill`) | ③ 变更合成 | ChangeComposer 生成 Change.md |
+| ③ 单元测试 (`unit-test-write`) | — | 当前人工编写测试策略 |
+| ④ 专家评审 (`expert-reviewer`) | ④ 变更管理 | 人工评审 Change 内容 |
+| ⑤ CI 门禁 (`unit-test-ci`) | — | 未来扩展 |
+| ⑥ 部署验证 (`deploy-verify`) | — | 未来扩展 |
+
+### 看板映射
+
+PRD 平台将流水线状态映射到 4 列看板：
+
+```
+PRD 导入 → 文档校验 → 设计评审 → 已完成
+```
+
+详见 [PRD 平台变更管理](change-management-prd.md)。

@@ -56,6 +56,31 @@ final class ArchDecisionExtractor {
             d.setStatus(CandidateStatus.PROPOSED);
             out.add(d);
         }
+        // 兜底：无架构决策章节但有业务内容时，生成一条候选 ADR，
+        // 使一句话/模糊需求也有架构决策文档可展示，与有 AI 场景行为一致。
+        if (out.isEmpty()) {
+            for (SectionNode node : PrdSectionParser.nodesOfType(tree, "business-model")) {
+                if (node.isRoot() || node.paragraphs.isEmpty()) {
+                    continue;
+                }
+                String body = aggregateBody(node);
+                if (body.length() < 8) {
+                    continue;
+                }
+                ArchitectureDecision d = new ArchitectureDecision();
+                d.setId("ADR-1");
+                d.setTitle("系统架构设计");
+                d.setContext("PRD 提出「" + truncateTitle(body) + "」相关需求，需进行系统架构设计以满足业务目标");
+                d.setDecision("以满足业务需求为目标进行架构设计，建议采用分层架构，确保系统可扩展、可维护");
+                d.setConsequences(new ArrayList<>(Arrays.asList(
+                        "候选决策：由架构师评审并补充具体技术方案",
+                        "决策确认后需在数据模型与接口协议中落地")));
+                d.setSourceParagraph(node.rawHeading);
+                d.setStatus(CandidateStatus.PROPOSED);
+                out.add(d);
+                break;
+            }
+        }
         return out;
     }
 
@@ -103,5 +128,12 @@ final class ArchDecisionExtractor {
         }
         String joined = String.join("\n", parts);
         return joined.length() > 300 ? joined.substring(0, 300) + "…" : joined;
+    }
+
+    /** 截取正文前 20 字作为 ADR 标题引用。 */
+    private static String truncateTitle(String text) {
+        if (text == null) return "";
+        String t = text.replaceAll("\\s+", "").trim();
+        return t.length() > 20 ? t.substring(0, 20) + "…" : t;
     }
 }

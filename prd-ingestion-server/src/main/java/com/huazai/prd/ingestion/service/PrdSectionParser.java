@@ -50,6 +50,16 @@ final class PrdSectionParser {
                 current.paragraphs.add(raw);
             }
         }
+
+        // 无标题章节时：将虚拟根中的零散段落合成一个「需求概述」章节，
+        // 使一句话/模糊需求也能被各提取器处理（正交算法兜底）。
+        if (root.children.isEmpty() && !root.paragraphs.isEmpty()) {
+            SectionNode synthetic = new SectionNode(2, "## 需求概述", "需求概述", "business-model", root);
+            synthetic.paragraphs.addAll(root.paragraphs);
+            root.children.add(synthetic);
+            root.paragraphs.clear();
+        }
+
         return root.children;
     }
 
