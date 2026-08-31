@@ -1,0 +1,29 @@
+{
+  "task_id": "20260831-120533-pasted-text-1-47-lines-begin-pasted-text-1-47-lines-1-ha",
+  "goal": "[Pasted text #1 · 47 lines]\n\n--- Begin [Pasted text #1 · 47 lines] ---\n关于这个项目的学习目标与方式\r\r专栏位置：知识星球 | 深度连接铁杆粉丝，运营高品质社群，知识变现的工具\r\r一、两个核心学习目标\r\r参与这个项目，我希望大家能真正带走两样硬核能力，而不是仅仅跑通一段代码：\r\r1. 掌握业务流水线 Harness 的设计与落地方法\r不是背概念，而是真正理解：在一个真实的企业级多Agent系统中，Harness工程规范如何从0到1搭建？它怎么约束Agent的行为边界？怎么保证多轮自主决策不失控？怎么让代码从“能跑”变成“可交付”？\r\r2. 掌握 Harness + AgentScope 2.0 + AI工具 的整合实战能力\r学会如何把这三者拧成一股绳——用Harness定义业务流程骨架，用AgentScope 2.0承载多Agent的协作与推理，用AI工具（大模型、RAG、Skills等）填充具体的执行能力，最终构建出一个能自主规划完整任务的多Agent系统。\r\r二、不推荐的学习方式\r\r❌ 直接Clone代码跑通，然后说“我学会了”\r这是很多人做项目的惯性，但恰恰是这个项目最忌讳的方式。\r代码只是最终结果，真正的价值藏在每一步的设计决策里：为什么这个Agent要拆出来？为什么这个Skill要这样封装？Harness的约束条件为什么这么设？这些思考过程，跑代码是跑不出来的。\r如果跳过过程只看结果，你拿到的只是一堆能运行的代码，而不是能迁移到下一个项目的能力。\r\r三、推荐的学习路径\r\r第一步：先跑整体流程，建立全局认知（快速预热）\rClone master分支代码，在本地完成部署和运行\r走一遍完整的业务场景流程（比如：用户输入一个旅游需求 → 系统完成多Agent自主规划 → 输出可执行的行程方案）\r打开IDE，仔细阅读运行日志，观察：\r    1、多个Agent之间是怎么依次被调起的？\r    2、每个Agent的输入/输出是什么？\r    3、Harness在哪个环节介入了决策？\r    4、自主规划的路径是如何一步步收敛到最终结果的？\r这一步的目标是建立感性认知——知道这个系统“长什么样”、运行起来“什么感觉”，为后面的深度拆解打底。\r\r第二步：跟着教程从0推进，逐模块实操（核心收获阶段）\r放下代码，从头开始，按照0-1文档教程的节奏，一步步搭建Harness + AI工具的整合链路\r每完成一个模块，理解它的职责边界、设计原因、与上下游的交互方式\r遇到问题先自己想，想不通再参考项目代码——对比“我的实现”和“项目实现”的差异，才是进步最快的方式\r逐步推进每一个Change（需求变更/功能迭代），观察系统如何演进，Harness如何在这个过程中保持工程规范性\r这一步的目标是把知识内化成能力——不只是“看懂了”，而是“下回我自己能搭出来”。\r\r四、最后\r\r这个项目真正的交付物不是代码本身，而是你跟着走完整个流程之后，脑子里那张清晰的架构设计图，和手里那套可复用的工程化方法论。\r\r代码可以Copy，能力不能。\r\r希望大家都能沉下心来，走一遍从0到1的完整路径。过程可能慢，但走完回头看，值得。\n--- End [Pasted text #1 · 47 lines] ---  这个是 agentscope 项目的学习目标和方法，请参考给出我们跨语言harness脚手架的学习目标和方法，直接给出就行",
+  "scope": null,
+  "non_goals": null,
+  "allowed_operations": {
+    "write": true,
+    "network": false,
+    "publish": false
+  },
+  "success_criteria": [
+    {
+      "id": "objective_evidence",
+      "description": "The goal outcome is supported by direct evidence, such as inspected code, reproduced behavior, source material, or concrete findings.",
+      "required": true,
+      "evidence_ids": [
+        "f1"
+      ]
+    },
+    {
+      "id": "verification",
+      "description": "The result has relevant verification evidence, such as tests, commands, benchmarks, manual checks, or a documented reason why verification is not applicable.",
+      "required": true,
+      "evidence_ids": [
+        "f2"
+      ]
+    }
+  ]
+}

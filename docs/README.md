@@ -12,6 +12,7 @@
 - [6 阶段流水线](6-stage-pipeline.md) — 从需求到交付
 - [变更管理](change-management.md) — 状态机与文档模板
 - [语言规范](languages/) — 各语言编码标准
+- [学习路径](learning-path.md) — 学习目标与方法（知识星球专栏版）
 
 ## 专栏文章
 
