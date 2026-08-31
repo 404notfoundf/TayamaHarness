@@ -60,6 +60,10 @@ stage-5  单元测试 + 覆盖率
 stage-6  安全扫描
   {{SECURITY_CMD}}          # 依赖版本一致、禁快照版本
   扫描硬编码密钥
+  grep -nE 'DROP\s+(DATABASE|TABLE|SCHEMA|INDEX|VIEW|PROCEDURE|FUNCTION|TRIGGER|EVENT)' --include='*.{{SRC_EXT}}' -r . || true  # 扫描危险 DDL
+  grep -nE 'TRUNCATE\s+(TABLE|DATABASE)' --include='*.{{SRC_EXT}}' -r . || true  # 扫描危险 DML
+  grep -nE 'rm\s+-rf|rmdir\s+/[sz]|del\s+/[fs]|Remove-Item\s+-Recurse|os\.RemoveAll|File\.Delete' --include='*.{{SRC_EXT}}' -r . || true  # 扫描破坏性文件操作
+  grep -nE 'password\s*=|secret\s*=|token\s*=|api.key\s*=|jdbc:mysql://|jdbc:postgresql://' --include='*.{{SRC_EXT}}' -r . | grep -v '\$\{\|env\|ENV\|getenv\|os\.Getenv\|System\.getenv' || true  # 扫描硬编码凭据（排除环境变量引用）
 
 stage-7  集成测试（PR 时）
   {{INTEGRATION_CMD}}
@@ -77,7 +81,7 @@ stage-7  集成测试（PR 时）
 | 架构约束 | 全部通过 | 退回 ②（架构腐化，严重） |
 | 单元测试 | 0 failed | 退回 ② / ③ |
 | 覆盖率 | 核心 ≥80% | 退回 ③ 补测试 |
-| 安全扫描 | 0 命中 | 退回 ②（安全红线） |
+| 安全扫描（含危险代码扫描） | 0 命中 | 退回 ②（安全红线） |
 
 ---
 

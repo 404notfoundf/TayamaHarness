@@ -95,6 +95,18 @@
 | git merge/rebase 冲突 | `resolving-merge-conflicts` | 逐 hunk 解决，保留双方意图 |
 | 阶段切换 / 对话交接 | `/handoff` | 压缩上下文为交接文档，下一个对话无缝续接 |
 | 架构摩擦 / 设计审查 | `/arch-review` | 扫描浅模块，生成 Mermaid 报告，逐一打磨 |
+| 当前进度总览 | `harness-status` | 聚合 changes 状态，输出阶段分布与待办 |
+| 无人值守收敛 | `harness-loop-run` | 编码→测试→评审自主循环，到 ci 停机交人 |
+| 质量是否达标 / 放行 | `harness-quality` | 真实 check + flow→test 对账 + 人签字放行 |
+| 改 A 影响哪些 B | `harness-relate` | 变更关系链管理 + impact 影响分析 |
+| 验证跨模块主链路 | `harness-e2e` | 端到端用例生成与执行 |
+| 数据模型设计 | `harness-db-design` | 表结构/索引/迁移设计 |
+| 接口先定、后端未就绪 | `harness-api-mock` | 按契约生成 mock 数据与服务 |
+| 改结构不改行为 | `harness-refactor` | 测试保护下小步重构 |
+| 迭代复盘 / 趋势 | `harness-retro` | 聚合历史留档出趋势报告 |
+| 正式发布一版 | `harness-ship` | 测试→版本→tag→CI/CD，留人确认 |
+| 整理变更记录 | `harness-changelog` | 按语义化版本汇总可追溯条目 |
+| 改团队规范 | `harness-standard` | 规范库增删改审，重大约束留人 |
 
 ---
 

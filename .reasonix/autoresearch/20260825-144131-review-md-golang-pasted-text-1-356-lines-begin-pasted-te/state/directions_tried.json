@@ -1,0 +1,16 @@
+[
+  {
+    "fingerprint": "review-md-28a01a79",
+    "summary": "## 调查结论：**没有写 `review.md` 是不对的**",
+    "first_seen_iteration": 1,
+    "last_seen_iteration": 1,
+    "count": 1
+  },
+  {
+    "fingerprint": "review-md-bug-3bca76b3",
+    "summary": "## 最终结论：**不写 `review.md` 是不对的，这是技能执行的一个 Bug**",
+    "first_seen_iteration": 2,
+    "last_seen_iteration": 2,
+    "count": 1
+  }
+]

@@ -25,8 +25,12 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
    - 恰好 1 个 → 自动选中
    - 0 个 → 报错：无处于 `reviewing` 状态的 change，退回 ③ unit-test-write
    - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
-2. 验证 `review.md` 不存在或可覆盖
-3. 缺前置 → 退回 ③ unit-test-write
+2. **锁定审查范围**（确保每次审查同一份代码）：
+   - **规则**：使用 `git diff HEAD` 作为审查范围，包含工作区未提交的变更
+   - 如果 `git diff HEAD` 为空，报错：无变更可审查，退回 ③ unit-test-write
+   - 在报告开头明确标注审查范围（文件数、增减行数、分支名）
+3. 验证 `review.md` 不存在或可覆盖
+4. 缺前置 → 退回 ③ unit-test-write
 
 ---
 
@@ -122,6 +126,9 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 ### 维度 6: 安全
 - [ ] 外部输入已校验？
 - [ ] 日志无敏感信息（Token/密码/隐私）？
+- [ ] **无危险数据库操作**（DROP / TRUNCATE / ALTER / DELETE 等 DDL/DML 是否经过了审批流程）？
+- [ ] **无破坏性文件操作**（`rm -rf`、`os.RemoveAll`、`File.Delete` 等递归删除是否受控）？
+- [ ] **无硬编码生产环境密钥**（数据库连接串、API Token、Secret 是否通过环境变量/配置中心注入）？
 
 ---
 
@@ -149,11 +156,15 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 
 ## 4. 输出格式（写入 review.md）
 
+> **⛔ 强制规则：无论审查结果是否有 🔴 严重问题，都必须将完整报告写入 `.harness/changes/<id>/review.md`。**
+> **未写入 review.md 不得进入下一步。**
+
 ```markdown
 # 📋 评审报告: C-NNN
 
 ## 总览
-- 审查文件: N 个
+- 审查范围: `git diff HEAD` — N 个文件，+N/-N 行
+- 分支: <branch-name>
 - 🔴 严重问题: N（必须修复）
 - 🟡 建议改进: N（推荐修复）
 - 🟢 通过项: N
@@ -193,5 +204,9 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 
 ## 6. 完成标志
 
-0 个 🔴 → 更新 `change.md` 状态 `reviewing → ci`，进入 ⑤ CI 门禁。
-有 🔴 → 退回 ② 编码实现修复。
+无论审查结果如何，**必须先完成**：
+
+1. ✅ 将完整报告写入 `.harness/changes/<id>/review.md`
+2. 然后根据检查结果执行分支：
+   - **0 个 🔴** → 更新 `change.md` 状态 `reviewing → ci`，进入 ⑤ CI 门禁
+   - **有 🔴** → 退回 ② 编码实现修复（review.md 作为修复参考依据）

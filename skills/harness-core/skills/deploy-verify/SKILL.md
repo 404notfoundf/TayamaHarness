@@ -25,7 +25,11 @@ description: 部署后冒烟、健康检查、关键链路验证，确保变更�
    - 恰好 1 个 → 自动选中
    - 0 个 → 报错：无处于 `verifying` 状态的 change，退回 ⑤ unit-test-ci
    - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
-2. 缺前置 → 退回 ⑤ unit-test-ci
+2. **锁定验证范围**（确保每次验证同一份代码）：
+   - **规则**：使用 `git diff HEAD` 作为验证范围，包含工作区未提交的变更
+   - 如果 `git diff HEAD` 为空，报错：无变更可验证，退回 ⑤ unit-test-ci
+   - 在报告开头明确标注验证范围（文件数、增减行数、分支名）
+3. 缺前置 → 退回 ⑤ unit-test-ci
 
 ---
 
@@ -77,8 +81,15 @@ curl {{METRICS_ENDPOINT}}  # 指标可读
 
 ## 3. 输出格式（写入 verify.md）
 
+> **⛔ 强制规则：无论验证结果是否通过，都必须将完整报告写入 `.harness/changes/<id>/verify.md`。**
+> **未写入 verify.md 不得进入下一步。**
+
 ```markdown
 # ✅ 部署验证报告: C-NNN
+
+## 总览
+- 验证范围: `git diff HEAD` — N 个文件，+N/-N 行
+- 分支: <branch-name>
 
 ## 环境
 - profile: dev / 镜像: …
@@ -104,4 +115,9 @@ curl {{METRICS_ENDPOINT}}  # 指标可读
 
 ## 4. 完成标志
 
-验证通过 → 更新 `change.md` 状态 `verifying → done`。变更交付完成，同步相关 `.harness/wiki/` 文档。
+无论验证结果如何，**必须先完成**：
+
+1. ✅ 将完整报告写入 `.harness/changes/<id>/verify.md`
+2. 然后根据检查结果执行分支：
+   - **验证通过** → 更新 `change.md` 状态 `verifying → done`，变更交付完成，同步相关 `.harness/wiki/` 文档
+   - **验证失败** → 退回 ⑤ unit-test-ci（verify.md 作为排查参考依据）

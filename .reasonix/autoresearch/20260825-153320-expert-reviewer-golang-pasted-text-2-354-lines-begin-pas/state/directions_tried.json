@@ -1,0 +1,23 @@
+[
+  {
+    "fingerprint": "task-52087692",
+    "summary": "两份报告的对比已经非常清晰了。",
+    "first_seen_iteration": 1,
+    "last_seen_iteration": 1,
+    "count": 1
+  },
+  {
+    "fingerprint": "task-208b4dae",
+    "summary": "现在所有证据都齐了。让我做最终分析。",
+    "first_seen_iteration": 2,
+    "last_seen_iteration": 2,
+    "count": 1
+  },
+  {
+    "fingerprint": "task-86465bd0",
+    "summary": "## 最终结论",
+    "first_seen_iteration": 3,
+    "last_seen_iteration": 3,
+    "count": 1
+  }
+]

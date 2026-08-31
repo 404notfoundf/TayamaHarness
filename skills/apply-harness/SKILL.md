@@ -252,6 +252,18 @@ disable-model-invocation: true
     - `oss-toolkit` — 对象存储工具封装
     - `excel-toolkit` — Excel 工具封装
     - `eventbus-toolkit` — 事件总线工具封装
+    - `harness-status` — 变更状态总览（聚合 changes 进度/待办）
+    - `harness-loop-run` — 自主收敛循环引擎（编码→测试→评审到 ci）
+    - `harness-quality` — 质量闸门与报告（真实 check + flow→test + 人签字）
+    - `harness-relate` — 变更关系链管理（六类关系 + impact 影响分析）
+    - `harness-e2e` — 端到端测试（主链路/降级链路）
+    - `harness-db-design` — 数据库设计（表结构/索引/迁移设计）
+    - `harness-api-mock` — API Mock 数据生成
+    - `harness-refactor` — 重构（行为不变、测试保护、小步）
+    - `harness-retro` — 迭代复盘（历史趋势报告）
+    - `harness-ship` — 发布工作流（版本/tag/CI/CD，留人确认）
+    - `harness-changelog` — 变更日志（可追溯条目）
+    - `harness-standard` — 规范库管理（新增/修订/归档/审批）
 
 4. **清理残留技能目录**：删除 `.harness/skills/{lang}/` 下在本仓库中已不存在的旧技能目录（如旧版本语言包中的 `agents/`、旧版专属技能等），确保 `.harness/skills/` 仅包含当前渲染的技能，无残留文件干扰。
 
@@ -333,6 +345,18 @@ disable-model-invocation: true
     ├── oss-toolkit/               # 对象存储工具封装（统一接口/分片上传/预签名）
     ├── excel-toolkit/             # Excel 工具封装（模板导出/大数据量/导入校验）
     └── eventbus-toolkit/          # 事件总线工具封装（同步/异步/事务事件）
+    ├── harness-status/            # 变更状态总览（聚合 changes 进度/待办）
+    ├── harness-loop-run/          # 自主收敛循环引擎（编码→测试→评审到 ci）
+    ├── harness-quality/           # 质量闸门与报告（真实 check + flow→test + 人签字）
+    ├── harness-relate/            # 变更关系链管理（六类关系 + impact 影响分析）
+    ├── harness-e2e/               # 端到端测试（主链路/降级链路）
+    ├── harness-db-design/         # 数据库设计（表结构/索引/约束/迁移设计）
+    ├── harness-api-mock/          # API Mock 数据生成（忠于契约）
+    ├── harness-refactor/          # 重构（行为不变、测试保护、小步）
+    ├── harness-retro/             # 迭代复盘（历史留档聚合趋势报告）
+    ├── harness-ship/              # 发布工作流（版本/tag/CI/CD，留人确认）
+    ├── harness-changelog/         # 变更日志（可追溯条目）
+    └── harness-standard/          # 规范库管理（新增/修订/归档/审批）
 ```
 
 ### Step 5.5: 检测当前 AI 工具并生成技能目录
@@ -482,6 +506,8 @@ mkdir -p .claude/skills/
 ## 参数表
 
 > 按 Step 1 检测到的（语言、框架、构建工具）三元组，选择对应的框架参数块。未在此列出的框架（用户手动指定）询问用户确认参数。
+
+> **命令真跑验证纪律（test-setup）**：参数表中的 `{{BUILD_CMD}}` / `{{TEST_CMD}}` / `{{COV_CMD}}` / `{{LINT_CMD}}` / `{{ARCH_TEST_CMD}}` / `{{SECURITY_CMD}}` / `{{INTEGRATION_CMD}}` 等命令，渲染前必须**逐条真跑一次，看到真实退出码**才可落盘到渲染后的技能中；跑不通的命令**如实留空或标注"未验证"**，不得猜命令、不得把猜测当事实。若目标项目尚无代码可跑（全新项目），则命令先以参数表默认值落盘，但必须在首个 change 进入 ② 编码 / ⑤ CI 门禁时由 `coding-skill` / `unit-test-ci` **真跑验证一次**，验证不通过即退回修正命令——这正是 `harness-quality` 的「量不到就写未测量」同一条纪律：**命令真跑过才算数，没跑过就不算**。
 
 ### Java — Spring Boot + Maven（默认）
 

@@ -3,6 +3,13 @@ id: C-NNN
 slug: <slug>
 status: analyzing
 created: <date>
+relations:
+  # 六类关系（可选，由 harness-relate 维护，反向索引见 .harness/changes/_relations.json）
+  # extends / depends_on / supersedes / resolves / conflicts_with / relates_to
+  # 格式: <关系类型>:
+  #   - C-XXX
+  #   - slug: <target-slug>
+  #     reason: <一句话理由>
 ---
 
 # C-NNN <标题>
@@ -42,6 +49,11 @@ created: <date>
 - 模块/服务: …
 - 外部 API: …
 - wiki: …
+
+## 变更关系（由 harness-relate 维护，反向索引见 .harness/changes/_relations.json）
+- 依赖（depends_on）: …
+- 冲突（conflicts_with）: …
+- 关联（relates_to / extends / supersedes / resolves）: …
 
 ## 测试策略
 - 先写失败测试: …
