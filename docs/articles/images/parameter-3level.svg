@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 340" width="650" height="340">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/></filter>
+  </defs>
+  <rect width="650" height="340" fill="url(#bg)" rx="12"/>
+  <text x="325" y="28" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="700" font-family="sans-serif">参数表三级继承体系</text>
+
+  <!-- Level 1: 基础参数 -->
+  <rect x="50" y="50" width="550" height="65" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2" filter="url(#sh)"/>
+  <text x="70" y="72" fill="#60a5fa" font-size="12" font-weight="700" font-family="sans-serif">第一级：语言基础参数（6 个）</text>
+  <text x="70" y="92" fill="#93c5fd" font-size="10" font-family="monospace">{{TEST_CMD}} = mvn test / pytest / go test / cargo test / phpunit / npm test</text>
+  <text x="70" y="108" fill="#93c5fd" font-size="10" font-family="monospace">{{LINT_CMD}} = mvn checkstyle / ruff / go vet / clippy / phpstan / eslint</text>
+
+  <line x1="325" y1="115" x2="325" y2="140" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Level 2: 框架差异块 -->
+  <rect x="50" y="145" width="550" height="65" rx="8" fill="#3b1f3b" stroke="#a855f7" stroke-width="2" filter="url(#sh)"/>
+  <text x="70" y="167" fill="#c084fc" font-size="12" font-weight="700" font-family="sans-serif">第二级：框架差异块（111 个）</text>
+  <text x="70" y="187" fill="#d8b4fe" font-size="10" font-family="monospace">Java — Spring Boot + Gradle → {{BUILD_CMD}} = gradle build  ← 覆盖基础</text>
+  <text x="70" y="203" fill="#d8b4fe" font-size="10" font-family="monospace">Java — Quarkus + Maven   → {{DEV_CMD}} = mvn quarkus:dev  ← 新增</text>
+
+  <line x1="325" y1="210" x2="325" y2="235" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Level 3: 用户覆盖 -->
+  <rect x="50" y="240" width="550" height="55" rx="8" fill="#1e3a2f" stroke="#22c55e" stroke-width="2" stroke-dasharray="6,3" filter="url(#sh)"/>
+  <text x="70" y="262" fill="#4ade80" font-size="12" font-weight="700" font-family="sans-serif">第三级：用户覆盖（可选）</text>
+  <text x="70" y="282" fill="#86efac" font-size="10" font-family="monospace">.harness/parameters.local.md → 手动修改参数值，优先级最高</text>
+
+  <!-- Side annotation -->
+  <text x="325" y="328" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">继承规则：第一级 → 第二级选择性覆盖 → 第三级强制覆盖</text>
+</svg>

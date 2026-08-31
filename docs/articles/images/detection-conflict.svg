@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 240" width="700" height="240">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/></filter>
+  </defs>
+  <rect width="700" height="240" fill="url(#bg)" rx="12"/>
+  <text x="350" y="28" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="700" font-family="sans-serif">多语言项目的检测冲突处理</text>
+
+  <!-- Project root -->
+  <rect x="200" y="50" width="300" height="30" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="350" y="70" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="700" font-family="monospace">项目根目录（多语言）</text>
+
+  <!-- Files detected -->
+  <rect x="30" y="110" width="120" height="35" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="90" y="132" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">pom.xml</text>
+
+  <rect x="180" y="110" width="120" height="35" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="240" y="132" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">requirements.txt</text>
+
+  <rect x="330" y="110" width="120" height="35" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="390" y="132" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">package.json</text>
+
+  <rect x="480" y="110" width="160" height="35" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="560" y="132" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">Dockerfile</text>
+
+  <!-- Arrows down -->
+  <line x1="210" y1="85" x2="90" y2="110" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="240" y1="85" x2="240" y2="110" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="390" y1="85" x2="390" y2="110" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="460" y1="85" x2="560" y2="110" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Conflict resolution -->
+  <rect x="130" y="165" width="440" height="55" rx="8" fill="#3b1f3b" stroke="#a855f7" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="350" y="187" text-anchor="middle" fill="#c084fc" font-size="12" font-weight="700" font-family="sans-serif">检测到多种语言 → 询问用户：主语言是什么？</text>
+  <text x="350" y="207" text-anchor="middle" fill="#d8b4fe" font-size="10" font-family="sans-serif">策略：按优先级排序，列出候选，请用户选择</text>
+</svg>

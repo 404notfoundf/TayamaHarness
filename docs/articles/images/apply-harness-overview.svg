@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/></filter>
+  </defs>
+  <rect width="800" height="300" fill="url(#g1)" rx="12"/>
+  <text x="400" y="30" text-anchor="middle" fill="#e2e8f0" font-size="18" font-weight="700" font-family="sans-serif">apply-harness 安装引擎：三步流程</text>
+
+  <!-- Step 1: 检测 -->
+  <rect x="40" y="55" width="200" height="100" rx="10" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2" filter="url(#sh)"/>
+  <text x="140" y="82" text-anchor="middle" fill="#60a5fa" font-size="14" font-weight="700" font-family="sans-serif">Step 1 · 检测</text>
+  <text x="140" y="105" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">扫描项目根目录</text>
+  <text x="140" y="122" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">识别语言 / 框架 / 构建工具</text>
+  <text x="140" y="139" text-anchor="middle" fill="#64748b" font-size="10" font-family="sans-serif">6 种语言 · 111 条检测规则</text>
+
+  <line x1="240" y1="105" x2="290" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: 参数化 -->
+  <rect x="300" y="55" width="200" height="100" rx="10" fill="#3b1f3b" stroke="#a855f7" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="82" text-anchor="middle" fill="#c084fc" font-size="14" font-weight="700" font-family="sans-serif">Step 2 · 参数化</text>
+  <text x="400" y="105" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">读取基础参数 + 框架差异块</text>
+  <text x="400" y="122" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">三级继承合并 → 完整参数表</text>
+  <text x="400" y="139" text-anchor="middle" fill="#64748b" font-size="10" font-family="sans-serif">38 个占位符 · 三级继承</text>
+
+  <line x1="500" y1="105" x2="550" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: 渲染 -->
+  <rect x="560" y="55" width="200" height="100" rx="10" fill="#1e3a2f" stroke="#22c55e" stroke-width="2" filter="url(#sh)"/>
+  <text x="660" y="82" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="700" font-family="sans-serif">Step 3 · 渲染</text>
+  <text x="660" y="105" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">模板 × 参数表 → 技能文件</text>
+  <text x="660" y="122" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">复制规则 + 生成 Owner Agent</text>
+  <text x="660" y="139" text-anchor="middle" fill="#64748b" font-size="10" font-family="sans-serif">10 个模板 · 6 个语言包</text>
+
+  <!-- Output -->
+  <rect x="150" y="190" width="500" height="50" rx="25" fill="#1e293b" stroke="#475569" stroke-width="1.5" stroke-dasharray="6,3" filter="url(#sh)"/>
+  <text x="400" y="212" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="sans-serif">输出：.harness/ 目录（规则 + 技能 + 模板 + 变更追踪 + 领域知识库）</text>
+  <text x="400" y="230" text-anchor="middle" fill="#64748b" font-size="10" font-family="sans-serif">Owner Agent · 6 条规则 · 16 个技能 · 5 个模板 · 变更状态机 · CONTEXT.md</text>
+
+  <!-- Down arrows from each step to output -->
+  <line x1="140" y1="155" x2="300" y2="190" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <line x1="400" y1="155" x2="400" y2="190" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <line x1="660" y1="155" x2="500" y2="190" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+  <!-- Bottom annotation -->
+  <text x="400" y="275" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">不变式：安装不是"复制文件"，而是"检测 → 参数化 → 渲染"的三步流程</text>
+  <text x="400" y="290" text-anchor="middle" fill="#475569" font-size="10" font-family="sans-serif">检测决定"是什么"，参数化决定"怎么配"，渲染决定"怎么用"</text>
+</svg>

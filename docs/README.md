@@ -13,6 +13,16 @@
 - [变更管理](change-management.md) — 状态机与文档模板
 - [语言规范](languages/) — 各语言编码标准
 
+## 专栏文章
+
+Harness 方法论与技术实践的深度拆解系列（共 51 篇，图文并茂、内嵌 SVG 图）：
+
+- 📖 [**文章总清单 column-series**](articles/column-series.md) — 四季分类：核心思想 / 命令深度拆解 / 实战与扩展 / 新增技能文档
+- 🔗 第一季 核心思想（5 篇）：[工程纪律即架构](articles/column-01-engineering-discipline.md) → [参数化](articles/column-02-parameterization.md) → [自动检测](articles/column-03-autodetect.md) → [apply-harness](articles/column-10-apply-harness.md) → [SDD-TDD](articles/column-51-sdd-tdd.md)
+- 🔗 第二季 命令深度拆解（12 篇）：[harnessing](articles/column-04-harnessing.md) → [coding-skill](articles/column-05-coding-skill.md) → [unit-test-write](articles/column-06-unit-test-write.md) → [expert-reviewer](articles/column-07-expert-reviewer.md) → [unit-test-ci](articles/column-22-unit-test-ci.md) → [deploy-verify](articles/column-08-deploy-verify.md) → [domain-modeling](articles/column-23-domain-modeling.md) → [diagnosing-bugs](articles/column-09-diagnosing-bugs.md) → [install-skill](articles/column-11-install-skill.md) → [arch-review](articles/column-14-arch-review-golang.md) → [handoff](articles/column-15-handoff-golang.md) → [harness-me](articles/column-16-harness-me-golang.md)
+- 🔗 第三季 实战与扩展（6 篇）：[自定义 Skill](articles/column-17-custom-skill.md) → [新增框架](articles/column-18-new-framework.md) → [迁移实战](articles/column-19-migration.md) → [Change Management](articles/column-20-change-management.md) → [Owner Agent](articles/column-52-owner-agent.md) → [6 阶段流水线](articles/column-53-pipeline.md)
+- 🔗 第四季 新增技能文档（28 篇）：[research](articles/column-24-research.md) / [merge-conflicts](articles/column-25-resolving-merge-conflicts.md) / [harness-* 机制](articles/column-26-harness-status.md)（26~29）/ [harness-* 工程](articles/column-30-harness-e2e.md)（30~33）/ [harness-* 治理](articles/column-34-harness-retro.md)（34~37）/ [Toolkit 工具箱](articles/column-38-database-migration-toolkit.md)（38~50）
+
 ## 核心概念
 
 | 文档 | 说明 |
@@ -46,6 +56,23 @@
 | `domain-modeling` | 领域语言维护 | [文档](skills/domain-modeling.md) |
 | `research` | 外部事实查证 | [文档](skills/research.md) |
 | `resolving-merge-conflicts` | 解决合并冲突 | [文档](skills/resolving-merge-conflicts.md) |
+
+## 跨语言治理技能（harness-*）
+
+| 技能 | 用途 | 文档 |
+|------|------|------|
+| `harness-status` | 变更状态总览 | [文档](skills/harness-status.md) |
+| `harness-loop-run` | 自主收敛循环引擎 | [文档](skills/harness-loop-run.md) |
+| `harness-quality` | 质量闸门与报告 | [文档](skills/harness-quality.md) |
+| `harness-relate` | 变更关系链管理 | [文档](skills/harness-relate.md) |
+| `harness-e2e` | 端到端测试 | [文档](skills/harness-e2e.md) |
+| `harness-db-design` | 数据库设计 | [文档](skills/harness-db-design.md) |
+| `harness-api-mock` | API Mock 数据生成 | [文档](skills/harness-api-mock.md) |
+| `harness-refactor` | 重构 | [文档](skills/harness-refactor.md) |
+| `harness-retro` | 迭代复盘 | [文档](skills/harness-retro.md) |
+| `harness-ship` | 发布工作流 | [文档](skills/harness-ship.md) |
+| `harness-changelog` | 变更日志维护 | [文档](skills/harness-changelog.md) |
+| `harness-standard` | 规范库管理 | [文档](skills/harness-standard.md) |
 
 ## 初始化技能
 

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" width="700" height="280">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/></filter>
+  </defs>
+  <rect width="700" height="280" fill="url(#bg)" rx="12"/>
+  <text x="350" y="28" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="700" font-family="sans-serif">模板渲染：从通用模板到语言包技能</text>
+
+  <!-- Left: Core Templates -->
+  <rect x="30" y="50" width="220" height="190" rx="10" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="140" y="75" text-anchor="middle" fill="#60a5fa" font-size="13" font-weight="700" font-family="sans-serif">Core 模板（10 个）</text>
+  <line x1="50" y1="85" x2="230" y2="85" stroke="#1e4976" stroke-width="1"/>
+  <text x="50" y="105" fill="#93c5fd" font-size="10" font-family="monospace">harnessing.SKILL.md</text>
+  <text x="50" y="122" fill="#93c5fd" font-size="10" font-family="monospace">coding-skill.SKILL.md</text>
+  <text x="50" y="139" fill="#93c5fd" font-size="10" font-family="monospace">unit-test-write.SKILL.md</text>
+  <text x="50" y="156" fill="#93c5fd" font-size="10" font-family="monospace">expert-reviewer.SKILL.md</text>
+  <text x="50" y="173" fill="#93c5fd" font-size="10" font-family="monospace">unit-test-ci.SKILL.md</text>
+  <text x="50" y="190" fill="#93c5fd" font-size="10" font-family="monospace">deploy-verify.SKILL.md</text>
+  <text x="50" y="207" fill="#93c5fd" font-size="10" font-family="monospace">diagnosing-bugs.SKILL.md</text>
+  <text x="50" y="224" fill="#93c5fd" font-size="10" font-family="monospace">arch-review.SKILL.md</text>
+  <text x="50" y="238" fill="#93c5fd" font-size="10" font-family="monospace">handoff.SKILL.md + domain-modeling.SKILL.md</text>
+
+  <!-- Center: × + 参数表 -->
+  <text x="310" y="145" text-anchor="middle" fill="#f59e0b" font-size="24" font-weight="700" font-family="sans-serif">×</text>
+  <rect x="265" y="155" width="90" height="40" rx="6" fill="#3b1f3b" stroke="#a855f7" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="310" y="172" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700" font-family="sans-serif">参数表</text>
+  <text x="310" y="188" text-anchor="middle" fill="#d8b4fe" font-size="9" font-family="sans-serif">38 个占位符</text>
+
+  <line x1="250" y1="145" x2="265" y2="170" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="355" y1="170" x2="380" y2="145" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Right: Language-specific skills -->
+  <rect x="390" y="50" width="280" height="190" rx="10" fill="#1e3a2f" stroke="#22c55e" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="530" y="75" text-anchor="middle" fill="#4ade80" font-size="13" font-weight="700" font-family="sans-serif">渲染后的语言包技能</text>
+  <line x1="410" y1="85" x2="650" y2="85" stroke="#1e4a3a" stroke-width="1"/>
+
+  <text x="410" y="105" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Java</text>
+  <text x="445" y="105" fill="#86efac" font-size="9" font-family="monospace">/harnessing-java  ·  mvn test</text>
+  <text x="410" y="122" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Python</text>
+  <text x="445" y="122" fill="#86efac" font-size="9" font-family="monospace">/harnessing-python  ·  pytest</text>
+  <text x="410" y="139" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Go</text>
+  <text x="445" y="139" fill="#86efac" font-size="9" font-family="monospace">/harnessing-golang  ·  go test ./...</text>
+  <text x="410" y="156" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Rust</text>
+  <text x="445" y="156" fill="#86efac" font-size="9" font-family="monospace">/harnessing-rust  ·  cargo test</text>
+  <text x="410" y="173" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">PHP</text>
+  <text x="445" y="173" fill="#86efac" font-size="9" font-family="monospace">/harnessing-php  ·  phpunit</text>
+  <text x="410" y="190" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Frontend</text>
+  <text x="445" y="190" fill="#86efac" font-size="9" font-family="monospace">/harnessing-front  ·  npm test</text>
+
+  <text x="530" y="220" text-anchor="middle" fill="#475569" font-size="10" font-family="sans-serif">语义相同（/harnessing），语法不同（mvn test vs pytest）</text>
+</svg>

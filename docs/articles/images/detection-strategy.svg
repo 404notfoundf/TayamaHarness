@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/></filter>
+  </defs>
+  <rect width="800" height="320" fill="url(#bg)" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" fill="#e2e8f0" font-size="18" font-weight="700" font-family="sans-serif">三层检测策略：从特征文件到技术栈</text>
+
+  <!-- Layer 1: 特征文件 -->
+  <rect x="30" y="50" width="740" height="70" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="50" y="72" fill="#60a5fa" font-size="12" font-weight="700" font-family="sans-serif">第一层：特征文件 → 语言</text>
+
+  <rect x="40" y="80" width="90" height="30" rx="6" fill="#1e4976" stroke="#60a5fa" stroke-width="1"/>
+  <text x="85" y="99" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">pom.xml</text>
+  <text x="135" y="99" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="150" y="80" width="60" height="30" rx="6" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+  <text x="180" y="99" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Java</text>
+
+  <text x="230" y="99" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">|</text>
+
+  <rect x="250" y="80" width="90" height="30" rx="6" fill="#1e4976" stroke="#60a5fa" stroke-width="1"/>
+  <text x="295" y="99" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">go.mod</text>
+  <text x="345" y="99" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="360" y="80" width="60" height="30" rx="6" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+  <text x="390" y="99" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Go</text>
+
+  <text x="440" y="99" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">|</text>
+
+  <rect x="460" y="80" width="90" height="30" rx="6" fill="#1e4976" stroke="#60a5fa" stroke-width="1"/>
+  <text x="505" y="99" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">requirements.txt</text>
+  <text x="555" y="99" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="570" y="80" width="60" height="30" rx="6" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+  <text x="600" y="99" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Python</text>
+
+  <text x="650" y="99" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">|</text>
+
+  <rect x="670" y="80" width="90" height="30" rx="6" fill="#1e4976" stroke="#60a5fa" stroke-width="1"/>
+  <text x="715" y="99" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="monospace">package.json</text>
+  <text x="765" y="99" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="780" y="80" width="60" height="30" rx="6" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+  <text x="810" y="99" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Frontend</text>
+
+  <!-- Arrow down -->
+  <line x1="400" y1="120" x2="400" y2="145" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 2: 框架 -->
+  <rect x="30" y="150" width="740" height="70" rx="8" fill="#3b1f3b" stroke="#a855f7" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="50" y="172" fill="#c084fc" font-size="12" font-weight="700" font-family="sans-serif">第二层：语言内特征 → 框架</text>
+
+  <rect x="40" y="180" width="130" height="30" rx="6" fill="#4a254a" stroke="#c084fc" stroke-width="1"/>
+  <text x="105" y="199" text-anchor="middle" fill="#d8b4fe" font-size="10" font-family="monospace">spring-boot-starter</text>
+  <text x="175" y="199" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="190" y="180" width="80" height="30" rx="6" fill="#a855f7" stroke="#c084fc" stroke-width="1"/>
+  <text x="230" y="199" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Spring Boot</text>
+
+  <text x="280" y="199" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">|</text>
+
+  <rect x="300" y="180" width="130" height="30" rx="6" fill="#4a254a" stroke="#c084fc" stroke-width="1"/>
+  <text x="365" y="199" text-anchor="middle" fill="#d8b4fe" font-size="10" font-family="monospace">quarkus-maven-plugin</text>
+  <text x="435" y="199" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="450" y="180" width="80" height="30" rx="6" fill="#a855f7" stroke="#c084fc" stroke-width="1"/>
+  <text x="490" y="199" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Quarkus</text>
+
+  <text x="540" y="199" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">|</text>
+
+  <rect x="560" y="180" width="100" height="30" rx="6" fill="#4a254a" stroke="#c084fc" stroke-width="1"/>
+  <text x="610" y="199" text-anchor="middle" fill="#d8b4fe" font-size="10" font-family="monospace">gin 依赖</text>
+  <text x="665" y="199" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="680" y="180" width="80" height="30" rx="6" fill="#a855f7" stroke="#c084fc" stroke-width="1"/>
+  <text x="720" y="199" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Gin</text>
+
+  <!-- Arrow down -->
+  <line x1="400" y1="220" x2="400" y2="245" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 3: 构建工具 -->
+  <rect x="30" y="250" width="740" height="60" rx="8" fill="#1e3a2f" stroke="#22c55e" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="50" y="272" fill="#4ade80" font-size="12" font-weight="700" font-family="sans-serif">第三层：构建特征 → 构建工具</text>
+
+  <rect x="40" y="280" width="90" height="25" rx="6" fill="#1e4a3a" stroke="#4ade80" stroke-width="1"/>
+  <text x="85" y="297" text-anchor="middle" fill="#86efac" font-size="10" font-family="monospace">maven-plugin</text>
+  <text x="135" y="297" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="150" y="280" width="60" height="25" rx="6" fill="#22c55e" stroke="#4ade80" stroke-width="1"/>
+  <text x="180" y="297" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Maven</text>
+
+  <text x="230" y="297" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">|</text>
+
+  <rect x="260" y="280" width="90" height="25" rx="6" fill="#1e4a3a" stroke="#4ade80" stroke-width="1"/>
+  <text x="305" y="297" text-anchor="middle" fill="#86efac" font-size="10" font-family="monospace">gradle plugin</text>
+  <text x="355" y="297" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="370" y="280" width="60" height="25" rx="6" fill="#22c55e" stroke="#4ade80" stroke-width="1"/>
+  <text x="400" y="297" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">Gradle</text>
+
+  <text x="450" y="297" text-anchor="middle" fill="#475569" font-size="11" font-family="sans-serif">|</text>
+
+  <rect x="480" y="280" width="80" height="25" rx="6" fill="#1e4a3a" stroke="#4ade80" stroke-width="1"/>
+  <text x="520" y="297" text-anchor="middle" fill="#86efac" font-size="10" font-family="monospace">go.mod</text>
+  <text x="565" y="297" text-anchor="middle" fill="#64748b" font-size="11" font-family="sans-serif">→</text>
+  <rect x="580" y="280" width="60" height="25" rx="6" fill="#22c55e" stroke="#4ade80" stroke-width="1"/>
+  <text x="610" y="297" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="sans-serif">go mod</text>
+</svg>
