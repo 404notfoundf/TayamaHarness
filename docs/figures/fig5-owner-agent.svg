@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" font-family="system-ui, 'Microsoft YaHei', sans-serif">
+  <rect width="960" height="480" fill="#0f172a" rx="16"/>
+  <text x="480" y="46" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700">Owner Agent：AI 和这个项目之间的"合同"</text>
+  <text x="480" y="72" text-anchor="middle" fill="#94a3b8" font-size="13">.harness/agents/owner.md · 由 /apply-harness 参数化渲染 · 每个项目一份</text>
+
+  <!-- 左：AI 对话 -->
+  <g transform="translate(40,140)">
+    <rect width="200" height="240" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="100" y="34" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="700">🤖 AI 对话</text>
+    <text x="100" y="60" text-anchor="middle" fill="#cbd5e1" font-size="11">/harnessing</text>
+    <text x="100" y="82" text-anchor="middle" fill="#cbd5e1" font-size="11">/coding-skill</text>
+    <text x="100" y="104" text-anchor="middle" fill="#cbd5e1" font-size="11">/expert-reviewer</text>
+    <text x="100" y="126" text-anchor="middle" fill="#cbd5e1" font-size="11">/unit-test-ci</text>
+    <line x1="20" y1="150" x2="180" y2="150" stroke="#334155"/>
+    <text x="100" y="180" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="600">每次对话先读</text>
+    <text x="100" y="204" text-anchor="middle" fill="#22c55e" font-size="12">Owner Agent</text>
+    <text x="100" y="228" text-anchor="middle" fill="#94a3b8" font-size="10">再决定怎么干活</text>
+  </g>
+
+  <!-- 中间：箭头 -->
+  <path d="M250,260 L370,260" stroke="#38bdf8" stroke-width="3" marker-end="url(#oa)"/>
+  <defs>
+    <marker id="oa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+  <text x="310" y="248" text-anchor="middle" fill="#fbbf24" font-size="11">约束注入</text>
+
+  <!-- 中：Owner Agent -->
+  <g transform="translate(380,110)">
+    <rect width="200" height="300" rx="12" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+    <text x="100" y="34" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="700">🧠 Owner Agent</text>
+    <text x="100" y="54" text-anchor="middle" fill="#64748b" font-size="10">.harness/agents/owner.md</text>
+    <line x1="20" y1="70" x2="180" y2="70" stroke="#22c55e" stroke-width="1"/>
+
+    <text x="16" y="96" fill="#fbbf24" font-size="11" font-weight="600">• 你是谁</text>
+    <text x="30" y="112" fill="#cbd5e1" font-size="10">应用负责人智能体</text>
+
+    <text x="16" y="138" fill="#fbbf24" font-size="11" font-weight="600">• 你的语言栈</text>
+    <text x="30" y="154" fill="#cbd5e1" font-size="10">Java 21 + Spring Boot</text>
+
+    <text x="16" y="180" fill="#fbbf24" font-size="11" font-weight="600">• 构建命令</text>
+    <text x="30" y="196" fill="#cbd5e1" font-size="10">mvn compile / test</text>
+
+    <text x="16" y="222" fill="#fbbf24" font-size="11" font-weight="600">• 架构分层</text>
+    <text x="30" y="238" fill="#cbd5e1" font-size="10">Ctrl → Service → Repo</text>
+
+    <text x="16" y="264" fill="#fbbf24" font-size="11" font-weight="600">• 规则 / 技能</text>
+    <text x="30" y="280" fill="#cbd5e1" font-size="10">5 条 rules · 30+ skills</text>
+  </g>
+
+  <!-- 中右：箭头 -->
+  <path d="M590,260 L700,260" stroke="#22c55e" stroke-width="3" marker-end="url(#og)"/>
+  <defs>
+    <marker id="og" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#22c55e"/>
+    </marker>
+  </defs>
+  <text x="645" y="248" text-anchor="middle" fill="#4ade80" font-size="11">落地代码</text>
+
+  <!-- 右：项目 -->
+  <g transform="translate(710,140)">
+    <rect width="210" height="240" rx="12" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="105" y="34" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="700">📦 项目</text>
+    <text x="105" y="60" text-anchor="middle" fill="#cbd5e1" font-size="11">prd-ingestion-server</text>
+    <line x1="20" y1="80" x2="190" y2="80" stroke="#334155"/>
+    <text x="105" y="104" text-anchor="middle" fill="#cbd5e1" font-size="11">src/ 业务代码</text>
+    <text x="105" y="124" text-anchor="middle" fill="#cbd5e1" font-size="11">test/ 测试代码</text>
+    <text x="105" y="144" text-anchor="middle" fill="#cbd5e1" font-size="11">pom.xml</text>
+    <line x1="20" y1="164" x2="190" y2="164" stroke="#334155"/>
+    <text x="105" y="188" text-anchor="middle" fill="#fbbf24" font-size="11">AI 按约束写</text>
+    <text x="105" y="210" text-anchor="middle" fill="#22c55e" font-size="11">机器按检查验</text>
+    <text x="105" y="232" text-anchor="middle" fill="#94a3b8" font-size="10">人类只签验收</text>
+  </g>
+
+  <!-- 底部结论 -->
+  <g transform="translate(40,420)">
+    <rect width="880" height="40" rx="6" fill="#0f172a" stroke="#334155"/>
+    <text x="20" y="26" fill="#fbbf24" font-size="12" font-weight="600">没有 Owner Agent → AI 是通用助手</text>
+    <text x="320" y="26" fill="#f8fafc" font-size="12">有 Owner Agent → AI 是这个项目的"专属负责人"</text>
+  </g>
+</svg>

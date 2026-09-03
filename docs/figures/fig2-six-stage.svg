@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" font-family="system-ui, 'Microsoft YaHei', sans-serif">
+  <rect width="960" height="460" fill="#0f172a" rx="16"/>
+  <text x="480" y="46" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700">Harness Engineering · 6 阶段流水线</text>
+  <text x="480" y="72" text-anchor="middle" fill="#94a3b8" font-size="13">每个阶段停一次、交接一次 · 每阶段有独立验收</text>
+
+  <!-- 输入 -->
+  <g transform="translate(30,150)">
+    <rect width="120" height="120" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="60" y="42" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="600">🎯 一句需求</text>
+    <text x="60" y="68" text-anchor="middle" fill="#cbd5e1" font-size="10">/harnessing</text>
+    <text x="60" y="86" text-anchor="middle" fill="#cbd5e1" font-size="10">"给 PRD 导入</text>
+    <text x="60" y="102" text-anchor="middle" fill="#cbd5e1" font-size="10">加白名单校验"</text>
+  </g>
+
+  <path d="M160,210 L210,210" stroke="#38bdf8" stroke-width="3" marker-end="url(#a1)"/>
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <!-- 6 stages -->
+  <g transform="translate(215,100)" font-size="11">
+    <!-- Stage 1 -->
+    <rect width="105" height="220" rx="10" fill="#1e293b" stroke="#38bdf8"/>
+    <text x="52" y="30" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">① harnessing</text>
+    <text x="52" y="52" text-anchor="middle" fill="#e2e8f0" font-size="11">需求拷问</text>
+    <line x1="15" y1="66" x2="90" y2="66" stroke="#334155"/>
+    <text x="10" y="86" fill="#cbd5e1" font-size="10">→ 规格说明书</text>
+    <text x="10" y="104" fill="#cbd5e1" font-size="10">→ AC ≥3 条</text>
+    <text x="10" y="122" fill="#cbd5e1" font-size="10">→ 明确边界</text>
+    <text x="10" y="148" fill="#475569" font-size="10">一次只问</text>
+    <text x="10" y="164" fill="#475569" font-size="10">一个问题</text>
+    <text x="52" y="204" text-anchor="middle" fill="#22c55e" font-size="10">✅ 人确认</text>
+
+    <!-- Stage 2 -->
+    <g transform="translate(112,0)">
+      <rect width="105" height="220" rx="10" fill="#1e293b" stroke="#38bdf8"/>
+      <text x="52" y="30" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">② coding-skill</text>
+      <text x="52" y="52" text-anchor="middle" fill="#e2e8f0" font-size="11">编码实现</text>
+      <line x1="15" y1="66" x2="90" y2="66" stroke="#334155"/>
+      <text x="10" y="86" fill="#cbd5e1" font-size="10">→ 逐 AC 实现</text>
+      <text x="10" y="104" fill="#cbd5e1" font-size="10">→ Red-Green</text>
+      <text x="10" y="122" fill="#cbd5e1" font-size="10">→ 垂直切片</text>
+      <text x="10" y="148" fill="#475569" font-size="10">一个循环</text>
+      <text x="10" y="164" fill="#475569" font-size="10">一次重构</text>
+      <text x="52" y="204" text-anchor="middle" fill="#22c55e" font-size="10">✅ 编译过</text>
+    </g>
+
+    <!-- Stage 3 -->
+    <g transform="translate(224,0)">
+      <rect width="105" height="220" rx="10" fill="#1e293b" stroke="#38bdf8"/>
+      <text x="52" y="30" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">③ unit-test-write</text>
+      <text x="52" y="52" text-anchor="middle" fill="#e2e8f0" font-size="11">单测编写</text>
+      <line x1="15" y1="66" x2="90" y2="66" stroke="#334155"/>
+      <text x="10" y="86" fill="#cbd5e1" font-size="10">→ AC 一测试</text>
+      <text x="10" y="104" fill="#cbd5e1" font-size="10">→ 覆盖率 ≥80%</text>
+      <text x="10" y="122" fill="#cbd5e1" font-size="10">→ 不测 happy</text>
+      <text x="10" y="148" fill="#475569" font-size="10">边界优先</text>
+      <text x="10" y="164" fill="#475569" font-size="10">异常优先</text>
+      <text x="52" y="204" text-anchor="middle" fill="#22c55e" font-size="10">✅ 全绿</text>
+    </g>
+
+    <!-- Stage 4 -->
+    <g transform="translate(336,0)">
+      <rect width="105" height="220" rx="10" fill="#1e293b" stroke="#38bdf8"/>
+      <text x="52" y="30" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">④ expert-reviewer</text>
+      <text x="52" y="52" text-anchor="middle" fill="#e2e8f0" font-size="11">专家评审</text>
+      <line x1="15" y1="66" x2="90" y2="66" stroke="#334155"/>
+      <text x="10" y="86" fill="#cbd5e1" font-size="10">→ Spec 轴</text>
+      <text x="10" y="104" fill="#cbd5e1" font-size="10">→ Standards 轴</text>
+      <text x="10" y="122" fill="#cbd5e1" font-size="10">→ 双轴并行</text>
+      <text x="10" y="148" fill="#475569" font-size="10">0 个 🔴</text>
+      <text x="10" y="164" fill="#475569" font-size="10">才放行</text>
+      <text x="52" y="204" text-anchor="middle" fill="#22c55e" font-size="10">✅ 双轴过</text>
+    </g>
+
+    <!-- Stage 5 -->
+    <g transform="translate(448,0)">
+      <rect width="105" height="220" rx="10" fill="#1e293b" stroke="#a855f7"/>
+      <text x="52" y="30" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="700">⑤ unit-test-ci</text>
+      <text x="52" y="52" text-anchor="middle" fill="#e2e8f0" font-size="11">CI 门禁</text>
+      <line x1="15" y1="66" x2="90" y2="66" stroke="#334155"/>
+      <text x="10" y="86" fill="#cbd5e1" font-size="10">→ lint</text>
+      <text x="10" y="104" fill="#cbd5e1" font-size="10">→ 竞态检测</text>
+      <text x="10" y="122" fill="#cbd5e1" font-size="10">→ 架构约束</text>
+      <text x="10" y="148" fill="#475569" font-size="10">任一失败</text>
+      <text x="10" y="164" fill="#475569" font-size="10">即红灯</text>
+      <text x="52" y="204" text-anchor="middle" fill="#22c55e" font-size="10">✅ 机械化</text>
+    </g>
+
+    <!-- Stage 6 -->
+    <g transform="translate(560,0)">
+      <rect width="105" height="220" rx="10" fill="#1e293b" stroke="#a855f7"/>
+      <text x="52" y="30" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="700">⑥ deploy-verify</text>
+      <text x="52" y="52" text-anchor="middle" fill="#e2e8f0" font-size="11">部署验证</text>
+      <line x1="15" y1="66" x2="90" y2="66" stroke="#334155"/>
+      <text x="10" y="86" fill="#cbd5e1" font-size="10">→ 冒烟测试</text>
+      <text x="10" y="104" fill="#cbd5e1" font-size="10">→ 健康检查</text>
+      <text x="10" y="122" fill="#cbd5e1" font-size="10">→ 链路验证</text>
+      <text x="10" y="148" fill="#475569" font-size="10">CI 绿 ≠</text>
+      <text x="10" y="164" fill="#475569" font-size="10">线上可用</text>
+      <text x="52" y="204" text-anchor="middle" fill="#22c55e" font-size="10">✅ 生产就绪</text>
+    </g>
+  </g>
+
+  <!-- 阶段间箭头 -->
+  <g stroke="#38bdf8" stroke-width="2" fill="none">
+    <path d="M327,210 L336,210" marker-end="url(#a1)"/>
+    <path d="M439,210 L448,210" marker-end="url(#a1)"/>
+    <path d="M551,210 L560,210" marker-end="url(#a1)"/>
+    <path d="M663,210 L672,210" marker-end="url(#a1)"/>
+    <path d="M775,210 L784,210" marker-end="url(#a1)"/>
+  </g>
+
+  <!-- 输出 -->
+  <g transform="translate(790,150)">
+    <rect width="140" height="120" rx="10" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="70" y="42" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="600">🚀 上线</text>
+    <text x="70" y="68" text-anchor="middle" fill="#cbd5e1" font-size="10">变更卡归档</text>
+    <text x="70" y="86" text-anchor="middle" fill="#cbd5e1" font-size="10">知识回流</text>
+    <text x="70" y="104" text-anchor="middle" fill="#cbd5e1" font-size="10">CONTEXT.md</text>
+  </g>
+
+  <!-- 底部说明 -->
+  <g transform="translate(30,380)">
+    <rect width="900" height="60" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="20" y="26" fill="#fbbf24" font-size="12" font-weight="600">⚠ 每一阶段都需"人签字"或"机器验证"才进入下一阶段</text>
+    <text x="20" y="46" fill="#94a3b8" font-size="11">阶段产物落 .harness/changes/&lt;id&gt;/  →  可审计、可回溯、可交接给下一个人</text>
+  </g>
+</svg>

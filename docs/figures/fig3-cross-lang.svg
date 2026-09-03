@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" font-family="system-ui, 'Microsoft YaHei', sans-serif">
+  <rect width="960" height="500" fill="#0f172a" rx="16"/>
+  <text x="480" y="46" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700">跨语言骨架：方法论层 + 技术栈层</text>
+  <text x="480" y="72" text-anchor="middle" fill="#94a3b8" font-size="13">方法论跨语言通用 · 技术栈按语言独立 · 一个团队一套工作语言</text>
+
+  <!-- 顶：应用 -->
+  <g transform="translate(60,100)">
+    <rect width="840" height="80" rx="10" fill="#1e293b" stroke="#334155"/>
+    <text x="420" y="30" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="600">同一个团队 · 同一个方法论</text>
+    <g font-size="12" fill="#cbd5e1">
+      <text x="60" y="58">Java 后端</text>
+      <text x="180" y="58">Go 微服务</text>
+      <text x="320" y="58">Python 数据</text>
+      <text x="480" y="58">Vue 3 前端</text>
+      <text x="620" y="58">Rust 加速</text>
+      <text x="750" y="58">PHP 遗留</text>
+    </g>
+  </g>
+
+  <!-- 中：方法论层 -->
+  <g transform="translate(60,205)">
+    <rect width="840" height="100" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+    <text x="20" y="28" fill="#38bdf8" font-size="14" font-weight="700">方法论层 · harness-core/</text>
+    <text x="20" y="48" fill="#64748b" font-size="10">跨语言通用</text>
+    <g font-size="11" fill="#e2e8f0">
+      <text x="20" y="76">SDD-TDD</text>
+      <text x="130" y="76">6 阶段流水线</text>
+      <text x="280" y="76">变更状态机</text>
+      <text x="420" y="76">人机协同协议</text>
+      <text x="580" y="76">战争迷雾</text>
+      <text x="700" y="76">垂直切片</text>
+    </g>
+    <text x="20" y="94" fill="#94a3b8" font-size="10">5 条通用规则 + 10 个流水线技能模板</text>
+  </g>
+
+  <!-- 底：技术栈层 -->
+  <g transform="translate(60,330)">
+    <rect width="840" height="130" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+    <text x="20" y="26" fill="#22c55e" font-size="14" font-weight="700">技术栈层 · harness-{lang}/</text>
+    <text x="20" y="46" fill="#64748b" font-size="10">语言特有</text>
+
+    <g transform="translate(20,60)">
+      <rect width="128" height="58" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="64" y="20" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">harness-java</text>
+      <text x="64" y="36" text-anchor="middle" fill="#94a3b8" font-size="9">Spring Boot · Dubbo</text>
+      <text x="64" y="50" text-anchor="middle" fill="#94a3b8" font-size="9">mvn · JUnit 5</text>
+    </g>
+    <g transform="translate(156,60)">
+      <rect width="128" height="58" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="64" y="20" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">harness-golang</text>
+      <text x="64" y="36" text-anchor="middle" fill="#94a3b8" font-size="9">Gin · go-zero · Kitex</text>
+      <text x="64" y="50" text-anchor="middle" fill="#94a3b8" font-size="9">go build · testify</text>
+    </g>
+    <g transform="translate(292,60)">
+      <rect width="128" height="58" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="64" y="20" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">harness-python</text>
+      <text x="64" y="36" text-anchor="middle" fill="#94a3b8" font-size="9">FastAPI · LangChain</text>
+      <text x="64" y="50" text-anchor="middle" fill="#94a3b8" font-size="9">pytest · mypy</text>
+    </g>
+    <g transform="translate(428,60)">
+      <rect width="128" height="58" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="64" y="20" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">harness-rust</text>
+      <text x="64" y="36" text-anchor="middle" fill="#94a3b8" font-size="9">Axum · Actix · Tauri</text>
+      <text x="64" y="50" text-anchor="middle" fill="#94a3b8" font-size="9">cargo · clippy</text>
+    </g>
+    <g transform="translate(564,60)">
+      <rect width="128" height="58" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="64" y="20" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">harness-php</text>
+      <text x="64" y="36" text-anchor="middle" fill="#94a3b8" font-size="9">Laravel · Hyperf · Yii</text>
+      <text x="64" y="50" text-anchor="middle" fill="#94a3b8" font-size="9">composer · PHPUnit</text>
+    </g>
+    <g transform="translate(700,60)">
+      <rect width="120" height="58" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="60" y="20" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">harness-front</text>
+      <text x="60" y="36" text-anchor="middle" fill="#94a3b8" font-size="9">Vue 3 · Next.js</text>
+      <text x="60" y="50" text-anchor="middle" fill="#94a3b8" font-size="9">Vite · Vitest</text>
+    </g>
+  </g>
+
+  <!-- 底部结论 -->
+  <g transform="translate(60,470)">
+    <text x="0" y="0" fill="#fbbf24" font-size="12" font-weight="600">同一个流程、各自的语言细节</text>
+    <text x="230" y="0" fill="#94a3b8" font-size="11">Owner Agent 和 10 个流水线技能模板，靠参数化适配不同语言</text>
+  </g>
+</svg>

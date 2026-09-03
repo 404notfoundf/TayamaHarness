@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" font-family="system-ui, 'Microsoft YaHei', monospace">
+  <rect width="960" height="480" fill="#0f172a" rx="16"/>
+  <text x="480" y="42" text-anchor="middle" fill="#f8fafc" font-size="20" font-weight="700">.harness/ 落地结构</text>
+  <text x="480" y="66" text-anchor="middle" fill="#94a3b8" font-size="12">哪些进 git · 哪些可选 · 一份"项目交付审计记录"</text>
+
+  <g font-family="ui-monospace, Menlo, Consolas, monospace" font-size="13" transform="translate(40,100)">
+
+    <g>
+      <text x="0"   y="0"   fill="#e2e8f0" font-weight="700">.harness/</text>
+
+      <text x="20"  y="26" fill="#22c55e">├── agents/</text>
+      <text x="40"  y="46" fill="#22c55e">│   └── owner.md</text>
+      <text x="58"  y="46" fill="#fbbf24" font-size="11">📌 必须进 git · 应用负责人</text>
+
+      <text x="20"  y="74" fill="#22c55e">├── rules/</text>
+      <text x="40"  y="94" fill="#22c55e">│   ├── SDD-TDD模式.md</text>
+      <text x="40"  y="114" fill="#22c55e">│   ├── 编码规范.md</text>
+      <text x="40"  y="134" fill="#22c55e">│   ├── 工程结构.md</text>
+      <text x="40"  y="154" fill="#22c55e">│   ├── 开发流程规范.md</text>
+      <text x="40"  y="174" fill="#22c55e">│   └── 运行时可靠性.md</text>
+      <text x="58"  y="174" fill="#fbbf24" font-size="11">📌 必须进 git · 5 条规则</text>
+
+      <text x="20"  y="202" fill="#22c55e">├── skills/</text>
+      <text x="40"  y="222" fill="#22c55e">│   ├── java/      (coding-skill / harnessing / expert-reviewer …)</text>
+      <text x="40"  y="242" fill="#22c55e">│   ├── golang/    (语言特有 10 个流水线技能)</text>
+      <text x="40"  y="262" fill="#22c55e">│   └── common/    (redis-cache / kafka / k8s / security … 17 组件)</text>
+      <text x="58"  y="262" fill="#fbbf24" font-size="11">📌 必须进 git · 30+ 技能</text>
+
+      <text x="20"  y="290" fill="#22c55e">├── wiki/</text>
+      <text x="40"  y="310" fill="#22c55e">│   ├── 业务模型.md</text>
+      <text x="40"  y="330" fill="#22c55e">│   ├── 接口协议.md</text>
+      <text x="40"  y="350" fill="#22c55e">│   ├── 数据模型.md</text>
+      <text x="40"  y="370" fill="#22c55e">│   └── 架构决策.md (ADR)</text>
+      <text x="58"  y="370" fill="#fbbf24" font-size="11">📌 必须进 git · 知识库</text>
+
+      <text x="20"  y="398" fill="#22c55e">├── CONTEXT.md</text>
+      <text x="58"  y="398" fill="#fbbf24" font-size="11">📌 必须进 git · 术语表</text>
+
+      <text x="20"  y="424" fill="#94a3b8">├── changes/  (变更追踪模板)</text>
+      <text x="58"  y="424" fill="#94a3b8" font-size="11">⚠ 看团队习惯</text>
+
+      <text x="20"  y="450" fill="#94a3b8">└── iterations/ (PRD / 方案 / 测试设计)</text>
+      <text x="58"  y="450" fill="#94a3b8" font-size="11">⚠ 看团队习惯</text>
+    </g>
+
+    <!-- 右侧说明 -->
+    <g transform="translate(560,0)">
+      <rect width="340" height="430" rx="10" fill="#1e293b" stroke="#334155"/>
+      <text x="170" y="34" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="600">为什么要进 git</text>
+
+      <text x="20" y="70" fill="#fbbf24" font-size="12" font-weight="600">① 换会话不失忆</text>
+      <text x="30" y="92" fill="#cbd5e1" font-size="11">AI 每次对话都读 CONTEXT.md</text>
+      <text x="30" y="110" fill="#cbd5e1" font-size="11">读 Owner Agent · 不重新学一遍</text>
+
+      <text x="20" y="146" fill="#fbbf24" font-size="12" font-weight="600">② 换人不重做</text>
+      <text x="30" y="168" fill="#cbd5e1" font-size="11">队友 clone 下来</text>
+      <text x="30" y="186" fill="#cbd5e1" font-size="11">.harness/ 已经在 · 直接上手</text>
+
+      <text x="20" y="222" fill="#fbbf24" font-size="12" font-weight="600">③ 可审计</text>
+      <text x="30" y="244" fill="#cbd5e1" font-size="11">wiki/ADR 记录决策过程</text>
+      <text x="30" y="262" fill="#cbd5e1" font-size="11">changes/ 记录变更历史</text>
+      <text x="30" y="280" fill="#cbd5e1" font-size="11">rules/ 记录团队规范演进</text>
+
+      <text x="20" y="316" fill="#fbbf24" font-size="12" font-weight="600">④ 进 git ≠ 缓存</text>
+      <text x="30" y="338" fill="#cbd5e1" font-size="11">缓存是机器生成的中间产物</text>
+      <text x="30" y="356" fill="#cbd5e1" font-size="11">这些是"项目交付审计记录"</text>
+
+      <line x1="20" y1="380" x2="320" y2="380" stroke="#334155"/>
+      <text x="20" y="404" fill="#22c55e" font-size="11">✅ 前 5 项必须进</text>
+      <text x="20" y="424" fill="#94a3b8" font-size="11">⚠ 后 2 项看团队习惯</text>
+    </g>
+
+  </g>
+</svg>
