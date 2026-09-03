@@ -1,97 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" font-family="system-ui, 'Microsoft YaHei', sans-serif">
-  <defs>
-    <linearGradient id="bg1" x1="0" x2="1" y1="0" y2="0">
-      <stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/>
-    </linearGradient>
-    <linearGradient id="blue" x1="0" x2="1">
-      <stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#0ea5e9"/>
-    </linearGradient>
-    <linearGradient id="green" x1="0" x2="1">
-      <stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#22c55e"/>
-    </linearGradient>
-  </defs>
-  <rect width="960" height="420" fill="url(#bg1)" rx="16"/>
-  <text x="480" y="52" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700">一行命令到底装了什么</text>
-  <text x="480" y="78" text-anchor="middle" fill="#94a3b8" font-size="13">npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" font-family="system-ui, 'Microsoft YaHei', sans-serif">
+  <rect width="960" height="400" fill="#0f172a" rx="16"/>
 
-  <!-- 命令入口 -->
-  <g transform="translate(40,110)">
-    <rect width="180" height="200" rx="12" fill="#1e293b" stroke="#334155"/>
-    <text x="90" y="34" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="600">npx 拉包</text>
+  <text x="480" y="42" text-anchor="middle" fill="#f8fafc" font-size="20" font-weight="700">一行命令到底装了什么</text>
+  <text x="480" y="66" text-anchor="middle" fill="#94a3b8" font-size="12">npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git</text>
+
+  <!-- 连线绘制函数：从 x1 到 x2，y 固定 -->
+  <!-- 入口 → ① -->
+  <polyline points="220,225 260,225" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+  <polygon points="260,220 260,230 268,225" fill="#38bdf8"/>
+
+  <!-- ① → ② -->
+  <polyline points="360,225 400,225" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+  <polygon points="400,220 400,230 408,225" fill="#38bdf8"/>
+
+  <!-- ② → ③ -->
+  <polyline points="565,225 605,225" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+  <polygon points="605,220 605,230 613,225" fill="#38bdf8"/>
+
+  <!-- ③ → ④ -->
+  <polyline points="770,225 810,225" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+  <polygon points="810,220 810,230 818,225" fill="#f59e0b"/>
+
+  <!-- 入口框 -->
+  <g transform="translate(40,150)">
+    <rect width="180" height="150" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="90" y="32" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="700">📥 npx 拉包</text>
     <text x="90" y="60" text-anchor="middle" fill="#cbd5e1" font-size="11">拉取仓库</text>
-    <text x="90" y="80" text-anchor="middle" fill="#cbd5e1" font-size="11">解到项目根目录</text>
-    <text x="90" y="100" text-anchor="middle" fill="#cbd5e1" font-size="11">生成 .harness/</text>
-    <text x="90" y="132" text-anchor="middle" fill="#475569" font-size="11">— — —</text>
-    <text x="90" y="158" text-anchor="middle" fill="#22c55e" font-size="11">⏱ 约 30 秒</text>
+    <text x="90" y="82" text-anchor="middle" fill="#cbd5e1" font-size="11">解到项目根目录</text>
+    <text x="90" y="104" text-anchor="middle" fill="#cbd5e1" font-size="11">生成 .harness/</text>
+    <text x="90" y="132" text-anchor="middle" fill="#22c55e" font-size="11" font-weight="600">⏱ 约 30 秒</text>
   </g>
 
-  <path d="M230,210 L270,210" stroke="url(#blue)" stroke-width="3" marker-end="url(#arr)"/>
-  <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/>
-    </marker>
-  </defs>
-
-  <!-- 4 步流程 -->
-  <g transform="translate(285,110)">
-    <rect width="630" height="200" rx="12" fill="#0f172a" stroke="#334155"/>
-    <text x="315" y="30" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="600">/apply-harness 自动完成 4 步</text>
-
-    <g transform="translate(20,50)">
-      <rect width="140" height="130" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
-      <text x="70" y="26" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">① 识别语言</text>
-      <text x="70" y="50" text-anchor="middle" fill="#cbd5e1" font-size="10">扫 pom.xml /</text>
-      <text x="70" y="66" text-anchor="middle" fill="#cbd5e1" font-size="10">go.mod / Cargo.toml</text>
-      <text x="70" y="82" text-anchor="middle" fill="#cbd5e1" font-size="10">/ composer.json /</text>
-      <text x="70" y="98" text-anchor="middle" fill="#cbd5e1" font-size="10">pyproject.toml</text>
-      <text x="70" y="118" text-anchor="middle" fill="#475569" font-size="10">120+ 框架覆盖</text>
-    </g>
-    <g transform="translate(180,50)">
-      <rect width="140" height="130" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
-      <text x="70" y="26" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">② 读项目名</text>
-      <text x="70" y="50" text-anchor="middle" fill="#cbd5e1" font-size="10">artifactId /</text>
-      <text x="70" y="66" text-anchor="middle" fill="#cbd5e1" font-size="10">name / module</text>
-      <text x="70" y="82" text-anchor="middle" fill="#cbd5e1" font-size="10">/ [project] name</text>
-      <text x="70" y="118" text-anchor="middle" fill="#475569" font-size="10">自动填充</text>
-    </g>
-    <g transform="translate(340,50)">
-      <rect width="140" height="130" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
-      <text x="70" y="26" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">③ 渲染 Owner</text>
-      <text x="70" y="50" text-anchor="middle" fill="#cbd5e1" font-size="10">owner.md 参数化</text>
-      <text x="70" y="66" text-anchor="middle" fill="#cbd5e1" font-size="10">30+ 语言参数</text>
-      <text x="70" y="82" text-anchor="middle" fill="#cbd5e1" font-size="10">+ 10 技能模板</text>
-      <text x="70" y="118" text-anchor="middle" fill="#475569" font-size="10">专属负责人</text>
-    </g>
-    <g transform="translate(500,50)">
-      <rect width="115" height="130" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
-      <text x="57" y="26" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="600">④ 注册技能</text>
-      <text x="57" y="50" text-anchor="middle" fill="#cbd5e1" font-size="10">检测 18 种</text>
-      <text x="57" y="66" text-anchor="middle" fill="#cbd5e1" font-size="10">AI 工具</text>
-      <text x="57" y="82" text-anchor="middle" fill="#cbd5e1" font-size="10">复制到目标</text>
-      <text x="57" y="98" text-anchor="middle" fill="#cbd5e1" font-size="10">技能目录</text>
-      <text x="57" y="118" text-anchor="middle" fill="#fbbf24" font-size="10">⚠ 命门</text>
-    </g>
+  <!-- 步骤 ① -->
+  <g transform="translate(260,150)">
+    <rect width="100" height="150" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="50" y="28" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700">① 识别</text>
+    <text x="50" y="52" text-anchor="middle" fill="#cbd5e1" font-size="10">扫 pom.xml</text>
+    <text x="50" y="70" text-anchor="middle" fill="#cbd5e1" font-size="10">go.mod</text>
+    <text x="50" y="88" text-anchor="middle" fill="#cbd5e1" font-size="10">Cargo.toml</text>
+    <text x="50" y="106" text-anchor="middle" fill="#cbd5e1" font-size="10">composer.json</text>
+    <text x="50" y="124" text-anchor="middle" fill="#cbd5e1" font-size="10">pyproject.toml</text>
+    <text x="50" y="144" text-anchor="middle" fill="#22c55e" font-size="10" font-weight="600">120+ 框架</text>
   </g>
 
-  <path d="M585,210 L625,210" stroke="url(#green)" stroke-width="3" marker-end="url(#arrg)"/>
-  <defs>
-    <marker id="arrg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#22c55e"/>
-    </marker>
-  </defs>
+  <!-- 步骤 ② -->
+  <g transform="translate(465,150)">
+    <rect width="100" height="150" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="50" y="28" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700">② 读名</text>
+    <text x="50" y="52" text-anchor="middle" fill="#cbd5e1" font-size="10">artifactId</text>
+    <text x="50" y="70" text-anchor="middle" fill="#cbd5e1" font-size="10">package.name</text>
+    <text x="50" y="88" text-anchor="middle" fill="#cbd5e1" font-size="10">go.mod module</text>
+    <text x="50" y="106" text-anchor="middle" fill="#cbd5e1" font-size="10">[project] name</text>
+    <text x="50" y="124" text-anchor="middle" fill="#475569" font-size="10">—</text>
+    <text x="50" y="144" text-anchor="middle" fill="#22c55e" font-size="10" font-weight="600">自动填充</text>
+  </g>
 
-  <!-- 落地产物 -->
-  <g transform="translate(635,110)">
-    <rect width="285" height="200" rx="12" fill="#0f172a" stroke="#22c55e"/>
-    <text x="142" y="30" text-anchor="middle" fill="#4ade80" font-size="13" font-weight="600">.harness/ 落地</text>
-    <g font-size="11" fill="#cbd5e1">
-      <text x="20" y="58">🧠 agents/owner.md</text>
-      <text x="20" y="80">📜 rules/ （5 条规则）</text>
-      <text x="20" y="102">⚙️ skills/ （30+ 技能）</text>
-      <text x="20" y="124">📖 wiki/ （知识库）</text>
-      <text x="20" y="146">📝 CONTEXT.md （术语表）</text>
-      <text x="20" y="168">📋 changes/ （变更追踪）</text>
-      <text x="20" y="190">🔗 .claude/skills/ ← 已注册</text>
-    </g>
+  <!-- 步骤 ③ -->
+  <g transform="translate(670,150)">
+    <rect width="100" height="150" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="50" y="28" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700">③ 渲染</text>
+    <text x="50" y="52" text-anchor="middle" fill="#cbd5e1" font-size="10">owner.md</text>
+    <text x="50" y="70" text-anchor="middle" fill="#cbd5e1" font-size="10">30+ 参数</text>
+    <text x="50" y="88" text-anchor="middle" fill="#cbd5e1" font-size="10">10 技能模板</text>
+    <text x="50" y="106" text-anchor="middle" fill="#475569" font-size="10">—</text>
+    <text x="50" y="124" text-anchor="middle" fill="#475569" font-size="10">—</text>
+    <text x="50" y="144" text-anchor="middle" fill="#22c55e" font-size="10" font-weight="600">专属负责人</text>
+  </g>
+
+  <!-- 步骤 ④ -->
+  <g transform="translate(875,150)">
+    <rect width="80" height="150" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="40" y="28" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">④ 注册</text>
+    <text x="40" y="52" text-anchor="middle" fill="#cbd5e1" font-size="10">检测</text>
+    <text x="40" y="70" text-anchor="middle" fill="#cbd5e1" font-size="10">18 种 AI</text>
+    <text x="40" y="88" text-anchor="middle" fill="#cbd5e1" font-size="10">复制技能</text>
+    <text x="40" y="106" text-anchor="middle" fill="#475569" font-size="10">—</text>
+    <text x="40" y="124" text-anchor="middle" fill="#475569" font-size="10">—</text>
+    <text x="40" y="144" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">⚠ 命门</text>
+  </g>
+
+  <!-- 落地 框 -->
+  <g transform="translate(30,325)">
+    <rect width="900" height="60" rx="8" fill="#0f172a" stroke="#22c55e"/>
+    <text x="20" y="26" fill="#4ade80" font-size="13" font-weight="700">.harness/ 落地（前 5 项必须进 git）</text>
+    <text x="20" y="48" fill="#cbd5e1" font-size="11">agents/owner.md · rules/ · skills/ · wiki/ · CONTEXT.md  →  可审计、可回溯、可交接</text>
   </g>
 </svg>
