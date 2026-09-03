@@ -33,3 +33,9 @@ description: 对高信任一手来源调研问题，结果作为 Markdown 文件
 - 调研结果已写入 `.harness/wiki/research/` 下的 Markdown
 - 每个断言有来源引用
 - 主 agent 已收到摘要
+---
+
+> **来源 & 作者**
+> - 公众号：华仔聊技术
+> - 知识星球：华仔·AI高并发全栈训练营
+> - 作者：王江华@huazai

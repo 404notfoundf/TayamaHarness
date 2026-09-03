@@ -99,3 +99,9 @@ graph LR
 - `set`/`rebuild` 后 `_relations.json` 与 `_graph.md` 已同步
 - `impact` 已输出分级影响清单（🔴/🟡/🟢）
 - `validate` 无一致性错误（或已提示 rebuild）
+---
+
+> **来源 & 作者**
+> - 公众号：华仔聊技术
+> - 知识星球：华仔·AI高并发全栈训练营
+> - 作者：王江华@huazai

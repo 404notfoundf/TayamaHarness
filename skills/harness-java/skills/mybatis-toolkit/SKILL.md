@@ -146,3 +146,9 @@ description: MyBatis 工具封装——通用分页（PageHelper 封装）、乐
 - ❌ 不修改已有的 Mapper XML 文件（只新增拦截器和配置）
 - ❌ 不引入未确认的 MyBatis 版本（项目中已有的优先复用）
 - ❌ 不生成数据库表结构（由 migration-toolkit 处理）
+---
+
+> **来源 & 作者**
+> - 公众号：华仔聊技术
+> - 知识星球：华仔·AI高并发全栈训练营
+> - 作者：王江华@huazai

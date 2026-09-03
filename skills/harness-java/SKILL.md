@@ -57,3 +57,9 @@ description: Java 语言规范包 — 编码规范、工程结构（SDD-TDD/开�
 | `eventbus-toolkit` | 事件总线工具封装（同步/异步/事务事件/事件追踪） |
 
 > **辅助技能**: `/harness-me`（需求打磨）、`domain-modeling`（领域语言维护）、`research`（外部事实查证）、`resolving-merge-conflicts`（合并冲突解决）
+---
+
+> **来源 & 作者**
+> - 公众号：华仔聊技术
+> - 知识星球：华仔·AI高并发全栈训练营
+> - 作者：王江华@huazai

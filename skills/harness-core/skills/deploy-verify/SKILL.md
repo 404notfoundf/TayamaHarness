@@ -121,3 +121,9 @@ curl {{METRICS_ENDPOINT}}  # 指标可读
 2. 然后根据检查结果执行分支：
    - **验证通过** → 更新 `change.md` 状态 `verifying → done`，变更交付完成，同步相关 `.harness/wiki/` 文档
    - **验证失败** → 退回 ⑤ unit-test-ci（verify.md 作为排查参考依据）
+---
+
+> **来源 & 作者**
+> - 公众号：华仔聊技术
+> - 知识星球：华仔·AI高并发全栈训练营
+> - 作者：王江华@huazai

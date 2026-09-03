@@ -29,3 +29,9 @@ description: 解决进行中的 git merge/rebase 冲突。当需要解决未完�
 - 所有冲突 hunk 已解决
 - 变更已 stage 并 commit（或 rebase 完成）
 - 自动化检查通过
+---
+
+> **来源 & 作者**
+> - 公众号：华仔聊技术
+> - 知识星球：华仔·AI高并发全栈训练营
+> - 作者：王江华@huazai

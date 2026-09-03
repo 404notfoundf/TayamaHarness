@@ -82,3 +82,9 @@ loop:
 - 成功停机：`reviewing` 通过，`status: ci`，已输出 `<<<HARNESS done stage=ci>>>` 并提示交人工
 - 或被 blocked / stuck / 预算耗尽停机，已输出对应机器可读信号与人类可读原因
 - 全程未触碰 `ci → verifying → done` 及发布链路
+---
+
+> **来源 & 作者**
+> - 公众号：华仔聊技术
+> - 知识星球：华仔·AI高并发全栈训练营
+> - 作者：王江华@huazai
