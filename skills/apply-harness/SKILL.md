@@ -224,6 +224,7 @@ disable-model-invocation: true
 ├── SDD-TDD模式.md       ← 来自 harness-core（跨语言通用）
 ├── 开发流程规范.md       ← 来自 harness-core（跨语言通用）
 ├── 变更定位规则.md       ← 来自 harness-core（跨语言通用）
+├── 知识库治理规则.md     ← 来自 harness-core（跨语言通用）
 ├── 运行时可靠性.md       ← 来自 harness-core（后端）/ 来自 harness-front（前端特有）
 ├── 编码规范.md           ← 来自 harness-{lang}（语言特有）
 └── 工程结构.md           ← 来自 harness-{lang}（语言特有）
@@ -264,6 +265,8 @@ disable-model-invocation: true
     - `harness-ship` — 发布工作流（版本/tag/CI/CD，留人确认）
     - `harness-changelog` — 变更日志（可追溯条目）
     - `harness-standard` — 规范库管理（新增/修订/归档/审批）
+    - `legacy-bootstrap` — 老系统冷启动（submodule 关联 src/、清洗 SKILL、采访稿）
+    - `knowledge-health` — 知识健康检查（重复/冲突/失效链接/无来源结论）
 
 4. **清理残留技能目录**：删除 `.harness/skills/{lang}/` 下在本仓库中已不存在的旧技能目录（如旧版本语言包中的 `agents/`、旧版专属技能等），确保 `.harness/skills/` 仅包含当前渲染的技能，无残留文件干扰。
 
@@ -356,7 +359,9 @@ disable-model-invocation: true
     ├── harness-retro/             # 迭代复盘（历史留档聚合趋势报告）
     ├── harness-ship/              # 发布工作流（版本/tag/CI/CD，留人确认）
     ├── harness-changelog/         # 变更日志（可追溯条目）
-    └── harness-standard/          # 规范库管理（新增/修订/归档/审批）
+    ├── harness-standard/          # 规范库管理（新增/修订/归档/审批）
+    ├── legacy-bootstrap/          # 老系统冷启动（submodule 关联 src/、清洗 SKILL、采访稿）
+    └── knowledge-health/          # 知识健康检查（重复/冲突/失效链接/无来源结论）
 ```
 
 ### Step 5.5: 检测当前 AI 工具并生成技能目录
@@ -455,21 +460,45 @@ mkdir -p .claude/skills/
 └── _TEMPLATE/
     ├── change.md      ← 变更卡模板
     ├── review.md      ← 评审报告模板
-    └── verify.md      ← 部署验证报告模板
+    ├── verify.md      ← 部署验证报告模板（含动态事实核验 + traceId/断言回填）
+    └── archive.md     ← 归档 + 知识回流清单模板
 ```
+
+### Step 6.1: 初始化机器可读迭代协议（可选增强）
+
+从 `harness-core/templates/iterations/` 复制到 `.harness/iterations/`：
+
+```
+.harness/iterations/
+└── _TEMPLATE/
+    ├── prd.md          ← 需求 + 验收标准（REQ/AC）
+    ├── solution.md     ← 技术方案（REQ→任务/观测点）
+    └── test/
+        ├── design.md   ← 测试设计（AC→测试方法）
+        ├── cases.md    ← 测试用例（TC）
+        └── report.md   ← 测试报告（真实证据）
+```
+
+> 复杂需求可将单文件 `change.md` 扩展为多文件迭代协议，使阶段产物可被机器对账。归档与知识回流统一落在 `.harness/changes/<id>/archive.md`（不随迭代协议拆分）。实例化由需求阶段（`harnessing`）把 `_TEMPLATE/` 复制为 `.harness/iterations/<ITER-ID>/`，并在 `change.md` 的 `iteration:` 字段回填（阶段间接口门禁见 `rules/开发流程规范.md §2.2`）。
 
 ### Step 7: 初始化领域知识库
 
-从 `harness-core/templates/wiki/` 复制到 `.harness/wiki/`：
+从 `harness-core/templates/wiki/` 复制到 `.harness/wiki/`，从 `harness-core/templates/tech/` 复制到 `.harness/tech/`：
 
 ```
 .harness/wiki/
+├── _TEMPLATE/知识文件模板.md   ← 业务知识模板（frontmatter: title/category/tags/status/version/source）
 ├── 业务模型.md     ← 业务结构与关系模板，待补充
 ├── 接口协议.md     ← 接口契约模板，待补充
 ├── 数据模型.md     ← 数据模型模板，待补充
 ├── 架构决策.md     ← ADR 记录模板，待补充
 └── ADR-FORMAT.md   ← ADR 编写规范（什么值得写 / 怎么写）
+
+.harness/tech/
+└── _TEMPLATE/链路模板.md       ← 技术上下文模板（链路/观测方式/废弃状态，含 wiki_ref）
 ```
+
+> 分层纪律见 `rules/知识库治理规则.md`：wiki 存业务知识、tech 存技术上下文，不复制代码，事实来源（source）必填、链接用相对路径。
 
 ### Step 7.1: 初始化共享语言上下文
 
@@ -483,6 +512,19 @@ mkdir -p .claude/skills/
 
 > **CONTEXT.md 的作用**：AI 与人类之间的共享语言机制，记录项目特有的领域术语、缩写、决策、约定。由 `domain-modeling` 技能在对话中主动维护——术语敲定后**当场写**，不批量累积。每次对话结束时，AI 应检查是否有新术语/决策需要补充。
 > **CONTEXT-FORMAT.md 的作用**：定义 CONTEXT.md 的编写规范（只存术语、要有主见、定义克制、只收项目特有概念）。
+
+### Step 7.2: 初始化动态事实来源与公共能力依赖声明
+
+从 `harness-core/templates/动态事实来源.md` 复制到 `.harness/动态事实来源.md`，从 `harness-core/templates/skill-dependencies.json` 复制到 `.harness/skill-dependencies.json`：
+
+```
+.harness/
+├── 动态事实来源.md          ← 动态事实（工作项/环境/日志/DB/配置）经 MCP/CLI 连接清单
+└── skill-dependencies.json  ← 公共能力依赖声明（来源 + 兼容版本，声明而非复制）
+```
+
+> **动态事实来源**：稳定上下文进 Git，动态事实从权威系统实时查询，两者在 Agent 执行时汇合。
+> **skill-dependencies.json**：公共能力声明依赖而非复制进项目，便于统一升级（三层结构见 `rules/开发流程规范.md §1.1`）。
 
 ### Step 8: 输出项目摘要卡片
 

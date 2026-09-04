@@ -30,8 +30,9 @@ description: 按已确认的需求卡与编码规范，小步实现可编译的 
    - 恰好 1 个 → 自动选中
    - 0 个 → 报错：无处于 `coding` 状态的 change，退回 ① harnessing
    - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
-2. 加载上下文：`.harness/rules/变更定位规则.md` + `.harness/rules/工程结构.md` + `编码规范.md` + 相关 `.harness/wiki/*`
-3. 缺前置 → 退回 ① harnessing
+2. 加载上下文：`.harness/rules/变更定位规则.md` + `.harness/rules/工程结构.md` + `编码规范.md` + 相关 `.harness/wiki/*`（业务规则）+ 相关 `.harness/tech/*`（技术链路）
+3. **迭代协议门禁（若走 iterations）**：`solution.md` 与 `test/design.md` 未确认前，**禁止进入编码**（见 `开发流程规范.md §2.2` 阶段间接口）
+4. 缺前置 → 退回 ① harnessing
 
 ---
 

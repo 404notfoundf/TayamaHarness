@@ -74,15 +74,17 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 
 ## 1. Spec 轴（需求匹配）
 
-### 维度 1: 功能完整性（对照 change.md）
+### 维度 1: 功能完整性（对照 change.md / iterations 协议）
 - [ ] 实现了 **所有** AC？
 - [ ] 处理了 **所有** 边界情况？
 - [ ] 有 scope creep（未要求的代码/功能）？
 - [ ] 实现与设计约束一致？
+- [ ] （若走 iterations）`prd.md` 每条 REQ 都有 `solution.md` 任务承接、每条 AC 都有 `test/cases.md` 的 TC 覆盖？
 
 ### 维度 2: SDD 合规
-- [ ] `change.md` 是否足够构成规格真相源？
-- [ ] 实现是否严格对齐 change.md，而非擅自扩 scope？
+- [ ] `change.md`（或 `prd.md`）是否足够构成规格真相源？
+- [ ] 实现是否严格对齐 change.md / prd.md，而非擅自扩 scope？
+- [ ] （若走 iterations）REQ/AC/TC 编号一致、无孤立 TC（TC 无 AC 归属）、无缺失 AC 的 TC？
 
 ---
 

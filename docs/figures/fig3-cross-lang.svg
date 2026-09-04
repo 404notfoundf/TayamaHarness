@@ -79,8 +79,8 @@
     </g>
   </g>
 
-  <!-- 底部结论 -->
-  <g transform="translate(40,478)">
+  <!-- 底部结论：间距加大，外框上边界 315+150=465，结论下移到 y=490 -->
+  <g transform="translate(40,492)">
     <text x="0" y="0" fill="#fbbf24" font-size="12" font-weight="700">同一个流程、各自的语言细节</text>
     <text x="220" y="0" fill="#94a3b8" font-size="11">Owner Agent 和 10 个流水线技能模板，靠参数化适配不同语言</text>
   </g>

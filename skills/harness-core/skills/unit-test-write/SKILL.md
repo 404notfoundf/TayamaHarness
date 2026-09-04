@@ -39,7 +39,7 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 ## 3. 工作流程
 
 ### Step 1: 梳理测试矩阵
-从 `change.md` 提取所有 AC 与边界情况，建立"测试点 → 测试用例"映射表，确保无遗漏。
+从 `change.md`（默认）或 `.harness/iterations/<id>/test/design.md`（若走迭代协议）提取所有 AC 与边界情况，建立"测试点 → 测试用例"映射表，确保无遗漏。
 
 ### Step 2: 分层测试
 | 层级 | 内容 |

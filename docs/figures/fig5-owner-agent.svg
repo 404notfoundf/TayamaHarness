@@ -68,8 +68,8 @@
     <text x="100" y="230" text-anchor="middle" fill="#94a3b8" font-size="10">人类只签验收</text>
   </g>
 
-  <!-- 底部结论 -->
-  <g transform="translate(40,420)">
+  <!-- 底部结论：y=435（离 viewBox 底部 25px） -->
+  <g transform="translate(40,440)">
     <rect width="880" height="40" rx="6" fill="#0f172a" stroke="#334155"/>
     <text x="20" y="26" fill="#fbbf24" font-size="12" font-weight="700">没有 Owner Agent → AI 是通用助手</text>
     <text x="330" y="26" fill="#f8fafc" font-size="12">有 Owner Agent → AI 是这个项目的"专属负责人"</text>

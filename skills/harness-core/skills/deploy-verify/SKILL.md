@@ -29,7 +29,8 @@ description: 部署后冒烟、健康检查、关键链路验证，确保变更�
    - **规则**：使用 `git diff HEAD` 作为验证范围，包含工作区未提交的变更
    - 如果 `git diff HEAD` 为空，报错：无变更可验证，退回 ⑤ unit-test-ci
    - 在报告开头明确标注验证范围（文件数、增减行数、分支名）
-3. 缺前置 → 退回 ⑤ unit-test-ci
+3. **加载动态事实来源**：读 `.harness/动态事实来源.md`，确认环境/日志/指标/工作项等动态事实的权威来源与连接方式，供验证与回滚时查询真实状态
+4. 缺前置 → 退回 ⑤ unit-test-ci
 
 ---
 
@@ -119,7 +120,7 @@ curl {{METRICS_ENDPOINT}}  # 指标可读
 
 1. ✅ 将完整报告写入 `.harness/changes/<id>/verify.md`
 2. 然后根据检查结果执行分支：
-   - **验证通过** → 更新 `change.md` 状态 `verifying → done`，变更交付完成，同步相关 `.harness/wiki/` 文档
+   - **验证通过** → 更新 `change.md` 状态 `verifying → done`，变更交付完成，同步相关 `.harness/wiki/`（业务规则）与 `.harness/tech/`（技术链路）文档
    - **验证失败** → 退回 ⑤ unit-test-ci（verify.md 作为排查参考依据）
 ---
 

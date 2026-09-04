@@ -13,6 +13,8 @@
 - [变更管理](change-management.md) — 状态机与文档模板
 - [语言规范](languages/) — 各语言编码标准
 - [学习路径](learning-path.md) — 学习目标与方法（知识星球专栏版）
+- [吸收清单](absorb-list.md) — 《AI 驱动研发体系的实践和思考》→ 脚手架的吸收规划与实施清单
+- [吸收落地使用指南](absorb-usage-guide.md) — 新资产怎么用、如何与 6 阶段流水线联动
 
 ## 专栏文章
 
@@ -23,6 +25,7 @@ Harness 方法论与技术实践的深度拆解系列（共 51 篇，图文并�
 - 🔗 第二季 命令深度拆解（12 篇）：[harnessing](articles/column-04-harnessing.md) → [coding-skill](articles/column-05-coding-skill.md) → [unit-test-write](articles/column-06-unit-test-write.md) → [expert-reviewer](articles/column-07-expert-reviewer.md) → [unit-test-ci](articles/column-22-unit-test-ci.md) → [deploy-verify](articles/column-08-deploy-verify.md) → [domain-modeling](articles/column-23-domain-modeling.md) → [diagnosing-bugs](articles/column-09-diagnosing-bugs.md) → [install-skill](articles/column-11-install-skill.md) → [arch-review](articles/column-14-arch-review-golang.md) → [handoff](articles/column-15-handoff-golang.md) → [harness-me](articles/column-16-harness-me-golang.md)
 - 🔗 第三季 实战与扩展（6 篇）：[自定义 Skill](articles/column-17-custom-skill.md) → [新增框架](articles/column-18-new-framework.md) → [迁移实战](articles/column-19-migration.md) → [Change Management](articles/column-20-change-management.md) → [Owner Agent](articles/column-52-owner-agent.md) → [6 阶段流水线](articles/column-53-pipeline.md)
 - 🔗 第四季 新增技能文档（28 篇）：[research](articles/column-24-research.md) / [merge-conflicts](articles/column-25-resolving-merge-conflicts.md) / [harness-* 机制](articles/column-26-harness-status.md)（26~29）/ [harness-* 工程](articles/column-30-harness-e2e.md)（30~33）/ [harness-* 治理](articles/column-34-harness-retro.md)（34~37）/ [Toolkit 工具箱](articles/column-38-database-migration-toolkit.md)（38~50）
+- 🔗 第五季 AI 驱动研发体系（6 篇）：[演进路径](articles/column-54-evolution.md) → [上下文瓶颈](articles/column-55-context-bottleneck.md) → [本地优先](articles/column-56-local-first.md) → [文件 Wiki](articles/column-57-file-wiki.md) → [共性协同](articles/column-58-common-vs-domain.md) → [Harness 收缩与 FDE](articles/column-59-fde.md)
 
 ## 核心概念
 
@@ -74,6 +77,8 @@ Harness 方法论与技术实践的深度拆解系列（共 51 篇，图文并�
 | `harness-ship` | 发布工作流 | [文档](skills/harness-ship.md) |
 | `harness-changelog` | 变更日志维护 | [文档](skills/harness-changelog.md) |
 | `harness-standard` | 规范库管理 | [文档](skills/harness-standard.md) |
+| `legacy-bootstrap` | 老系统冷启动（submodule/清洗/采访稿） | [文档](skills/legacy-bootstrap.md) |
+| `knowledge-health` | 知识健康检查（重复/冲突/失效链接） | [文档](skills/knowledge-health.md) |
 
 ## 初始化技能
 

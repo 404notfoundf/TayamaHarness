@@ -24,7 +24,8 @@ description: 机械化执行全量质量门禁——静态分析、竞态检测�
    - 恰好 1 个 → 自动选中
    - 0 个 → 报错：无处于 `ci` 状态的 change，退回 ④ expert-reviewer
    - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
-2. 缺前置 → 退回 ④ expert-reviewer
+2. **迭代协议证据门禁（若走 iterations）**：`test/report.md` 必须有真实执行证据（覆盖率/通过数），无证据 → 退回 ③ unit-test-write 补齐
+3. 缺前置 → 退回 ④ expert-reviewer
 
 ---
 

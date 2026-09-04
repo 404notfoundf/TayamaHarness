@@ -26,6 +26,8 @@ description: 迭代复盘——读取 .harness/changes/ 历史与状态留档，
 | `.harness/changes/<id>/verify.md` | 部署验证结论、回滚记录 |
 | `.harness/changes/<id>/quality-report.md` | 覆盖率、flow→test 映射、放行签字 |
 | `.harness/changes/TECH-DEBT.md` | 技术债条目与优先级 |
+| `.harness/changes/*/archive.md` | 知识回流清单（本次迭代确认了哪些业务规则→wiki、链路→tech） |
+| 手记 / AI Trace 日志（可选） | 对话内补充上下文次数、同一问题纠正次数 |
 | git 历史 | 提交节奏、commit message 含 change ID 的比例 |
 
 ## 3. 执行流程
@@ -44,6 +46,8 @@ description: 迭代复盘——读取 .harness/changes/ 历史与状态留档，
 | 覆盖率趋势 | quality-report.md 的覆盖率数字 | 下降 → 测试保护在退化 |
 | 技术债变化 | TECH-DEBT.md 增删 | 债只增不减 → 熵失控 |
 | 提交质量 | commit message 含 change ID 的比例 | 低 → 追溯断裂 |
+| 知识回流率 | archive.md 中「是否已更新」勾选比例 | 低 → 知识库与代码漂移 |
+| AI Trace 信号 | 对话内补充上下文次数 / 同一问题纠正次数（可选，需 AI Trace 日志） | 高 → 项目 Harness 有待完善 |
 
 ### Step 3: 出报告（写 `.harness/retro/<日期>.md`）
 
@@ -73,6 +77,7 @@ description: 迭代复盘——读取 .harness/changes/ 历史与状态留档，
 ### Step 4: 转化
 - 把可执行的改进项**当场登记**：写入 `TECH-DEBT.md`（按优先级）或建议新建 change。
 - 系统性问题（如"每个 change 都在 reviewing 被打回"）→ 建议检查需求阶段是否充分（`harnessing`）或补充设计阶段。
+- 知识漂移信号（wiki/tech 出现重复主题、冲突 status、失效链接、无来源结论）→ 建议运行 `/knowledge-health` 做知识健康检查。
 
 ## 4. 纪律
 
@@ -86,6 +91,7 @@ description: 迭代复盘——读取 .harness/changes/ 历史与状态留档，
 |------|------|
 | 当前状态总览 | `/harness-status` |
 | 历史趋势复盘 | **本技能**（`/harness-retro`） |
+| 知识健康检查 | `/knowledge-health` |
 | 改进项落实 | 新建 change（`/harnessing`）或技术债登记 |
 
 ## 完成标志

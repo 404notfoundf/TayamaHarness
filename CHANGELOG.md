@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **吸收《AI 驱动研发体系的实践和思考》（淘天集团-营销&交易技术团队）**:
+  - 新增机器可读迭代协议模板 `iterations/_TEMPLATE/`（`prd.md` / `solution.md` / `test/design.md` / `test/cases.md` / `test/report.md`），REQ/AC/TC 编号与阶段间接口门禁见 `rules/开发流程规范.md §2.2`
+  - 新增 wiki/tech 分层知识库模板（`wiki/_TEMPLATE/知识文件模板.md`、`tech/_TEMPLATE/链路模板.md`）与规则 `知识库治理规则.md`
+  - 新增 `动态事实来源.md` 与 `skill-dependencies.json`（公共能力声明依赖而非复制）
+  - 新增两个技能：`legacy-bootstrap`（老系统冷启动）、`knowledge-health`（知识健康检查）
+  - 6 个流水线技能焊入对新资产的消费点（`harnessing` / `coding-skill` / `unit-test-write` / `expert-reviewer` / `unit-test-ci` / `deploy-verify`）；`archive.md` 落于 `changes/_TEMPLATE/` 作知识回流入口，`harness-ship` 增加发布后回查、`harness-retro` 增加知识回流率与 AI Trace 信号
+
 - **重构：语言包技能单一事实源（方案 A）**:
   - 6 个语言包（java/python/golang/rust/php/front）内的 10 个流水线/辅助技能全部收敛到 `harness-core/skills/` 参数化模板，语言包不再维护同名副本，消除 60 份重复文件与内容漂移
   - `harness-core/skills/` 新增 5 个参数化模板：`arch-review`、`deploy-verify`、`expert-reviewer`、`harnessing`、`unit-test-ci`
