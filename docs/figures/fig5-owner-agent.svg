@@ -41,13 +41,13 @@
     <text x="30" y="108" fill="#cbd5e1" font-size="10">应用负责人智能体</text>
 
     <text x="16" y="134" fill="#fbbf24" font-size="11" font-weight="700">• 你的语言栈</text>
-    <text x="30" y="152" fill="#cbd5e1" font-size="10">Java 21 + Spring Boot</text>
+    <text x="30" y="152" fill="#cbd5e1" font-size="10">Go 1.25 + go-zero</text>
 
     <text x="16" y="178" fill="#fbbf24" font-size="11" font-weight="700">• 构建命令</text>
-    <text x="30" y="196" fill="#cbd5e1" font-size="10">mvn compile / test</text>
+    <text x="30" y="196" fill="#cbd5e1" font-size="10">go build / test / vet</text>
 
     <text x="16" y="222" fill="#fbbf24" font-size="11" font-weight="700">• 架构分层</text>
-    <text x="30" y="240" fill="#cbd5e1" font-size="10">Ctrl → Service → Repo</text>
+    <text x="30" y="240" fill="#cbd5e1" font-size="10">handler → logic → rpc</text>
 
     <text x="16" y="266" fill="#fbbf24" font-size="11" font-weight="700">• 规则 / 技能</text>
     <text x="30" y="284" fill="#cbd5e1" font-size="10">5 条 rules · 30+ skills</text>
@@ -57,11 +57,11 @@
   <g transform="translate(740,140)">
     <rect width="200" height="240" rx="10" fill="#1e293b" stroke="#22c55e" stroke-width="1.5"/>
     <text x="100" y="32" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="700">📦 项目</text>
-    <text x="100" y="60" text-anchor="middle" fill="#cbd5e1" font-size="11">prd-ingestion-server</text>
+    <text x="100" y="60" text-anchor="middle" fill="#cbd5e1" font-size="11">huazai-go-im</text>
     <line x1="20" y1="80" x2="180" y2="80" stroke="#334155"/>
     <text x="100" y="104" text-anchor="middle" fill="#cbd5e1" font-size="11">src/ 业务代码</text>
     <text x="100" y="124" text-anchor="middle" fill="#cbd5e1" font-size="11">test/ 测试代码</text>
-    <text x="100" y="144" text-anchor="middle" fill="#cbd5e1" font-size="11">pom.xml</text>
+    <text x="100" y="144" text-anchor="middle" fill="#cbd5e1" font-size="11">go.mod</text>
     <line x1="20" y1="164" x2="180" y2="164" stroke="#334155"/>
     <text x="100" y="190" text-anchor="middle" fill="#fbbf24" font-size="11">AI 按约束写</text>
     <text x="100" y="210" text-anchor="middle" fill="#22c55e" font-size="11">机器按检查验</text>

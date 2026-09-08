@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" font-family="system-ui, 'Microsoft YaHei', sans-serif">
   <rect width="960" height="460" fill="#0f172a" rx="16"/>
 
-  <text x="480" y="42" text-anchor="middle" fill="#f8fafc" font-size="19" font-weight="700">实演：在 prd-ingestion-server 上跑一遍</text>
-  <text x="480" y="66" text-anchor="middle" fill="#94a3b8" font-size="12">需求："给 PRD 导入接口加文件类型白名单" · Spring Boot 3.4.4 · Java 21 · MinIO · MySQL</text>
+  <text x="480" y="42" text-anchor="middle" fill="#f8fafc" font-size="19" font-weight="700">实演：在 huazai-go-im 上跑一遍 C-001</text>
+  <text x="480" y="66" text-anchor="middle" fill="#94a3b8" font-size="12">变更卡 C-001「群聊功能补齐 + Bug 修复 + 优化」 · 20 项 AC · go-zero · MongoDB · Kafka</text>
 
   <!-- 4 个框：w=180, 间距 30, y=95, h=320 -->
   <!-- 位置：40 / 250 / 460 / 670 (w=250 for last) -->
@@ -25,18 +25,17 @@
   <g transform="translate(40,95)">
     <rect width="180" height="320" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
     <text x="90" y="28" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">① 需求 · harnessing</text>
-    <text x="15" y="56" fill="#fbbf24" font-size="11" font-weight="700">3 条 AC：</text>
-    <text x="25" y="80" fill="#cbd5e1" font-size="10">• 白名单外 → 400</text>
-    <text x="35" y="98" fill="#cbd5e1" font-size="10">+ FILE_TYPE_NOT_ALLOWED</text>
-    <text x="25" y="128" fill="#cbd5e1" font-size="10">• 白名单内</text>
-    <text x="35" y="146" fill="#cbd5e1" font-size="10">(docx/pdf/doc)</text>
-    <text x="35" y="164" fill="#cbd5e1" font-size="10">→ 入 MinIO + 落 DB</text>
-    <text x="25" y="196" fill="#cbd5e1" font-size="10">• 非法类型 → WARN</text>
-    <text x="35" y="214" fill="#cbd5e1" font-size="10">+ traceId</text>
-    <line x1="15" y1="238" x2="165" y2="238" stroke="#334155"/>
-    <text x="15" y="262" fill="#475569" font-size="10">产物：</text>
-    <text x="25" y="280" fill="#475569" font-size="10">.harness/changes/001/</text>
-    <text x="25" y="298" fill="#475569" font-size="10">spec.md</text>
+    <text x="15" y="56" fill="#fbbf24" font-size="11" font-weight="700">20 项 AC：</text>
+    <text x="25" y="80" fill="#cbd5e1" font-size="10">• 8 功能补齐：管理员</text>
+    <text x="35" y="98" fill="#cbd5e1" font-size="10">扫码/审批/禁言/历史</text>
+    <text x="25" y="128" fill="#cbd5e1" font-size="10">• 5 Bug 修复</text>
+    <text x="35" y="146" fill="#cbd5e1" font-size="10">解散/计数/零值/缓存</text>
+    <text x="25" y="176" fill="#cbd5e1" font-size="10">• 7 优化：原子计数</text>
+    <text x="35" y="194" fill="#cbd5e1" font-size="10">缓存/离线队列</text>
+    <line x1="15" y1="220" x2="165" y2="220" stroke="#334155"/>
+    <text x="15" y="244" fill="#475569" font-size="10">产物：</text>
+    <text x="25" y="262" fill="#475569" font-size="10">.harness/changes/</text>
+    <text x="25" y="280" fill="#475569" font-size="10">C-001/change.md</text>
     <text x="90" y="316" text-anchor="middle" fill="#22c55e" font-size="11" font-weight="700">✅ 人确认</text>
   </g>
 
@@ -47,15 +46,15 @@
     <text x="15" y="56" fill="#fbbf24" font-size="11" font-weight="700">逐 AC 实现：</text>
     <text x="25" y="80" fill="#cbd5e1" font-size="10">先红：写失败单测</text>
     <text x="25" y="100" fill="#cbd5e1" font-size="10">再绿：最小实现</text>
-    <text x="25" y="120" fill="#cbd5e1" font-size="10">重构：抽出 validator</text>
+    <text x="25" y="120" fill="#cbd5e1" font-size="10">重构：抽公共模型</text>
     <text x="25" y="150" fill="#475569" font-size="10">垂直切片</text>
     <text x="25" y="168" fill="#475569" font-size="10">不批量</text>
-    <text x="25" y="186" fill="#475569" font-size="10">一次一问</text>
+    <text x="25" y="186" fill="#475569" font-size="10">改动 123 files</text>
     <line x1="15" y1="210" x2="165" y2="210" stroke="#334155"/>
-    <text x="15" y="234" fill="#475569" font-size="10">涉及文件：</text>
-    <text x="25" y="254" fill="#cbd5e1" font-size="10">ImportValidator.java</text>
-    <text x="25" y="272" fill="#cbd5e1" font-size="10">FileTypeAllowList</text>
-    <text x="25" y="290" fill="#cbd5e1" font-size="10">ImportController.java</text>
+    <text x="15" y="234" fill="#475569" font-size="10">涉及：</text>
+    <text x="25" y="254" fill="#cbd5e1" font-size="10">socialsrv/rpc logic</text>
+    <text x="25" y="272" fill="#cbd5e1" font-size="10">models + bitmap.go</text>
+    <text x="25" y="290" fill="#cbd5e1" font-size="10">tasksync 消息推送</text>
     <text x="90" y="316" text-anchor="middle" fill="#22c55e" font-size="11" font-weight="700">✅ 编译过</text>
   </g>
 
@@ -63,19 +62,18 @@
   <g transform="translate(460,95)">
     <rect width="180" height="320" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
     <text x="90" y="28" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">③ 单测 · unit-test-write</text>
-    <text x="15" y="56" fill="#fbbf24" font-size="11" font-weight="700">AC → 测试：</text>
-    <text x="25" y="80" fill="#cbd5e1" font-size="10">3 白名单外</text>
-    <text x="35" y="98" fill="#cbd5e1" font-size="10">(.exe/.bat/.js)</text>
-    <text x="25" y="122" fill="#cbd5e1" font-size="10">3 白名单内</text>
-    <text x="35" y="140" fill="#cbd5e1" font-size="10">(.docx/.pdf/.doc)</text>
-    <text x="25" y="164" fill="#cbd5e1" font-size="10">1 边界</text>
-    <text x="35" y="182" fill="#cbd5e1" font-size="10">(大小写敏感)</text>
+    <text x="15" y="56" fill="#fbbf24" font-size="11" font-weight="700">AC → 用例：</text>
+    <text x="25" y="80" fill="#cbd5e1" font-size="10">功能每条一用例</text>
+    <text x="25" y="100" fill="#cbd5e1" font-size="10">Bug 各一回归用例</text>
+    <text x="25" y="122" fill="#cbd5e1" font-size="10">边界：群主不可退群</text>
+    <text x="35" y="140" fill="#cbd5e1" font-size="10">被踢不可重入</text>
+    <text x="25" y="164" fill="#cbd5e1" font-size="10">bitmap Resize 用例</text>
     <line x1="15" y1="204" x2="165" y2="204" stroke="#334155"/>
     <text x="15" y="228" fill="#475569" font-size="10">覆盖率 ≥ 80%</text>
     <text x="15" y="246" fill="#475569" font-size="10">不测 happy path</text>
     <text x="15" y="264" fill="#475569" font-size="10">命令：</text>
-    <text x="25" y="284" fill="#22c55e" font-size="10">mvn test -Dtest=</text>
-    <text x="25" y="302" fill="#22c55e" font-size="10">ImportValidatorTest</text>
+    <text x="25" y="284" fill="#22c55e" font-size="10">go test ./...</text>
+    <text x="25" y="302" fill="#22c55e" font-size="10">全绿 TEST_ALL=0</text>
   </g>
 
   <!-- ④⑤⑥ 评审+CI+部署 -->
@@ -84,23 +82,23 @@
     <text x="125" y="28" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="700">④⑤⑥ 评审 + CI + 部署</text>
     <text x="15" y="56" fill="#fbbf24" font-size="11" font-weight="700">专家评审：</text>
     <text x="25" y="76" fill="#cbd5e1" font-size="10">Spec 轴 + Standards 轴</text>
-    <text x="25" y="94" fill="#22c55e" font-size="10">0 个 🔴 才放行</text>
+    <text x="25" y="94" fill="#22c55e" font-size="10">六轮复审 0 个 🔴</text>
 
     <text x="15" y="122" fill="#fbbf24" font-size="11" font-weight="700">CI 门禁：</text>
-    <text x="25" y="142" fill="#cbd5e1" font-size="10">mvn checkstyle:check</text>
-    <text x="25" y="160" fill="#cbd5e1" font-size="10">mvn pmd:check</text>
-    <text x="25" y="178" fill="#cbd5e1" font-size="10">mvn verify</text>
+    <text x="25" y="142" fill="#cbd5e1" font-size="10">go build ./...</text>
+    <text x="25" y="160" fill="#cbd5e1" font-size="10">go vet ./...</text>
+    <text x="25" y="178" fill="#cbd5e1" font-size="10">go test ./...</text>
 
     <text x="15" y="206" fill="#fbbf24" font-size="11" font-weight="700">部署验证：</text>
-    <text x="25" y="226" fill="#cbd5e1" font-size="10">POST /api/prd/upload</text>
-    <text x="25" y="244" fill="#cbd5e1" font-size="10">.exe → 返回 400</text>
-    <text x="25" y="262" fill="#cbd5e1" font-size="10">.docx → MinIO 落库</text>
-    <text x="25" y="280" fill="#cbd5e1" font-size="10">/actuator/health → UP</text>
+    <text x="25" y="226" fill="#cbd5e1" font-size="10">8 服务端口 OPEN</text>
+    <text x="25" y="244" fill="#cbd5e1" font-size="10">+ etcd 注册</text>
+    <text x="25" y="262" fill="#cbd5e1" font-size="10">冒烟：建群/审批/扫码</text>
+    <text x="25" y="280" fill="#cbd5e1" font-size="10">回滚 → 7220ad47</text>
     <text x="125" y="316" text-anchor="middle" fill="#22c55e" font-size="11" font-weight="700">✅ 上线</text>
   </g>
 
   <!-- 底部 -->
   <g transform="translate(40,432)">
-    <text x="0" y="0" fill="#4ade80" font-size="12" font-weight="700">最终：1 句需求 → 6 阶段 → 变更卡归档 → 知识回流 CONTEXT.md → 迭代复盘</text>
+    <text x="0" y="0" fill="#4ade80" font-size="12" font-weight="700">最终：C-001 20 项 AC → 6 阶段 → 变更卡归档（status: done）→ 知识回流 CONTEXT.md</text>
   </g>
 </svg>

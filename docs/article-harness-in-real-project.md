@@ -172,10 +172,10 @@ ls .harness/
 
 ## 四、跑第一个功能：从一句需求开始
 
-地基立好，正式开工只需要一句话。比如我手上正好有个现成的 Java 项目——`prd-ingestion-server`（一个 PRD 前置转换后端，Spring Boot 3.4.4 + Java 21 + MySQL + MinIO + Spring Security + JWT），我就用它在下面实演一遍：
+地基立好，正式开工只需要一句话。比如我手上正好有个现成的 Go 项目——`huazai-go-im`（一个基于 go-zero 的小红书社交高并发 IM 项目，Go 1.25.4 + go-zero v1.9.3 + MySQL + MongoDB + MinIO + Kafka + gRPC），我就用它在下面实演一遍：
 
 ```
-/harnessing  给 PRD 导入接口加上"文件类型白名单"校验
+/harnessing  补齐群聊功能：8 项功能 + 5 个 Bug 修复 + 7 项优化
 ```
 
 然后它顺着 6 阶段流水线往下走，每到一个阶段停一次、交接一次：
@@ -187,21 +187,21 @@ ls .harness/
 
 展开说，每一步具体在干什么：
 
-- **① `/harnessing`** — 把"加文件类型白名单"从一句模糊的话打磨成规格说明书：3 条以上验收条件（AC）、明确的边界、错误码、日志规范。比如：AC-1 "白名单之外的文件类型，接口返回 400 + `FILE_TYPE_NOT_ALLOWED`"；AC-2 "白名单内的 docx、pdf、doc 正常入库，文件保存到 MinIO"；AC-3 "非法文件类型的请求在 actuator 日志里打 WARN 级别，带 traceId"。
+- **① `/harnessing`** — 把"补齐群聊功能"从一句模糊的话打磨成规格说明书：20 项验收条件（AC）、明确的边界、Out of Scope（不做消息撤回/删除）、错误码、日志规范。比如：AC-1 "群主可在群成员列表中设置/取消管理员，user_role 实时生效"；AC-2 "扫码加群，二维码带 groupId + expireTime，后端校验有效性"；AC-3 "群聊发消息前校验群未解散、成员未退群、未被禁言，校验失败返回错误 ACK、消息不入 Kafka"。
 - **② `/coding-skill`** — 按 AC 列表逐个实现，**垂直切片**：一个 AC 一次 Red-Green-Refactor，不批量。先写失败测试、再写最小实现、再重构。
-- **③ `/unit-test-write`** — 每条 AC 一个测试，覆盖率 ≥80%，**不测 happy path**（happy path 测试是浪费）。三个白名单外的、三个白名单内的、一个边界（大小写敏感的文件类型）。
-- **④ `/expert-reviewer`** — 双轴评审：**Spec 轴**看代码是否满足所有 AC，**Standards 轴**看是否符合 `.harness/rules/` 下的编码规范（Spring Boot 的 Controller 分层、异常处理、traceId 透传）。**0 个 🔴 才放行**，有一个红点就必须返工。
-- **⑤ `/unit-test-ci`** — 机械化执行：`mvn test`、`mvn compile`、`mvn checkstyle:check`、`mvn pmd:check`，再加竞态检测、架构约束（比如"Controller 不得直接依赖 Repository"）。任一检查失败即红灯。
-- **⑥ `/deploy-verify`** — "CI 绿"≠"线上可用"。跑冒烟测试（白名单外的文件真的会被拦？）、健康检查（`/actuator/health`）、关键链路验证（上传→MinIO→DB）、回滚确认。
+- **③ `/unit-test-write`** — 每条 AC 一个测试，覆盖率 ≥80%，**不测 happy path**（happy path 测试是浪费）。功能 8 项每条 AC 一用例、Bug 5 个各一回归用例、边界用例（群主不可退群、被踢成员不可重入、bitmap 扩容）。
+- **④ `/expert-reviewer`** — 双轴评审：**Spec 轴**看代码是否满足全部 20 项 AC，**Standards 轴**看是否符合 `.harness/rules/` 下的编码规范（go-zero 的 handler → logic 分层、CodeError 统一错误处理、traceId 透传）。**0 个 🔴 才放行**——C-001 六轮复审，3 个 🔴（含 JOIN_MODE_SCAN 越权拉人逃生通道）全部闭环后才放行，有一个红点就必须返工。
+- **⑤ `/unit-test-ci`** — 机械化执行：`go test ./...`、`go build ./...`、`go vet ./...`，再加 `-race` 竞态检测、架构约束（比如"handler 不得直接依赖 model 层"）。任一检查失败即红灯。
+- **⑥ `/deploy-verify`** — "CI 绿"≠"线上可用"。跑冒烟测试（建群 → 邀请 → 禁言 → 审批 → 扫码 → 解散全链路端到端，冒烟中还抓到"被踢成员无法重新加入（1062）"缺陷并当场修复）、健康检查（8 个服务端口 OPEN + etcd 注册；go-zero 无默认 `/health` 端点，以端口 + 进程 + 注册为健康标准）、关键链路验证（群消息 → Kafka → MongoDB 消息记录）、回滚确认（`git reset --hard 7220ad47`）。
 
 <figure>
-<img src="figures/fig6-real-project.svg" alt="在 prd-ingestion-server 上实演一遍" />
-<figcaption>图 3 · 在 prd-ingestion-server 上实演：需求 → 6 阶段 → 部署验证</figcaption>
+<img src="figures/fig6-real-project.svg" alt="在 huazai-go-im 上实演一遍" />
+<figcaption>图 3 · 在 huazai-go-im 上实演：需求 → 6 阶段 → 部署验证</figcaption>
 </figure>
 
 修 bug 是同一个节奏，换成 `/diagnosing-bugs`；想看当前进展，`/harness-status`；想定期体检，`/arch-review`。
 
-日常你就用这几个。**剩下二十多个**（`/redis-cache-wrapper`、`/database-migration-toolkit`、`/kafka-toolkit`、`/security-toolkit`、`/k8s-release-toolkit`……）是封装好的**即插即用组件**，需要时才往下钻——比如给 `prd-ingestion-server` 加 MinIO 分片上传时，直接 `/oss-toolkit`，不用自己从零写。
+日常你就用这几个。**剩下二十多个**（`/redis-cache-wrapper`、`/database-migration-toolkit`、`/kafka-toolkit`、`/security-toolkit`、`/k8s-release-toolkit`……）是封装好的**即插即用组件**，需要时才往下钻——比如给 `huazai-go-im` 的消息推送接 Kafka 时，直接 `/kafka-toolkit`，不用自己从零写。
 
 ---
 
@@ -297,15 +297,15 @@ Owner Agent 是一段定义"这个应用是谁、怎么工作、怎么决策"的
 </figure>
 
 它里面定义了：
-- **你是谁**：这个项目的 Owner Agent，负责 `prd-ingestion-server` 的全部开发
-- **你的语言栈**：Java 21 + Spring Boot 3.4.4 + Maven + JUnit 5 + Mockito
-- **你的构建命令**：`mvn compile` / `mvn test` / `mvn checkstyle:check`
-- **你的架构分层**：`Controller → Service → Repository`，依赖单向
+- **你是谁**：这个项目的 Owner Agent，负责 `huazai-go-im` 的全部开发
+- **你的语言栈**：Go 1.25.4 + go-zero v1.9.3 + gorm + MongoDB + go test（标准库 testing）
+- **你的构建命令**：`go build ./...` / `go test ./...` / `go vet ./...`
+- **你的架构分层**：`handler → logic → rpc → 存储`，依赖单向
 - **你的规则**：`.harness/rules/` 下的 5 条规则
 - **你的技能**：`.harness/skills/` 下的 30+ 个技能
 - **你的开发协议**：SDD-TDD、垂直切片、战争迷雾、变更状态机
 
-以后每次在 AI 对话里敲一个斜杠命令，AI 都会先读 Owner Agent——"哦，我在 `prd-ingestion-server` 项目里，用 Java 21 + Spring Boot，架构是三层，lint 用 checkstyle + pmd"——然后按这个约束去工作。
+以后每次在 AI 对话里敲一个斜杠命令，AI 都会先读 Owner Agent——"哦，我在 `huazai-go-im` 项目里，用 Go 1.25 + go-zero，架构是 api → rpc 微服务，lint 用 go vet"——然后按这个约束去工作。
 
 **Owner Agent 是 AI 和这个项目之间的"合同"**。没有它，AI 就是通用助手，按通用规矩干活；有了它，AI 是这个项目的"专属负责人"，按这个项目的规矩干活。
 
