@@ -12,7 +12,7 @@
 
 ### 2. 掌握跨语言 Harness skill 脚手架的构建能力
 
-学会怎么把一个方法论做成**可安装、可迁移、跨语言**的 skill 产品：SKILL.md 怎么写才有效、`apply-harness` 为什么是「检测 → 参数化 → 渲染」而不是复制文件、52 个占位符怎么解耦「跨语言通用的方法论」与「语言绑定的实现」、6 种语言 × 110+ 框架的自动检测怎么做。最终能自己搭出覆盖 Java / Python / Go / Rust / PHP / Frontend 的脚手架，并在新语言新框架上迁移它。
+学会怎么把一个方法论做成**可安装、可迁移、跨语言**的 skill 产品：SKILL.md 怎么写才有效、`apply-harness` 为什么是「检测 → 参数化 → 渲染」而不是复制文件、52 个占位符怎么解耦「跨语言通用的方法论」与「语言绑定的实现」、5 种语言 × 80+ 框架的自动检测怎么做。最终能自己搭出覆盖 Java / Python / Go / Rust / Frontend 的脚手架，并在新语言新框架上迁移它。
 
 ## 二、不推荐的学习方式
 
@@ -31,7 +31,7 @@
 在本地真实项目根目录执行安装，而不是在仓库里看代码：
 
 ```bash
-npx skills add git@gitcode.com:huazaiteam/huazai-harness-skills.git
+npx skills add https://github.com/404notfoundf/TayamaHarness.git
 ```
 
 安装完成后，先不急着读文件。打开 `.harness/` 目录扫一眼装进来了什么（Owner Agent、Rules、Skills、Changes、Wiki、CONTEXT.md），知道东西装齐了、命令可用了，就进入第二步。

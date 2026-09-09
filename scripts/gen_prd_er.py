@@ -282,7 +282,7 @@ for name in T:
     parts.append(table_svg(name))
 parts.append('</svg>')
 
-out_path = "C:/code/huazai-harness-skills/docs/prd-ingestion-er.svg"
+out_path = "C:/code/tayama-harness-skills/docs/prd-ingestion-er.svg"
 with open(out_path, "w", encoding="utf-8") as f:
     f.write("\n".join(parts))
 print("OK tables=", len(T), "relations=", len(REL))

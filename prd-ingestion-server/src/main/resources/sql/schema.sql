@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS prd_ingestion (
   COMMENT='PRD 导入记录表：存储 PRD 文档原始内容与解析状态';
 
 -- 旧表加列迁移（parse_source、source_paragraph 等）已改为 Java 启动迁移，
--- 见 com.huazai.prd.ingestion.config.SchemaMigrationRunner（Spring ScriptUtils 不执行 DELIMITER 存储过程）。
+-- 见 com.tayama.prd.ingestion.config.SchemaMigrationRunner（Spring ScriptUtils 不执行 DELIMITER 存储过程）。
 -- 1.2 需求实体
 CREATE TABLE IF NOT EXISTS prd_requirement (
     id                BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
@@ -652,7 +652,7 @@ ON DUPLICATE KEY UPDATE role_id = role_id;
 
 -- 9.4 默认管理员用户（密码: admin123）
 INSERT INTO sys_user (user_id, username, password_hash, display_name, email) VALUES
-('user-admin', 'admin', '$2a$10$KOmVJgPk5PR4mHfunAVU9.mGr8QbRWSJWVIvOeIJDErkF.OKjVuci', '系统管理员', 'admin@huazai.com')
+('user-admin', 'admin', '$2a$10$KOmVJgPk5PR4mHfunAVU9.mGr8QbRWSJWVIvOeIJDErkF.OKjVuci', '系统管理员', 'admin@tayama.com')
 ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash), display_name = VALUES(display_name);
 
 -- 9.5 默认管理员用户角色
@@ -677,8 +677,7 @@ INSERT INTO prd_language (name, slug, sort_order) VALUES
 ('Java', 'java', 1),
 ('Python', 'python', 2),
 ('Go', 'go', 3),
-('Rust', 'rust', 4),
-('PHP', 'php', 5)
+('Rust', 'rust', 4)
 ON DUPLICATE KEY UPDATE name = VALUES(name), sort_order = VALUES(sort_order);
 
 -- 8.2 框架（Java）
@@ -769,43 +768,9 @@ INSERT INTO prd_framework (language_id, name, slug, sort_order) VALUES
 ((SELECT id FROM prd_language WHERE slug = 'rust'), '其他', 'rust-other', 99)
 ON DUPLICATE KEY UPDATE name = VALUES(name), sort_order = VALUES(sort_order);
 
--- 8.6 框架（PHP）
-INSERT INTO prd_framework (language_id, name, slug, sort_order) VALUES
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Laravel', 'laravel', 1),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Laravel AI SDK', 'laravel-ai-sdk', 2),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'ThinkPHP', 'thinkphp', 3),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Hyperf', 'hyperf', 4),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Symfony', 'symfony', 5),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Yii 2', 'yii2', 6),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Yii 3', 'yii3', 7),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Workerman', 'workerman', 8),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Webman', 'webman', 9),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'CodeIgniter 4', 'codeigniter4', 10),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Slim', 'slim', 11),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Phalcon', 'phalcon', 12),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Yaf', 'yaf', 13),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'CakePHP', 'cakephp', 14),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Craft CMS', 'craft-cms', 15),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'October CMS', 'october-cms', 16),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'OpenCart', 'opencart', 17),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'GravCMS', 'gravcms', 18),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Symfony2', 'symfony2', 19),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Swoole', 'swoole', 20),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Drupal', 'drupal', 21),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'WordPress', 'wordpress', 22),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'WooCommerce', 'woocommerce', 23),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Joomla', 'joomla', 24),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'PHP CMS (phpcms)', 'phpcms', 25),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'DedeCMS', 'dedecms', 26),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Discuz', 'discuz', 27),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Neuron AI (PHP)', 'neuron-ai-php', 28),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'LLPhant', 'llphant', 29),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Prism (PHP)', 'prism-php', 30),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'PocketFlow PHP', 'pocketflow-php', 31),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Cognesy Instructor PHP', 'cognesy-instructor-php', 32),
-((SELECT id FROM prd_language WHERE slug = 'php'), 'Papiai', 'papiai', 33),
-((SELECT id FROM prd_language WHERE slug = 'php'), '其他', 'php-other', 99)
-ON DUPLICATE KEY UPDATE name = VALUES(name), sort_order = VALUES(sort_order);
+-- 下线 PHP：技能包已移除，字典不再提供
+DELETE FROM prd_framework WHERE language_id IN (SELECT id FROM (SELECT id FROM prd_language WHERE slug = 'php') t);
+DELETE FROM prd_language WHERE slug = 'php';
 
 
 INSERT INTO prd_template (`template_id`, `type`, `name`, `description`, `content`, `version`, `updated_by`, `created_at`, `updated_at`)

@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" font-family="system-ui, 'Microsoft YaHei', sans-serif">
   <rect width="960" height="460" fill="#0f172a" rx="16"/>
 
-  <text x="480" y="42" text-anchor="middle" fill="#f8fafc" font-size="19" font-weight="700">实演：在 huazai-go-im 上跑一遍 C-001</text>
+  <text x="480" y="42" text-anchor="middle" fill="#f8fafc" font-size="19" font-weight="700">实演：在 tayama-go-im 上跑一遍 C-001</text>
   <text x="480" y="66" text-anchor="middle" fill="#94a3b8" font-size="12">变更卡 C-001「群聊功能补齐 + Bug 修复 + 优化」 · 20 项 AC · go-zero · MongoDB · Kafka</text>
 
   <!-- 4 个框：w=180, 间距 30, y=95, h=320 -->

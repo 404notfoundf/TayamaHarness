@@ -148,7 +148,4 @@ description: MyBatis 工具封装——通用分页（PageHelper 封装）、乐
 - ❌ 不生成数据库表结构（由 migration-toolkit 处理）
 ---
 
-> **来源 & 作者**
-> - 公众号：华仔聊技术
-> - 知识星球：华仔·AI高并发全栈训练营
-> - 作者：王江华@huazai
+

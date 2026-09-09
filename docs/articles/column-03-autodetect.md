@@ -6,11 +6,11 @@
 
 ## 一、从"手工配置"到"自动识别"：一场效率革命
 
-### 1.1 huazai-trip-plan 的"手动告白"困境
+### 1.1 tayama-trip-plan 的"手动告白"困境
 
 在参数化系统（第二篇）解决了"命令在哪"的问题之后，一个更棘手的问题浮现了：**AI 怎么知道这个项目用的是什么技术栈？**
 
-在 huazai-trip-plan 中，答案很简单——因为只有一个项目，只需要一段固定的描述："你是一个 Java 后端工程师，使用 Spring Boot 3.x，Maven 构建，JUnit 5 测试..."
+在 tayama-trip-plan 中，答案很简单——因为只有一个项目，只需要一段固定的描述："你是一个 Java 后端工程师，使用 Spring Boot 3.x，Maven 构建，JUnit 5 测试..."
 
 但 Harness 要服务任意语言、任意框架的项目。当用户在一个新项目目录中安装 Harness 时，AI 必须"自己"弄清楚：**这是 Java 还是 Python？是 Spring Boot 还是 FastAPI？用 Maven 还是 pip？**
 
@@ -50,10 +50,10 @@ AI 如何"认出"一个项目？答案是：**读取项目中的关键文件（�
 
 | 信号源 | 示例 | 揭示的信息 |
 |--------|------|-----------|
-| 构建文件 | pom.xml、build.gradle、go.mod、requirements.txt、Cargo.toml、composer.json | 语言、构建工具、框架依赖 |
+| 构建文件 | pom.xml、build.gradle、go.mod、requirements.txt、Cargo.toml、package.json | 语言、构建工具、框架依赖 |
 | 项目描述 | package.json、pyproject.toml | 项目名、框架、脚本命令 |
 
-这两类信号源覆盖了 6 种语言（Java、Python、Go、Rust、PHP、Frontend）的主流框架检测需求。此外，在极少数无标准构建文件的场景下，AI 代理也可以参考源码特征（如 `manage.py` 暗示 Django）或目录结构来辅助判断，但这不是检测系统的主要路径。**检测的核心是"信号源"的确定性**——构建文件和项目描述文件是标准化的、可预测的，因此是检测的基石。
+这两类信号源覆盖了 5 种语言（Java、Python、Go、Rust、Frontend）的主流框架检测需求。此外，在极少数无标准构建文件的场景下，AI 代理也可以参考源码特征（如 `manage.py` 暗示 Django）或目录结构来辅助判断，但这不是检测系统的主要路径。**检测的核心是"信号源"的确定性**——构建文件和项目描述文件是标准化的、可预测的，因此是检测的基线。
 
 ### 1.3 检测的"优先级"：从强信号到弱信号
 
@@ -61,7 +61,7 @@ AI 如何"认出"一个项目？答案是：**读取项目中的关键文件（�
 
 因此，自动检测遵循**优先级顺序**：先检查构建文件（高可信），再检查项目描述文件（中可信），最后在无标准文件时参考源码特征。这个优先级确保了检测的**确定性**——不会因为一行注释就误判技术栈。
 
-> 实际检测规则以扁平列表的形式定义在 `apply-harness` 技能中，按语言分组（Java → Python → Go → Frontend → Rust → PHP），每组内按常见框架优先排列。AI 代理按序检查每个规则，命中即判定。这并不是一个严格的三级优先级系统，而是一个"按可信度排列"的规则列表。
+> 实际检测规则以扁平列表的形式定义在 `apply-harness` 技能中，按语言分组（Java → Python → Go → Frontend → Rust），每组内按常见框架优先排列。AI 代理按序检查每个规则，命中即判定。这并不是一个严格的三级优先级系统，而是一个"按可信度排列"的规则列表。
 
 ## 二、检测规则库：60+ 框架的"识别指纹"
 
@@ -301,36 +301,7 @@ Rust 框架的识别主要依赖 `Cargo.toml` 中的依赖路径：
 
 Rust 的识别有个特点：`Cargo.toml` 是唯一的构建文件，依赖路径直接对应框架名，因此识别非常精确。由于 Rust 的异步运行时（tokio / async-std）和构建工具（cargo）相对统一，检测的重点在于框架而非工具链。
 
-### 4.6 PHP 框架的识别指纹
-
-PHP 框架的识别主要依赖 `composer.json` 中的依赖：
-
-| 框架 | 识别指纹（依赖关键字） |
-|------|----------------------|
-| Laravel | laravel/framework |
-| Laravel AI SDK | laravel-ai / laravel-ai/sdk |
-| ThinkPHP | topthink/framework |
-| Hyperf | hyperf/framework |
-| Yii 2 | yiisoft/yii2 |
-| Yii 3 | yiisoft/yii |
-| Symfony 2 | symfony/symfony |
-| CodeIgniter 4 | codeigniter4/framework |
-| Slim | slim/slim |
-| CakePHP | cakephp/cakephp |
-| Phalcon | phalcon/cphalcon |
-| Drupal | drupal/core |
-| Craft CMS | craftcms/cms |
-| October CMS | october/october |
-| OpenCart | opencart/opencart |
-| GravCMS | getgrav/grav |
-| Workerman | workerman/workerman |
-| webman | workerman/webman-framework |
-| Swoole | swoole / ext-swoole |
-| Yaf | yaf（php 扩展） |
-
-PHP 的识别有个独特挑战：**框架数量多且命名风格不统一**。有的用 `vendor/package` 格式（`laravel/framework`），有的直接用单一名（`slim/slim`），还有的依赖 PHP 扩展（`phalcon`、`yaf`）。系统需要同时处理 Composer 依赖和 PHP 扩展两种信号源。
-
-### 4.7 识别指纹的"组合与冲突"
+### 4.6 识别指纹的"组合与冲突"
 
 当一个项目同时命中多个框架规则时（比如 Java + Spring Boot + Dubbo），系统需要处理组合与冲突：
 - **组合**：Spring Boot + Dubbo 是合法组合（一个 Web 框架 + 一个 RPC 框架），系统加载两个框架的参数块，按优先级合并
@@ -456,7 +427,7 @@ AI 发现以下文件：`pom.xml`（构建文件）、`src/main/java/**/*.java`�
 
 ### 8.1 AI 自主检测
 
-目前的检测系统依赖"预定义的规则表"——约 128 条检测规则（6 种语言）对应 111 个框架差异块。未来的方向是让 AI 自主检测：当 AI 遇到一个未知的框架时，它可以通过分析项目文件（import 语句、依赖声明、配置模式）来推断框架类型，而无需预定义的规则。
+目前的检测系统依赖"预定义的规则表"——约 90 条检测规则（5 种语言）对应 80+ 个框架差异块。未来的方向是让 AI 自主检测：当 AI 遇到一个未知的框架时，它可以通过分析项目文件（import 语句、依赖声明、配置模式）来推断框架类型，而无需预定义的规则。
 
 这需要 AI 具备更强的"框架推理"能力——能从源码中推断出"这个项目用了什么框架"。这部分能力已经在 Claude 的代码理解能力中有所体现，但尚未系统化。
 
@@ -479,7 +450,7 @@ AI 发现以下文件：`pom.xml`（构建文件）、`src/main/java/**/*.java`�
 
 自动检测系统是 Harness 的"第一道门"。它让 AI 从"不知道这个项目是什么"到"一眼认出技术栈"，从"需要用户手动配置"到"零配置开箱即用"。
 
-约 128 条检测规则构成了一个庞大的"框架指纹库"，覆盖了 Java、Python、Go、Rust、PHP、Frontend 六大语言生态中的主流框架。每条规则独立维护、可扩展，让系统能持续跟进新技术的发展。
+约 90 条检测规则构成了一个庞大的"框架指纹库"，覆盖了 Java、Python、Go、Rust、Frontend 五大语言生态中的主流框架。每条规则独立维护、可扩展，让系统能持续跟进新技术的发展。
 
 ```svg
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 230" font-family="'SF Pro Display','Segoe UI','Microsoft YaHei',sans-serif">

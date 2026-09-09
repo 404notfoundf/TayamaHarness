@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.huazai.prd</groupId>
+    <groupId>com.tayama.prd</groupId>
     <artifactId>prd-ingestion-server</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
@@ -118,7 +118,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.huazai.prd.ingestion.PrdIngestionApplication</mainClass>
+                    <mainClass>com.tayama.prd.ingestion.PrdIngestionApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

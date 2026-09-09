@@ -45,10 +45,8 @@
   <text x="445" y="139" fill="#86efac" font-size="9" font-family="monospace">/harnessing-golang  ·  go test ./...</text>
   <text x="410" y="156" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Rust</text>
   <text x="445" y="156" fill="#86efac" font-size="9" font-family="monospace">/harnessing-rust  ·  cargo test</text>
-  <text x="410" y="173" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">PHP</text>
-  <text x="445" y="173" fill="#86efac" font-size="9" font-family="monospace">/harnessing-php  ·  phpunit</text>
-  <text x="410" y="190" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Frontend</text>
-  <text x="445" y="190" fill="#86efac" font-size="9" font-family="monospace">/harnessing-front  ·  npm test</text>
+  <text x="410" y="173" fill="#4ade80" font-size="10" font-weight="700" font-family="sans-serif">Frontend</text>
+  <text x="445" y="173" fill="#86efac" font-size="9" font-family="monospace">/harnessing-front  ·  npm test</text>
 
   <text x="530" y="220" text-anchor="middle" fill="#475569" font-size="10" font-family="sans-serif">语义相同（/harnessing），语法不同（mvn test vs pytest）</text>
 </svg>

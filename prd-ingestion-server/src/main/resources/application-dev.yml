@@ -50,7 +50,7 @@ server:
 logging:
   level:
     root: INFO
-    com.huazai.prd.ingestion: INFO
+    com.tayama.prd.ingestion: INFO
     org.springframework.jdbc.datasource.init: DEBUG   # 查看 SQL 初始化是否执行
   pattern:
     console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"

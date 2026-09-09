@@ -20,7 +20,7 @@
 
 ```
 skills/harness-java/       skills/harness-golang/      skills/harness-python/
-skills/harness-rust/       skills/harness-php/         skills/harness-front/
+skills/harness-rust/       skills/harness-front/
 ```
 
 | 判断结果 | 分支 | 改动范围 | 耗时 |

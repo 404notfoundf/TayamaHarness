@@ -93,7 +93,4 @@ description: 发布工作流——跑测试 → bump VERSION → 更新 CHANGELO
 - verify.md 已记录版本号/时间/回滚点
 ---
 
-> **来源 & 作者**
-> - 公众号：华仔聊技术
-> - 知识星球：华仔·AI高并发全栈训练营
-> - 作者：王江华@huazai
+

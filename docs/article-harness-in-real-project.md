@@ -1,6 +1,6 @@
 # 从图纸到落地：harness-skills 在真实项目里的一次跑通
 
-> 本文对应仓库：https://gitcode.com/huazaiteam/huazai-harness-skills  
+> 本文对应仓库：https://github.com/404notfoundf/TayamaHarness  
 > 全文约 9000 字，含 6 张示意图。建议配 8–12 分钟读完，或收藏后按文末的"照着走一遍"直接动手。
 
 ---
@@ -44,14 +44,10 @@
 
 ```bash
 # 在任意项目根目录执行
-npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
+npx skills@latest add https://github.com/404notfoundf/TayamaHarness.git
 ```
 
-仓库在 gitcode.com，且是私有的，所以用 SSH URL。如果你的仓库已公开，也可以用 HTTPS：
-
-```bash
-npx skills@latest add https://gitcode.com/huazaiteam/huazai-harness-skills.git
-```
+仓库在 [GitHub](https://github.com/404notfoundf/TayamaHarness) 上公开，用 HTTPS 即可。
 
 这一行跑完，`npx` 会把整个技能包拉下来、解到你**当前项目的根目录**，落成一个 `.harness/` 目录。
 
@@ -91,7 +87,7 @@ ls .harness/
 
 对，都是它。原因在它的**四步自动化流程**里：
 
-1. **扫描项目根目录**，识别语言和框架——`pom.xml` 就去看 `spring-boot-starter-parent`，`go.mod` 就去读 `module`，`Cargo.toml` 去看依赖，`composer.json` 去读 `name` 字段，`pyproject.toml` 去看安装了 django 还是 fastapi…… **Java / Python / Go / Rust / PHP / Frontend，120+ 主流框架都在它的识别表里**，从 Spring Boot、Quarkus、Dubbo、Spring Cloud Alibaba、Spring AI，到 FastAPI、Django、LangChain、PyTorch，到 Gin、go-zero、Kitex、GoFrame、eino，到 Axum、Actix、Tauri、Dioxus，到 Laravel、Symfony、WordPress，到 Vue 3、Next.js、Angular、Svelte——全部覆盖。
+1. **扫描项目根目录**，识别语言和框架——`pom.xml` 就去看 `spring-boot-starter-parent`，`go.mod` 就去读 `module`，`Cargo.toml` 去看依赖，`pyproject.toml` 去看安装了 django 还是 fastapi…… **Java / Python / Go / Rust / Frontend，80+ 主流框架都在它的识别表里**，从 Spring Boot、Quarkus、Dubbo、Spring Cloud Alibaba、Spring AI，到 FastAPI、Django、LangChain、PyTorch，到 Gin、go-zero、Kitex、GoFrame、eino，到 Axum、Actix、Tauri、Dioxus，到 Vue 3、Next.js、Angular、Svelte——全部覆盖。
 2. **读取项目名**，`pom.xml` 的 `<artifactId>`、`package.json` 的 `name`、`go.mod` 的 `module`，它都认识。
 3. **参数化渲染 `owner.md`**——把语言、框架、构建工具、测试框架、lint 工具、覆盖率工具、架构分层描述、Mock 库等 30 多个参数填进 Owner Agent 模板。
 4. **复制规则 + 渲染技能模板 + 复制组件技能**，最后把整包注册到当前 AI 工具能识别的技能目录里。
@@ -172,7 +168,7 @@ ls .harness/
 
 ## 四、跑第一个功能：从一句需求开始
 
-地基立好，正式开工只需要一句话。比如我手上正好有个现成的 Go 项目——`huazai-go-im`（一个基于 go-zero 的小红书社交高并发 IM 项目，Go 1.25.4 + go-zero v1.9.3 + MySQL + MongoDB + MinIO + Kafka + gRPC），我就用它在下面实演一遍：
+地基立好，正式开工只需要一句话。比如我手上正好有个现成的 Go 项目——`tayama-go-im`（一个基于 go-zero 的小红书社交高并发 IM 项目，Go 1.25.4 + go-zero v1.9.3 + MySQL + MongoDB + MinIO + Kafka + gRPC），我就用它在下面实演一遍：
 
 ```
 /harnessing  补齐群聊功能：8 项功能 + 5 个 Bug 修复 + 7 项优化
@@ -195,13 +191,13 @@ ls .harness/
 - **⑥ `/deploy-verify`** — "CI 绿"≠"线上可用"。跑冒烟测试（建群 → 邀请 → 禁言 → 审批 → 扫码 → 解散全链路端到端，冒烟中还抓到"被踢成员无法重新加入（1062）"缺陷并当场修复）、健康检查（8 个服务端口 OPEN + etcd 注册；go-zero 无默认 `/health` 端点，以端口 + 进程 + 注册为健康标准）、关键链路验证（群消息 → Kafka → MongoDB 消息记录）、回滚确认（`git reset --hard 7220ad47`）。
 
 <figure>
-<img src="figures/fig6-real-project.svg" alt="在 huazai-go-im 上实演一遍" />
-<figcaption>图 3 · 在 huazai-go-im 上实演：需求 → 6 阶段 → 部署验证</figcaption>
+<img src="figures/fig6-real-project.svg" alt="在 tayama-go-im 上实演一遍" />
+<figcaption>图 3 · 在 tayama-go-im 上实演：需求 → 6 阶段 → 部署验证</figcaption>
 </figure>
 
 修 bug 是同一个节奏，换成 `/diagnosing-bugs`；想看当前进展，`/harness-status`；想定期体检，`/arch-review`。
 
-日常你就用这几个。**剩下二十多个**（`/redis-cache-wrapper`、`/database-migration-toolkit`、`/kafka-toolkit`、`/security-toolkit`、`/k8s-release-toolkit`……）是封装好的**即插即用组件**，需要时才往下钻——比如给 `huazai-go-im` 的消息推送接 Kafka 时，直接 `/kafka-toolkit`，不用自己从零写。
+日常你就用这几个。**剩下二十多个**（`/redis-cache-wrapper`、`/database-migration-toolkit`、`/kafka-toolkit`、`/security-toolkit`、`/k8s-release-toolkit`……）是封装好的**即插即用组件**，需要时才往下钻——比如给 `tayama-go-im` 的消息推送接 Kafka 时，直接 `/kafka-toolkit`，不用自己从零写。
 
 ---
 
@@ -277,7 +273,7 @@ ls .harness/
 
 **方法论层（跨语言通用）**：SDD-TDD、6 阶段、人机协同协议、上下文交接、变更状态机——落在 `harness-core/` 的 5 条通用规则和 10 个流水线技能模板里。
 
-**技术栈层（语言特有）**：`harness-java/`、`harness-golang/`、`harness-python/`、`harness-rust/`、`harness-php/`、`harness-front/` 各自有自己的规则（编码规范 / 工程结构）、专属技能（Java 的 `java-code-review`、`spring-api-convention`、`mybatis-toolkit`、`openfeign-toolkit`）和**框架参数表**——Spring Boot 的 `BUILD_CMD` 是 `mvn compile`，Gin 是 `go build ./...`，Vue 3 是 `npm run build`。
+**技术栈层（语言特有）**：`harness-java/`、`harness-golang/`、`harness-python/`、`harness-rust/`、`harness-front/` 各自有自己的规则（编码规范 / 工程结构）、专属技能（Java 的 `java-code-review`、`spring-api-convention`、`mybatis-toolkit`、`openfeign-toolkit`）和**框架参数表**——Spring Boot 的 `BUILD_CMD` 是 `mvn compile`，Gin 是 `go build ./...`，Vue 3 是 `npm run build`。
 
 这意味着一个团队可以**用同一套工作语言**管理 Java、Go、前端所有项目——不是"每个项目套不同的流程"，而是"同一个流程、各自的语言细节"。
 
@@ -297,7 +293,7 @@ Owner Agent 是一段定义"这个应用是谁、怎么工作、怎么决策"的
 </figure>
 
 它里面定义了：
-- **你是谁**：这个项目的 Owner Agent，负责 `huazai-go-im` 的全部开发
+- **你是谁**：这个项目的 Owner Agent，负责 `tayama-go-im` 的全部开发
 - **你的语言栈**：Go 1.25.4 + go-zero v1.9.3 + gorm + MongoDB + go test（标准库 testing）
 - **你的构建命令**：`go build ./...` / `go test ./...` / `go vet ./...`
 - **你的架构分层**：`handler → logic → rpc → 存储`，依赖单向
@@ -305,7 +301,7 @@ Owner Agent 是一段定义"这个应用是谁、怎么工作、怎么决策"的
 - **你的技能**：`.harness/skills/` 下的 30+ 个技能
 - **你的开发协议**：SDD-TDD、垂直切片、战争迷雾、变更状态机
 
-以后每次在 AI 对话里敲一个斜杠命令，AI 都会先读 Owner Agent——"哦，我在 `huazai-go-im` 项目里，用 Go 1.25 + go-zero，架构是 api → rpc 微服务，lint 用 go vet"——然后按这个约束去工作。
+以后每次在 AI 对话里敲一个斜杠命令，AI 都会先读 Owner Agent——"哦，我在 `tayama-go-im` 项目里，用 Go 1.25 + go-zero，架构是 api → rpc 微服务，lint 用 go vet"——然后按这个约束去工作。
 
 **Owner Agent 是 AI 和这个项目之间的"合同"**。没有它，AI 就是通用助手，按通用规矩干活；有了它，AI 是这个项目的"专属负责人"，按这个项目的规矩干活。
 
@@ -329,7 +325,7 @@ Owner Agent 是一段定义"这个应用是谁、怎么工作、怎么决策"的
 
 1. **装**：
    ```bash
-   npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
+   npx skills@latest add https://github.com/404notfoundf/TayamaHarness.git
    ```
 2. **验目录**：`ls .harness/`，确认 `agents/`、`rules/`、`skills/`、`wiki/`、`CONTEXT.md` 都在
 3. **起手**：在 AI 对话里敲 `/apply-harness`，让它自动识别语言和框架、生成规范
@@ -364,10 +360,10 @@ Owner Agent 是一段定义"这个应用是谁、怎么工作、怎么决策"的
 想自己试一下，一行就够：
 
 ```bash
-npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
+npx skills@latest add https://github.com/404notfoundf/TayamaHarness.git
 ```
 
-仓库：https://gitcode.com/huazaiteam/huazai-harness-skills
+仓库：https://github.com/404notfoundf/TayamaHarness
 
 觉得有用的话，给个 star 是对我最大的支持 ⭐
 

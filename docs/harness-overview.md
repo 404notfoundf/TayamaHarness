@@ -61,8 +61,7 @@
 
 ```bash
 # 在任意项目根目录执行
-# 仓库在 gitcode.com。若仓库为私有，请用 SSH URL：
-npx skills@latest add git@gitcode.com:huazaiteam/huazai-harness-skills.git
+npx skills@latest add https://github.com/404notfoundf/TayamaHarness.git
 
 # 在 AI 对话中键入
 /apply-harness

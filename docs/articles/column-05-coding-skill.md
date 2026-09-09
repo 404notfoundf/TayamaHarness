@@ -12,9 +12,9 @@
 
 **它不是"替代程序员的机器"。** coding-skill 的目标不是让程序员失业，而是让程序员的"编码模式"更加规范——从"凭感觉写代码"变成"按 TDD 小循环写代码"。
 
-### 1.1 从 huazai-trip-plan 的"复制粘贴困局"说起
+### 1.1 从 tayama-trip-plan 的"复制粘贴困局"说起
 
-huazai-trip-plan 是 Harness 的"前身"。在 huazai-trip-plan 中，/coding-skill 的雏形是一个"手动执行"的过程：用户用 Claude Code 写代码，但每次都要手动加载需求卡片、手动检查编码规范、手动执行 TDD 循环。
+tayama-trip-plan 是 Harness 的"前身"。在 tayama-trip-plan 中，/coding-skill 的雏形是一个"手动执行"的过程：用户用 Claude Code 写代码，但每次都要手动加载需求卡片、手动检查编码规范、手动执行 TDD 循环。
 
 这个"手动"过程的问题在于：
 
@@ -62,7 +62,7 @@ coding-skill 的诞生，就是要把这个"手动"过程变成"自动"——让
 
 ### 1.3 coding-skill 的"进化"：从"手动"到"自动"
 
-huazai-trip-plan 的 coding-skill 是"手动"的。用户需要自己：加载需求卡片、检查编码规范、执行 TDD 循环。这个过程依赖用户"记得"这些步骤。
+tayama-trip-plan 的 coding-skill 是"手动"的。用户需要自己：加载需求卡片、检查编码规范、执行 TDD 循环。这个过程依赖用户"记得"这些步骤。
 
 而 Harness 的 coding-skill 是"自动"的。用户只需要输入 `/coding-skill`，AI 就会自动：读取需求卡片、加载编码规范、执行 TDD 循环。
 
@@ -108,7 +108,7 @@ coding-skill 有一个核心原则：**不替代人的判断**。
 
 当 AI 遇到"不确定"的情况时，coding-skill 不会"替人做决定"，而是"请人做决定"。这个"不替代"原则，保证了"人始终在决策链中"——AI 是工具，不是决策者。
 
-这个原则的设计背景是：在 huazai-trip-plan 的实践中，发现 AI "自作主张"是最大的问题来源。AI 以为"这个参数应该这样设"，但实际需求是"那样设"。所以 coding-skill 的"不替代"原则，就是从实践中总结出来的"血的教训"。
+这个原则的设计背景是：在 tayama-trip-plan 的实践中，发现 AI "自作主张"是最大的问题来源。AI 以为"这个参数应该这样设"，但实际需求是"那样设"。所以 coding-skill 的"不替代"原则，就是从实践中总结出来的"血的教训"。
 
 ### 1.8 从"编码工具"到"工程伙伴"的进化
 

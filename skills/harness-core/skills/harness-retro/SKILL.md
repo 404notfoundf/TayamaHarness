@@ -101,7 +101,4 @@ description: 迭代复盘——读取 .harness/changes/ 历史与状态留档，
 - 改进项已登记（TECH-DEBT.md 或新 change 建议）
 ---
 
-> **来源 & 作者**
-> - 公众号：华仔聊技术
-> - 知识星球：华仔·AI高并发全栈训练营
-> - 作者：王江华@huazai
+

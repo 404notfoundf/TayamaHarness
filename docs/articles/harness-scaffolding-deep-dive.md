@@ -21,11 +21,11 @@
 
 2026 年，AI Agent 真正进入落地爆发期。会使用大模型、调 API 的工程师很多，但真正能把「多 Agent 协同」「自主决策」「Skills 技能封装」「工程化约束」和「可交付代码」结合起来的人并不多。谁能把这几件事打通，谁就不再只是「只会接模型的人」，而是在向「Agent 架构师」进行升级。
 
-下面我就结合正在落地的一套跨语言 Harness Engineering 脚手架（huazai-harness-skills），手把手拆开讲清楚：一套从 Java 专属 Harness 中脱胎、能约束 AI 在工程纪律内交付可维护代码的跨语言基础设施，到底应该怎么从 0 到 1 设计、分模块研发、逐步交付。
+下面我就结合正在落地的一套跨语言 Harness Engineering 脚手架（tayama-harness-skills），手把手拆开讲清楚：一套从 Java 专属 Harness 中脱胎、能约束 AI 在工程纪律内交付可维护代码的跨语言基础设施，到底应该怎么从 0 到 1 设计、分模块研发、逐步交付。
 
 项目的核心定位是：
 
-> **跨语言 Harness Engineering 脚手架**——Java / Python / Go / Rust / PHP / Frontend 六种语言、111 框架差异块自动识别，SDD-TDD 思想 + Owner Agent 智能编排 + 10 个模板化流水线技能，让「人类设计约束、AI 写代码、机器验证」在任何技术栈上开箱即用。
+> **跨语言 Harness Engineering 脚手架**——Java / Python / Go / Rust / Frontend 五种语言、80+ 框架差异块自动识别，SDD-TDD 思想 + Owner Agent 智能编排 + 10 个模板化流水线技能，让「人类设计约束、AI 写代码、机器验证」在任何技术栈上开箱即用。
 
 我会分成两大部分来讲：
 
@@ -40,11 +40,11 @@
 
 ## 二、为什么要开发这个脚手架
 
-### 2.1 真实起源：huazai-trip-plan 的"Java 专属 Harness"
+### 2.1 真实起源：tayama-trip-plan 的"Java 专属 Harness"
 
-这个脚手架不是凭空设计出来的。它的起源，是一个叫 **huazai-trip-plan** 的 Java 项目——**它本身就带着一套完整的 v1 版 Harness 工程规范**。
+这个脚手架不是凭空设计出来的。它的起源，是一个叫 **tayama-trip-plan** 的 Java 项目——**它本身就带着一套完整的 v1 版 Harness 工程规范**。
 
-在从零搭建 huazai-trip-plan（AgentScope 自主旅游规划项目）的过程中，harness 规范与代码是同步生长的。目标从一开始就很明确：**让 AI 在工程约束下写代码，而不是自由发挥。**
+在从零搭建 tayama-trip-plan（AgentScope 自主旅游规划项目）的过程中，harness 规范与代码是同步生长的。目标从一开始就很明确：**让 AI 在工程约束下写代码，而不是自由发挥。**
 
 这套规范由四部分组成：
 
@@ -53,11 +53,11 @@
 3. **一个变更追踪体系**：`.harness/changes/` 下 18 个变更（C-001 ~ C-018），每个变更都有 change.md / review.md / verify.md，需求卡片、审查报告、验证结果全程可追溯
 4. **一个领域知识库**：`.harness/wiki/` 下的业务模型、接口协议、数据模型、架构决策，沉淀多智能体系统的共享知识
 
-这套体系在 huazai-trip-plan 上完整交付了一个 AgentScope 多智能体项目，AI 写代码的质量稳定了、代码风格统一了、需求与变更全程留档。**但它有一个根本性的问题：它只对 Java 有效——`mvn` 构建、JUnit 测试、Spring Boot 结构全部写死。**
+这套体系在 tayama-trip-plan 上完整交付了一个 AgentScope 多智能体项目，AI 写代码的质量稳定了、代码风格统一了、需求与变更全程留档。**但它有一个根本性的问题：它只对 Java 有效——`mvn` 构建、JUnit 测试、Spring Boot 结构全部写死。**
 
 ### 2.2 问题暴露：换一种语言，整套规范就失效
 
-huazai-trip-plan 验证了 harness 方法论的价值，但当我们把同样的工程纪律用到 Go、Python、前端项目上时，发现根本复用不了：
+tayama-trip-plan 验证了 harness 方法论的价值，但当我们把同样的工程纪律用到 Go、Python、前端项目上时，发现根本复用不了：
 
 - `coding-skill` 里写死了 `mvn compile` 和 `mvn test`
 - 代码规范检查用的是 `checkstyle`
@@ -69,14 +69,14 @@ huazai-trip-plan 验证了 harness 方法论的价值，但当我们把同样的
 
 我们面临着两个选择：
 
-1. **为每种语言重写一套技能**——复制 huazai-trip-plan 的结构，把 Java 特定的命令换成对应语言的命令
+1. **为每种语言重写一套技能**——复制 tayama-trip-plan 的结构，把 Java 特定的命令换成对应语言的命令
 2. **把技能参数化**——让同一套技能根据检测到的语言/框架，自动使用不同的命令
 
 如果选 1，意味着每增加一个语言（Python、Go、前端、Rust……），就要重写一套。而且维护 4 套技能，改了 Java 的规则还要手动同步到其他语言的版本。
 
 **选 1 是死路。选 2 是唯一出路。**
 
-但为什么参数化可行？我们重新拆解了 huazai-trip-plan 中的 harness 文件，一个关键结构浮现出来：
+但为什么参数化可行？我们重新拆解了 tayama-trip-plan 中的 harness 文件，一个关键结构浮现出来：
 
 - 大约 60% 的规则是**跨语言通用**的：测试覆盖率门禁、编码规范约束、代码审查流程、门禁卡点
 - 只有 40% 是**语言/框架特定**的：构建工具（Maven/Gradle）、测试框架（JUnit/Mockito）、风格检查（Checkstyle/SpotBugs）
@@ -116,7 +116,7 @@ huazai-trip-plan 验证了 harness 方法论的价值，但当我们把同样的
 
 这不够好。一个好的脚手架应该**自动检测**项目使用了什么语言和框架，然后自动匹配对应的参数。
 
-于是，我们开发了**检测机制**——通过扫描项目根目录的特征文件（`pom.xml` → Java + Maven、`build.gradle` → Java + Gradle、`go.mod` → Go、`requirements.txt` → Python、`package.json` → Node.js、`Cargo.toml` → Rust + Cargo、`composer.json` → PHP + Composer……），自动识别语言和框架。
+于是，我们开发了**检测机制**——通过扫描项目根目录的特征文件（`pom.xml` → Java + Maven、`build.gradle` → Java + Gradle、`go.mod` → Go、`requirements.txt` → Python、`package.json` → Node.js、`Cargo.toml` → Rust + Cargo……），自动识别语言和框架。
 
 检测的粒度从"语言"细化到了"框架"：
 
@@ -124,14 +124,13 @@ huazai-trip-plan 验证了 harness 方法论的价值，但当我们把同样的
 - **Python**：FastAPI + pip、FastAPI + poetry、Flask、Django、PyTorch、LangChain、CrewAI……
 - **Go**：Gin + go mod、go-zero、Fiber、Echo、Chi、Gorilla Mux、Kitex、Hertz……
 - **Rust**：Axum、Actix Web、Rocket、Warp、Poem、Loco、Tauri……
-- **PHP**：Laravel、ThinkPHP、Symfony、Hyperf、Swoole、WordPress、GravCMS……
 - **Frontend**：Vue + Vite、React + Vite、Angular、Next.js、Nuxt.js……
 
 每种组合对应一套不同的参数。当参数化表达到 51 个参数键时，这套系统才能说"真正支持了跨语言"。
 
 ### 2.5 工具适配：从"只支持 Claude Code"到"支持 19+ 工具"
 
-参数化解决了"跨语言"的问题，但还有一个问题：**huazai-trip-plan 的技能是基于 Claude Code 的 Skill 机制写的。**
+参数化解决了"跨语言"的问题，但还有一个问题：**tayama-trip-plan 的技能是基于 Claude Code 的 Skill 机制写的。**
 
 如果用户用的是 Cursor、Cline、Windsurf、Reasonix 或其他 AI 工具，怎么办？
 
@@ -148,7 +147,7 @@ huazai-trip-plan 验证了 harness 方法论的价值，但当我们把同样的
 
 ### 2.6 从"Java 专属"到"基础设施"
 
-回头看，huazai-trip-plan 中的那套 Harness，是一个"刚好能用的原型"。它证明了"工程纪律 → AI 代码质量"这个因果链是成立的，但它的作用域被限制在 Java 生态内。
+回头看，tayama-trip-plan 中的那套 Harness，是一个"刚好能用的原型"。它证明了"工程纪律 → AI 代码质量"这个因果链是成立的，但它的作用域被限制在 Java 生态内。
 
 现在这个脚手架，是从**那个原型**中解耦出来的通用版本：
 
@@ -587,7 +586,7 @@ huazai-trip-plan 验证了 harness 方法论的价值，但当我们把同样的
   <text x="80" y="88" fill="#c7d2fe" font-size="13" font-weight="700">① 语言基础参数 · Language Base</text>
   <text x="80" y="108" fill="#94a3b8" font-size="11" font-family="monospace">LANGUAGE=Java · RUNTIME=JDK21 · BUILD_CMD=mvn build · TEST_CMD=mvn test</text>
   <text x="80" y="126" fill="#94a3b8" font-size="11" font-family="monospace">LINT_CMD=mvn checkstyle · COV=mvn jacoco · TYPE=mvn compile</text>
-  <text x="80" y="142" fill="#64748b" font-size="10">所有 Java 项目共享 · 6 种语言各一份</text>
+  <text x="80" y="142" fill="#64748b" font-size="10">所有 Java 项目共享 · 5 种语言各一份</text>
 
   <line x1="500" y1="150" x2="500" y2="174" stroke="#6366f1" stroke-width="2"/>
   <polygon points="500,180 493,169 507,169" fill="#6366f1"/>
@@ -650,7 +649,7 @@ LangChain、CrewAI、TensorFlow 这类 AI 框架没有传统的 Web 分层（Con
 
 ### 4.5 多 Change 如何选择：从"候选清单"到"依赖 DAG"
 
-6 阶段流水线回答的是"**一个** change 怎么走完"，但真实项目里从来不止一个 change。以 huazai-trip-plan 为例，`.harness/changes/` 下就有 **18 个 change 并存**（C-001 ~ C-018）。这时候真正的问题来了：**面对一堆 change，AI 凭什么知道"现在该做哪一个"？**
+6 阶段流水线回答的是"**一个** change 怎么走完"，但真实项目里从来不止一个 change。以 tayama-trip-plan 为例，`.harness/changes/` 下就有 **18 个 change 并存**（C-001 ~ C-018）。这时候真正的问题来了：**面对一堆 change，AI 凭什么知道"现在该做哪一个"？**
 
 这是变更选择（Change Selection）问题，脚手架把它拆成两个层次来解决：技能层的**变更定位规则**，和项目层的**变更清单路线图（ROADMAP）**。
 
@@ -746,8 +745,8 @@ C-001 → C-004 → C-005 → C-006/07/08/09 → C-010 → C-011 → C-012 → C
 `skills/apply-harness/SKILL.md` 是整个脚手架最复杂的单个文件，也是唯一的"中枢编辑器"。它不是一份说明文档，而一个**可执行的、有状态的安装协议**：
 
 - 8 个主步骤 + 2 个内嵌子步骤（Step 1-8，含 Step 5.5 技能注册与 Step 7.1 共享语言上下文）
-- 6 种语言的检测表（每种 11-35 条规则）
-- 111 个框架差异的参数块定义
+- 5 种语言的检测表（每种 10-23 条规则）
+- 80+ 个框架差异的参数块定义
 - 51 参数键的完整定义
 - 硬性约束（禁止修改已存在 `.harness/`、禁止多语言擅自选择、禁止跳过 Step 1）
 
@@ -766,7 +765,7 @@ pom.xml（通用，未匹配以上）      → 询问用户（兜底）
 
 ### 5.2 语言包：差异的隔离舱
 
-每个语言包（`harness-java/`、`harness-python/`、`harness-golang/`、`harness-rust/`、`harness-php/`、`harness-front/`）只承载语言特有内容：
+每个语言包（`harness-java/`、`harness-python/`、`harness-golang/`、`harness-rust/`、`harness-front/`）只承载语言特有内容：
 
 ```
 harness-{lang}/
@@ -781,9 +780,9 @@ harness-{lang}/
     └── openfeign-toolkit/SKILL.md       # 仅 Java
 ```
 
-**语言包的核心设计原则：同构化 + 参数化。** 六个语言包的结构**完全同构**——同样的子目录、同样的 rules。唯一的差异是 `{{LANG_TAG}}`（`-java`、`-python`、`-golang`、`-rust`、`-php`、`-front`）和参数表里的具体命令值。所有流水线技能的模板已收敛到 `harness-core/skills/`，语言包不再维护同名副本。
+**语言包的核心设计原则：同构化 + 参数化。** 五个语言包的结构**完全同构**——同样的子目录、同样的 rules。唯一的差异是 `{{LANG_TAG}}`（`-java`、`-python`、`-golang`、`-rust`、`-front`）和参数表里的具体命令值。所有流水线技能的模板已收敛到 `harness-core/skills/`，语言包不再维护同名副本。
 
-同构化的价值在于：**维护者只需要理解一个语言包的结构，就能维护全部六个。** 这极大降低了脚手架本身的维护成本——这是"meta-scaffolding"（脚手架的脚手架）层面的设计。
+同构化的价值在于：**维护者只需要理解一个语言包的结构，就能维护全部五个。** 这极大降低了脚手架本身的维护成本——这是"meta-scaffolding"（脚手架的脚手架）层面的设计。
 
 ### 5.3 install-skill：技能注册的适配器模式
 
@@ -1593,15 +1592,15 @@ harness-{lang}/
 
 | 维度 | 数据 |
 |------|------|
-| 支持语言 | 6（Java / Python / Go / Rust / PHP / Frontend） |
-| 框架差异块 | 111 |
+| 支持语言 | 5（Java / Python / Go / Rust / Frontend） |
+| 框架差异块 | 80+ |
 | 支持构建工具 | 10+ |
 | 支持 AI 工具 | 19+ |
 | 可执行技能 | 30 个（10 模板 + 16 通用 + 4 专属） |
 | 参数键 | 51 |
 | 规则文件 | 6 条（4 通用 + 2 语言特有） |
-| 检测表 | 6 种 × 11-35 条规则 |
-| 参数块 | 117 个（6 基础 + 111 差异） |
+| 检测表 | 5 种 × 10-23 条规则 |
+| 参数块 | 85+ 个（5 基础 + 80+ 差异） |
 | 架构层级 | 4 层 |
 | 核心文件 | apply-harness/SKILL.md（2300+ 行） |
 
@@ -1609,7 +1608,7 @@ harness-{lang}/
 
 这个脚手架不是一个"做完就完"的项目，它在持续演进：
 
-- **检测表持续扩展**：随着新框架和构建工具出现持续更新。Go 已支持 21 框架差异块，Java 16，Python 16，Frontend 9，Rust 19，PHP 30。
+- **检测表持续扩展**：随着新框架和构建工具出现持续更新。Go 已支持 21 框架差异块，Java 16，Python 16，Frontend 9，Rust 19。
 - **AI 工具兼容性**：随着新 AI 编程工具出现，安装适配器持续添加。
 - **参数化深度**：从 51 参数键扩展到更多维度（部署平台、云服务商、日志系统等）。
 - **领域建模**：`/domain-modeling` 技能持续增强，支持更丰富的 ADR 格式。

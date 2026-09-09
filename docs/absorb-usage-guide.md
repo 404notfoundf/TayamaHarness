@@ -1,6 +1,6 @@
 # 吸收落地使用指南：新资产 × 6 阶段流水线联动
 
-> 本文档说明《AI 驱动研发体系的实践和思考》吸收进 huazai-harness-skills 后，
+> 本文档说明《AI 驱动研发体系的实践和思考》吸收进 tayama-harness-skills 后，
 > **新增了哪些资产、各自怎么用、如何与既有的 6 阶段业务流水线联动**。
 >
 > 规划背景见 [吸收清单](absorb-list.md)，流水线定义见 [6 阶段流水线](6-stage-pipeline.md) 与 `.harness/rules/开发流程规范.md`。

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **移除 PHP 语言支持**：删除 `skills/harness-php/` 语言包、PHP 检测规则与框架参数块，以及 `docs/languages/php.md`；当前支持 Java / Python / Go / Rust / Frontend
+
 - **吸收《AI 驱动研发体系的实践和思考》（淘天集团-营销&交易技术团队）**:
   - 新增机器可读迭代协议模板 `iterations/_TEMPLATE/`（`prd.md` / `solution.md` / `test/design.md` / `test/cases.md` / `test/report.md`），REQ/AC/TC 编号与阶段间接口门禁见 `rules/开发流程规范.md §2.2`
   - 新增 wiki/tech 分层知识库模板（`wiki/_TEMPLATE/知识文件模板.md`、`tech/_TEMPLATE/链路模板.md`）与规则 `知识库治理规则.md`
@@ -10,10 +12,10 @@
   - 6 个流水线技能焊入对新资产的消费点（`harnessing` / `coding-skill` / `unit-test-write` / `expert-reviewer` / `unit-test-ci` / `deploy-verify`）；`archive.md` 落于 `changes/_TEMPLATE/` 作知识回流入口，`harness-ship` 增加发布后回查、`harness-retro` 增加知识回流率与 AI Trace 信号
 
 - **重构：语言包技能单一事实源（方案 A）**:
-  - 6 个语言包（java/python/golang/rust/php/front）内的 10 个流水线/辅助技能全部收敛到 `harness-core/skills/` 参数化模板，语言包不再维护同名副本，消除 60 份重复文件与内容漂移
+  - 6 个语言包（java/python/golang/rust/php/front，当时含 PHP）内的 10 个流水线/辅助技能全部收敛到 `harness-core/skills/` 参数化模板，语言包不再维护同名副本，消除 60 份重复文件与内容漂移
   - `harness-core/skills/` 新增 5 个参数化模板：`arch-review`、`deploy-verify`、`expert-reviewer`、`harnessing`、`unit-test-ci`
   - `apply-harness` Step 5 改为「渲染 core 模板 + 复制语言包专属技能」：10 个技能全部由 `harness-core/skills/` 渲染，语言差异通过参数表占位符表达；java 语言包仅保留 4 个框架专属技能（`java-code-review`、`spring-api-convention`、`mybatis-toolkit`、`openfeign-toolkit`）
-  - 参数表新增「Frontend 基础参数（通用）」块，并补齐 Java/Python/Go/Rust/PHP 基础参数块缺失键（ARCH_LAYER、TEST_FRAMEWORK、MOCK_LIB 等），6 语言 × 111 个框架块对 29 个模板占位符全覆盖、零缺失
+  - 参数表新增「Frontend 基础参数（通用）」块，并补齐 Java/Python/Go/Rust/PHP 基础参数块缺失键（ARCH_LAYER、TEST_FRAMEWORK、MOCK_LIB 等），当时 6 语言 × 111 个框架块对 29 个模板占位符全覆盖、零缺失
   - 语言特有内容（部署命令、架构审查关注点、自检项等）下沉到各语言包 `rules/`
 
 ## 1.3.0 (2025-08-14)

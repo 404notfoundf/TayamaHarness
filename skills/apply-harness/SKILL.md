@@ -1,6 +1,6 @@
 ---
 name: apply-harness
-description: 自动检测项目语言与框架（Java / Python / Go / Rust / PHP / Frontend，支持 Spring Boot / Quarkus / Django / Gin / Axum / Laravel / React / Vue 等主流框架）并应用 Harness 开发规范体系
+description: 自动检测项目语言与框架（Java / Python / Go / Rust / Frontend，支持 Spring Boot / Quarkus / Django / Gin / Axum / React / Vue 等主流框架）并应用 Harness 开发规范体系
 disable-model-invocation: true
 ---
 
@@ -135,48 +135,9 @@ disable-model-invocation: true
 | `Cargo.toml` + `dioxus` 依赖 | Dioxus | cargo | 读取版本 |
 | `Cargo.toml`（通用，未匹配以上） | 询问用户 | cargo | 读取 rust-toolchain / Cargo.toml edition |
 
-#### PHP 检测
-
-| 检测特征 | 框架 | 构建工具 | 版本 |
-|---------|------|---------|------|
-| `composer.json` + `laravel/framework` | Laravel | composer | 读取 laravel/framework 版本 |
-| `composer.json` + `laravel-ai` / `laravel-ai/sdk` | Laravel AI SDK | composer | 读取版本 |
-| `composer.json` + `neuron` / `neuron-ai` | Neuron AI（PHP） | composer | 读取版本 |
-| `composer.json` + `llphant/llphant` | LLPhant | composer | 读取版本 |
-| `composer.json` + `prism-php` / `prism` | Prism（PHP） | composer | 读取版本 |
-| `composer.json` + `pocketflow` | PocketFlow PHP | composer | 读取版本 |
-| `composer.json` + `cognesy/instructor` | Cognesy Instructor PHP | composer | 读取版本 |
-| `composer.json` + `papiai` | Papiai | composer | 读取版本 |
-| `composer.json` + `topthink/framework` | ThinkPHP | composer | 读取版本 |
-| `composer.json` + `hyperf/framework` | Hyperf | composer | 读取版本 |
-| `composer.json` + `yiisoft/yii2` | Yii 2 | composer | 读取版本 |
-| `composer.json` + `yiisoft/yii`（3.x） | Yii 3 | composer | 读取版本 |
-| `composer.json` + `workerman/workerman`（长驻进程） | Workerman | composer | 读取版本 |
-| `composer.json` + `workerman/webman-framework` | webman | composer | 读取版本 |
-| `composer.json` + `codeigniter4/framework` | CodeIgniter 4 | composer | 读取版本 |
-| `composer.json` + `slim/slim` | Slim | composer | 读取版本 |
-| `composer.json` + `phalcon/cphalcon` | Phalcon | composer | 读取版本 |
-| 无 composer + `phalcon`（php 扩展） | Phalcon | composer（或原生） | 读取版本 |
-| 无 composer + `yaf`（php 扩展）/ `Yaf.php` | Yaf | composer（或原生） | 读取版本 |
-| `composer.json` + `cakephp/cakephp` | CakePHP | composer | 读取版本 |
-| `composer.json` + `craftcms/cms` | Craft CMS | composer | 读取版本 |
-| `composer.json` + `october/october` | October CMS | composer | 读取版本 |
-| `composer.json` + `opencart/opencart` 或 upload/admin 目录 | OpenCart | composer | 读取版本 |
-| `composer.json` + `getgrav/grav` | GravCMS | composer | 读取版本 |
-| `composer.json` + `symfony/symfony`（2.x） | Symfony2 | composer | 读取版本 |
-| `composer.json` + `swoole` / `ext-swoole` | Swoole | composer | 读取版本 |
-| `composer.json` + `drupal/core` | Drupal | composer | 读取版本 |
-| `wp-config.php` / `wp-content/`（无 composer） | WordPress | composer（或原生） | 读取 wp-includes/version.php |
-| `wp-content/plugins/woocommerce/` | WooCommerce | composer（或原生） | 读取插件版本 |
-| `configuration.php` / `administrator/` | Joomla | composer（或原生） | 读取版本 |
-| `phpcms/` 根目录特征文件 | phpcms | 原生 | 读取版本 |
-| `dede/` 目录 / data/cache 特征 | dedecms | 原生 | 读取版本 |
-| `config_global.php` / `source/` | discuz | 原生 | 读取版本 |
-| `composer.json`（通用，未匹配以上） | 询问用户 | composer | 读取 PHP 版本 |
-
 #### 多语言项目处理
 
-同时有前端+后端（如 `package.json` + `pom.xml` / `go.mod` / `pyproject.toml` / `Cargo.toml` / `composer.json`）：询问用户选择当前焦点语言。
+同时有前端+后端（如 `package.json` + `pom.xml` / `go.mod` / `pyproject.toml` / `Cargo.toml`）：询问用户选择当前焦点语言。
 
 #### 无法识别
 
@@ -192,7 +153,6 @@ disable-model-invocation: true
 | Java (Gradle) | `settings.gradle(.kts)` → `rootProject.name` 或目录名 |
 | Go | `go.mod` → `module` 后的模块名 |
 | Rust | `Cargo.toml` → `[package] name` 或目录名 |
-| PHP | `composer.json` → `name` 字段或目录名 |
 | Python | `pyproject.toml` → `[project] name` 或目录名 |
 | Frontend | `package.json` → `name` 字段或目录名 |
 
@@ -203,7 +163,7 @@ disable-model-invocation: true
 | 参数 | 说明 |
 |------|------|
 | `{{PROJECT_NAME}}` | 项目名称（从 Step 2 读取） |
-| `{{LANGUAGE}}` | `Java` / `Python` / `Go` / `Rust` / `PHP` / `Frontend` |
+| `{{LANGUAGE}}` | `Java` / `Python` / `Go` / `Rust` / `Frontend` |
 | `{{LANGUAGE_DESC}}` | 语言技术栈描述（见下文参数表，按检测到的框架选择） |
 | `{{LANGUAGE_RUNTIME}}` | 运行时版本 |
 | `{{FRAMEWORK_VER}}` | 框架版本（从检测到的框架参数块读取） |
@@ -230,7 +190,7 @@ disable-model-invocation: true
 └── 工程结构.md           ← 来自 harness-{lang}（语言特有）
 ```
 
-> **注意**: 对于后端项目（Java/Python/Go/Rust/PHP），`运行时可靠性.md` 来自通用版；对于前端项目，`运行时可靠性.md` 来自 `harness-front`（前端特有版本，会覆盖通用版）。
+> **注意**: 对于后端项目（Java/Python/Go/Rust），`运行时可靠性.md` 来自通用版；对于前端项目，`运行时可靠性.md` 来自 `harness-front`（前端特有版本，会覆盖通用版）。
 
 ### Step 5: 渲染技能模板 + 复制技能文件
 
@@ -289,8 +249,8 @@ disable-model-invocation: true
 
 | 参数 | 说明                                                                                       |
 |------|------------------------------------------------------------------------------------------|
-| `{{LANG_TAG}}` | 技能名称后缀，如 `-python`、`-java`、`-golang`、`-rust`、`-php`、`-front` |                                            |
-| `{{HARNESS_ME_NAME}}` | harness-me 技能名（`/harness-me`/`harness-me-python`/`harness-me-golang`/`harness-me-rust`/`harness-me-php`/`harness-me-front`） |
+| `{{LANG_TAG}}` | 技能名称后缀，如 `-python`、`-java`、`-golang`、`-rust`、`-front` |                                            |
+| `{{HARNESS_ME_NAME}}` | harness-me 技能名（`/harness-me`/`harness-me-python`/`harness-me-golang`/`harness-me-rust`/`harness-me-front`） |
 | `{{HARNESSING_CMD}}` | harnessing 命令，如 `/harnessing`、`/harnessing-python`                                       |
 | `{{BUILD_CMD}}` | 编译命令，如 `mvn compile`、`go build ./...`                                                    |
 | `{{TEST_CMD}}` | 测试命令                                                                                     |
@@ -304,7 +264,7 @@ disable-model-invocation: true
 | `{{COV_CMD}}` | 覆盖率检查命令                                                                                  |
 | `{{DEBUG_TOOL}}` | 调试工具                                                                                     |
 | `{{ARCH_REVIEW_CMD}}` | 架构审查命令，如 `/arch-review`、`/arch-review-python`                                            |
-| `{{LANGUAGE}}` | 语言名，如 `Java`、`Python`、`Go`、`Rust`、`PHP`、`Frontend`                                  |
+| `{{LANGUAGE}}` | 语言名，如 `Java`、`Python`、`Go`、`Rust`、`Frontend`                                  |
 | `{{TEST_FRAMEWORK}}` | 测试框架，如 `JUnit 5 + Mockito`                                                          |
 | `{{LINT_TOOL}}` | 代码规范检查工具，如 `Checkstyle + PMD`                                                      |
 | `{{RACE_DETECT_ARG}}` | 竞态检测参数（无竞态检测能力的语言为 `空`）                                                    |
@@ -532,7 +492,7 @@ mkdir -p .claude/skills/
 ╔══════════════════════════════════════════╗
 ║   ✅ Harness 规范已应用到 <项目名>       ║
 ╠══════════════════════════════════════════╣
-║  语言:   Java / Python / Go / Rust / PHP / Frontend   ║
+║  语言:   Java / Python / Go / Rust / Frontend        ║
 ║  框架:   Spring Boot 3.x / Django 5.x    ║
 ║  规则:   5 个已就绪（3 通用 + 2 语言特有）   ║
 ║  技能:   12 个已就绪（9 语言特有 + 3 通用）║
@@ -2121,347 +2081,6 @@ mkdir -p .claude/skills/
 | `{{ARCH_LAYER}}` | 组件树 → 状态（hooks）→ 事件 |
 | `{{DB_ACCESS}}` | 本地存储（rusqlite / localStorage） |
 
-### PHP 基础参数（通用）
-
-| 参数 | 值                                      |
-|------|----------------------------------------|
-| `{{LANGUAGE}}` | `PHP`                                  |
-| `{{LANGUAGE_RUNTIME}}` | PHP 8.2+（strict_types）                |
-| `{{COV_TOOL}}` | phpunit --coverage-text (核心逻辑 ≥80%)    |
-| `{{LINT_TOOL}}` | phpstan + psalm + php-cs-fixer          |
-| `{{ARCH_TEST_TOOL}}` | phpstan 架构约束 + 自定义检查              |
-| `{{LANG_TAG}}` | `-php`                                 |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-php`                      |
-| `{{HARNESSING_CMD}}` | `/harnessing-php`                      |
-| `{{BUILD_CMD}}` | `composer install --no-dev --optimize-autoloader` |
-| `{{TEST_CMD}}` | `vendor/bin/phpunit`                   |
-| `{{TEST_FRAMEWORK}}` | PHPUnit                             |
-| `{{LINT_CMD}}` | `vendor/bin/phpstan analyse` + `vendor/bin/php-cs-fixer fix --dry-run` |
-| `{{COV_CMD}}` | `vendor/bin/phpunit --coverage-text`   |
-| `{{DOCSTYLE}}` | PHPDoc 注释                             |
-| `{{FILE_LIMIT}}` | `400`                                  |
-| `{{TEST_NAMING}}` | `testXWhenY`（PHPUnit camelCase）       |
-| `{{DEBUG_TOOL}}` | `xdebug`                               |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-php`                     |
-| `{{ARCH_TEST_CMD}}` | 架构约束测试命令                               |
-| `{{SECURITY_CMD}}` | 安全扫描命令：`composer audit`              |
-| `{{INTEGRATION_CMD}}` | 集成测试命令：`vendor/bin/phpunit tests/Integration` |
-| `{{RUN_CMD}}` | 启动服务命令：`php -S localhost:8080 -t public`（或框架自带） |
-| `{{HEALTH_CHECK_CMD}}` | 健康检查命令                               |
-| `{{HEALTH_ENDPOINT}}` | 健康检查端点                               |
-| `{{METRICS_ENDPOINT}}` | 指标端点                                 |
-| `{{VET_CMD}}` | 静态分析命令：`vendor/bin/phpstan analyse` |
-| `{{DEP_CMD}}` | 依赖管理命令：`composer require` / `composer update` |
-| `{{ORM_TOOL}}` | ORM 框架：Doctrine ORM / Eloquent        |
-| `{{TYPE_CHECK_TOOL}}` | 类型检查工具：phpstan（level 8+strict_types） |
-| `{{TYPE_CHECK_CMD}}` | 类型检查命令：`vendor/bin/phpstan analyse` |
-| `{{ASSERT_LIB}}` | 断言库：PHPUnit 断言（assertSame 等）      |
-| `{{MOCK_LIB}}` | `Mockery` / PHPUnit mock               |
-| `{{RACE_DETECT_ARG}}` | 竞态检测参数：PHP-FPM 请求隔离（无共享状态）    |
-| `{{HTTP_MOCK_UTIL}}` | HTTP Mock 工具：Guzzle MockHandler / phpunit mock |
-| `{{FRAMEWORK_NAME}}` | 框架名称（从 {{LANGUAGE_DESC}} 提取）       |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service → Model，依赖单向 |
-
-### PHP — Laravel（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Laravel、全栈 Web 框架 |
-| `{{FRAMEWORK_VER}}` | Laravel 11/12 |
-| `{{DEV_CMD}}` | `php artisan serve` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service/Repository → Model，依赖单向 |
-| `{{DB_ACCESS}}` | Eloquent ORM + 迁移 |
-
-### PHP — Laravel AI SDK
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Laravel AI SDK、LLM 编排（基于 Laravel） |
-| `{{FRAMEWORK_VER}}` | laravel-ai |
-| `{{DEV_CMD}}` | `php artisan serve` |
-| `{{ARCH_LAYER}}` | Agent → Tool → Model，工具化编排 |
-| `{{DB_ACCESS}}` | 向量库 / 会话存储 |
-
-### PHP — Neuron AI
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Neuron AI、AI 生成框架 |
-| `{{FRAMEWORK_VER}}` | neuron-ai |
-| `{{DEV_CMD}}` | `php artisan serve` / `composer run` |
-| `{{ARCH_LAYER}}` | Agent → Tool → Model，工具化编排 |
-| `{{DB_ACCESS}}` | 向量库 / 会话存储 |
-
-### PHP — LLPhant
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、LLPhant、LLM 编排（Laravel/Symfony 可集成） |
-| `{{FRAMEWORK_VER}}` | llphant/llphant |
-| `{{DEV_CMD}}` | `php artisan serve` / `composer run` |
-| `{{ARCH_LAYER}}` | Chain → Model → Tool，链式编排 |
-| `{{DB_ACCESS}}` | 向量库 + 会话存储 |
-
-### PHP — Prism
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Prism、生成式 AI SDK |
-| `{{FRAMEWORK_VER}}` | prism-php |
-| `{{DEV_CMD}}` | `php artisan serve` / `composer run` |
-| `{{ARCH_LAYER}}` | Agent → Tool → Model，工具化编排 |
-| `{{DB_ACCESS}}` | 向量库 / 会话存储 |
-
-### PHP — PocketFlow PHP
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、PocketFlow PHP、Agent 流程框架 |
-| `{{FRAMEWORK_VER}}` | pocketflow |
-| `{{DEV_CMD}}` | `composer run`（CLI 应用） |
-| `{{ARCH_LAYER}}` | 流程（Flow）→ 节点动作 → LLM 调用 |
-| `{{DB_ACCESS}}` | 会话存储 |
-
-### PHP — Cognesy Instructor PHP
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Cognesy Instructor、LLM 结构化输出 |
-| `{{FRAMEWORK_VER}}` | cognesy/instructor |
-| `{{DEV_CMD}}` | `composer run`（CLI 应用） |
-| `{{ARCH_LAYER}}` | Schema → Prompt → 结构化响应 |
-| `{{DB_ACCESS}}` | 会话存储 |
-
-### PHP — Papiai
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Papiai、Agent 工作流（Workflow 引擎） |
-| `{{FRAMEWORK_VER}}` | papiai |
-| `{{DEV_CMD}}` | `composer run`（CLI 应用） |
-| `{{ARCH_LAYER}}` | Workflow → Agent → Tool → Model |
-| `{{DB_ACCESS}}` | 向量库 / 会话存储 |
-
-### PHP — ThinkPHP（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、ThinkPHP、国产全栈 Web 框架 |
-| `{{FRAMEWORK_VER}}` | ThinkPHP 8 |
-| `{{DEV_CMD}}` | `php think run` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service/Logic → Model，依赖单向 |
-| `{{DB_ACCESS}}` | ThinkPHP ORM（内置）+ 迁移 |
-
-### PHP — Hyperf（Swoole）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Hyperf、Swoole 协程高性能框架 |
-| `{{FRAMEWORK_VER}}` | Hyperf 3.x |
-| `{{DEV_CMD}}` | `php bin/hyperf.php start` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service → Model，协程安全 |
-| `{{DB_ACCESS}}` | Hyperf Database（PDO 连接池） |
-
-### PHP — Yii / Yii 3（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Yii / Yii 3、全栈 Web 框架 |
-| `{{FRAMEWORK_VER}}` | Yii 3 |
-| `{{DEV_CMD}}` | `php yii serve` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service → Model（ActiveRecord） |
-| `{{DB_ACCESS}}` | Yii ActiveRecord / Query Builder |
-
-### PHP — Workerman（常驻网络）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Workerman、常驻内存网络框架 |
-| `{{FRAMEWORK_VER}}` | Workerman 4.x |
-| `{{DEV_CMD}}` | `php start.php start` |
-| `{{ARCH_LAYER}}` | 事件回调 → Service（协程/多进程隔离） |
-| `{{DB_ACCESS}}` | PDO 连接池 / 无内置 ORM |
-
-### PHP — webman（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、webman、Workerman 驱动的 Web 框架 |
-| `{{FRAMEWORK_VER}}` | webman 1.x |
-| `{{DEV_CMD}}` | `php start.php start` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service → Model |
-| `{{DB_ACCESS}}` | ThinkORM / Eloquent（可选） |
-
-### PHP — CodeIgniter (CI) / Slim（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、CodeIgniter (CI) / Slim、轻量 Web 框架 |
-| `{{FRAMEWORK_VER}}` | CI4 / Slim 4 |
-| `{{DEV_CMD}}` | `php spark serve` / `php -S localhost:8080 -t public` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service → Model |
-| `{{DB_ACCESS}}` | CI Query Builder / Slim + PDO（无内置 ORM） |
-
-### PHP — WordPress（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、WordPress、CMS |
-| `{{FRAMEWORK_VER}}` | WordPress 6.x |
-| `{{DEV_CMD}}` | `wp-env start` / `php -S localhost:8080` |
-| `{{ARCH_LAYER}}` | 主题/插件 → hooks（动作/过滤器）→ 核心服务 |
-| `{{DB_ACCESS}}` | `$wpdb`（全局数据库抽象） |
-
-### PHP — WooCommerce（电商）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、WooCommerce、WordPress 电商插件 |
-| `{{FRAMEWORK_VER}}` | WooCommerce 9.x |
-| `{{DEV_CMD}}` | `wp-env start` / `php -S localhost:8080` |
-| `{{ARCH_LAYER}}` | 插件 → hooks → WC 核心服务（订单/商品/支付） |
-| `{{DB_ACCESS}}` | `$wpdb` + WC 数据表 |
-
-### PHP — Drupal（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Drupal、CMS（企业级） |
-| `{{FRAMEWORK_VER}}` | Drupal 10/11 |
-| `{{DEV_CMD}}` | `drush serve` / `php -S localhost:8080` |
-| `{{ARCH_LAYER}}` | 模块 → hooks → 服务容器（DIC） |
-| `{{DB_ACCESS}}` | Drupal Database API + Entity |
-
-### PHP — Joomla（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Joomla、CMS |
-| `{{FRAMEWORK_VER}}` | Joomla 5.x |
-| `{{DEV_CMD}}` | `php -S localhost:8080`（需 Web 服务器配置） |
-| `{{ARCH_LAYER}}` | 组件/模块 → MVC（JModel/JView） |
-| `{{DB_ACCESS}}` | Joomla Database API |
-
-### PHP — phpcms（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、phpcms、国产 CMS |
-| `{{FRAMEWORK_VER}}` | phpcms v9 |
-| `{{DEV_CMD}}` | `php -S localhost:8080`（需 Web 服务器配置） |
-| `{{ARCH_LAYER}}` | 模块 → 控制器 → 模型（phpcms MVC） |
-| `{{DB_ACCESS}}` | phpcms 数据库封装（PDO） |
-
-### PHP — dedecms（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、dedecms、国产 CMS |
-| `{{FRAMEWORK_VER}}` | dedecms v5.7 |
-| `{{DEV_CMD}}` | `php -S localhost:8080`（需 Web 服务器配置） |
-| `{{ARCH_LAYER}}` | 模块 → 控制器 → 模板（织梦 MVC 风格） |
-| `{{DB_ACCESS}}` | dedecms 数据引擎（DedeSql） |
-
-### PHP — discuz（论坛）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、discuz、社区论坛系统 |
-| `{{FRAMEWORK_VER}}` | Discuz! X3.5 |
-| `{{DEV_CMD}}` | `php -S localhost:8080`（需 Web 服务器配置） |
-| `{{ARCH_LAYER}}` | 应用 → 模块（plugin 钩子）→ 核心服务 |
-| `{{DB_ACCESS}}` | Discuz 数据库类（DB::） |
-
-### PHP — Phalcon（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Phalcon、C 扩展高性能框架 |
-| `{{FRAMEWORK_VER}}` | Phalcon 5 |
-| `{{DEV_CMD}}` | `php -S localhost:8080 -t public` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Model（Phalcon MVC） |
-| `{{DB_ACCESS}}` | Phalcon ORM / Query Builder |
-
-### PHP — CakePHP（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、CakePHP、全栈 Web 框架（约定优于配置） |
-| `{{FRAMEWORK_VER}}` | CakePHP 5 |
-| `{{DEV_CMD}}` | `bin/cake server` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service → Table/Entity |
-| `{{DB_ACCESS}}` | CakePHP ORM（Cake\ORM） |
-
-### PHP — Craft CMS（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Craft CMS、CMS |
-| `{{FRAMEWORK_VER}}` | Craft CMS 5 |
-| `{{DEV_CMD}}` | `php craft serve` |
-| `{{ARCH_LAYER}}` | 插件 → 元素/控制器 → services |
-| `{{DB_ACCESS}}` | Yii ActiveRecord（内置） |
-
-### PHP — October CMS（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、October CMS、Laravel 基础 CMS |
-| `{{FRAMEWORK_VER}}` | October CMS 3.x |
-| `{{DEV_CMD}}` | `php artisan serve` |
-| `{{ARCH_LAYER}}` | 插件 → 组件 → Model（Laravel 分层） |
-| `{{DB_ACCESS}}` | Eloquent ORM（Laravel 内置） |
-
-### PHP — OpenCart（电商）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、OpenCart、电商系统 |
-| `{{FRAMEWORK_VER}}` | OpenCart 4 |
-| `{{DEV_CMD}}` | `php -S localhost:8080`（需 Web 服务器配置） |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Model（OC 分层） |
-| `{{DB_ACCESS}}` | OpenCart DB 抽象（mysqli/PDO） |
-
-### PHP — GravCMS（CMS）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、GravCMS、扁平文件 CMS |
-| `{{FRAMEWORK_VER}}` | Grav 1.7+/2.x |
-| `{{DEV_CMD}}` | `bin/grav server` |
-| `{{ARCH_LAYER}}` | 插件 → Twig 模板 → 页面处理（无数据库） |
-| `{{DB_ACCESS}}` | YAML/文件存储（无内置 ORM） |
-
-### PHP — Symfony2（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Symfony2、企业级全栈框架 |
-| `{{FRAMEWORK_VER}}` | Symfony 2.8 |
-| `{{DEV_CMD}}` | `app/console server:run` |
-| `{{ARCH_LAYER}}` | 路由 → Controller → Service（DI 容器） |
-| `{{DB_ACCESS}}` | Doctrine ORM（内置） |
-
-### PHP — Yaf（Web）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Yaf、C 扩展高性能框架 |
-| `{{FRAMEWORK_VER}}` | Yaf 3.x |
-| `{{DEV_CMD}}` | `php -S localhost:8080 -t public`（需 yaf 扩展） |
-| `{{ARCH_LAYER}}` | Bootstrap → Controller → Model/Plugin |
-| `{{DB_ACCESS}}` | PDO 直连（无内置 ORM） |
-
-### PHP — Swoole（网络框架）
-
-| 参数 | 值 |
-|------|-----|
-| `{{LANGUAGE_DESC}}` | PHP、Swoole、常驻协程网络框架 |
-| `{{FRAMEWORK_VER}}` | Swoole 5.x（ext-swoole） |
-| `{{DEV_CMD}}` | `php server.php start` |
-| `{{ARCH_LAYER}}` | 事件回调 → Service（协程隔离） |
-| `{{DB_ACCESS}}` | PDO 连接池 / 无内置 ORM |
-
 ---
 
 ## 约束
@@ -2473,7 +2092,4 @@ mkdir -p .claude/skills/
 - ✅ 每个步骤完成后输出简要状态
 ---
 
-> **来源 & 作者**
-> - 公众号：华仔聊技术
-> - 知识星球：华仔·AI高并发全栈训练营
-> - 作者：王江华@huazai
+

@@ -4,17 +4,16 @@
   <text x="480" y="42" text-anchor="middle" fill="#f8fafc" font-size="20" font-weight="700">跨语言骨架：方法论层 + 技术栈层</text>
   <text x="480" y="66" text-anchor="middle" fill="#94a3b8" font-size="12">方法论跨语言通用 · 技术栈按语言独立 · 一个团队一套工作语言</text>
 
-  <!-- 顶部：同一个团队 · 6 语言 -->
+  <!-- 顶部：同一个团队 · 5 语言 -->
   <g transform="translate(40,90)">
     <rect width="880" height="80" rx="8" fill="#1e293b" stroke="#334155"/>
     <text x="440" y="26" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="700">同一个团队 · 同一个方法论</text>
     <g font-size="11" fill="#cbd5e1" text-anchor="middle">
-      <text x="72" y="58">Java 后端</text>
-      <text x="214" y="58">Go 微服务</text>
-      <text x="356" y="58">Python 数据</text>
-      <text x="498" y="58">Vue 3 前端</text>
-      <text x="640" y="58">Rust 加速</text>
-      <text x="782" y="58">PHP 遗留</text>
+      <text x="88" y="58">Java 后端</text>
+      <text x="264" y="58">Go 微服务</text>
+      <text x="440" y="58">Python 数据</text>
+      <text x="616" y="58">Vue 3 前端</text>
+      <text x="792" y="58">Rust 加速</text>
     </g>
   </g>
 
@@ -40,42 +39,36 @@
     <text x="20" y="26" fill="#22c55e" font-size="13" font-weight="700">技术栈层 · harness-{{lang}}/</text>
     <text x="20" y="46" fill="#64748b" font-size="10">语言特有</text>
 
-    <!-- 6 个语言卡片，w=132，间距 12 -->
+    <!-- 5 个语言卡片 -->
     <g transform="translate(20,60)">
-      <rect width="132" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
-      <text x="66" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-java</text>
-      <text x="66" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Spring Boot · Dubbo</text>
-      <text x="66" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">mvn · JUnit 5</text>
+      <rect width="156" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="78" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-java</text>
+      <text x="78" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Spring Boot · Dubbo</text>
+      <text x="78" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">mvn · JUnit 5</text>
     </g>
-    <g transform="translate(164,60)">
-      <rect width="132" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
-      <text x="66" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-golang</text>
-      <text x="66" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Gin · go-zero · Kitex</text>
-      <text x="66" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">go build · testify</text>
+    <g transform="translate(188,60)">
+      <rect width="156" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="78" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-golang</text>
+      <text x="78" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Gin · go-zero · Kitex</text>
+      <text x="78" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">go build · testify</text>
     </g>
-    <g transform="translate(308,60)">
-      <rect width="132" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
-      <text x="66" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-python</text>
-      <text x="66" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">FastAPI · LangChain</text>
-      <text x="66" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">pytest · mypy</text>
+    <g transform="translate(356,60)">
+      <rect width="156" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="78" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-python</text>
+      <text x="78" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">FastAPI · LangChain</text>
+      <text x="78" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">pytest · mypy</text>
     </g>
-    <g transform="translate(452,60)">
-      <rect width="132" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
-      <text x="66" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-rust</text>
-      <text x="66" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Axum · Actix · Tauri</text>
-      <text x="66" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">cargo · clippy</text>
+    <g transform="translate(524,60)">
+      <rect width="156" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="78" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-rust</text>
+      <text x="78" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Axum · Actix · Tauri</text>
+      <text x="78" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">cargo · clippy</text>
     </g>
-    <g transform="translate(596,60)">
-      <rect width="132" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
-      <text x="66" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-php</text>
-      <text x="66" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Laravel · Hyperf · Yii</text>
-      <text x="66" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">composer · PHPUnit</text>
-    </g>
-    <g transform="translate(740,60)">
-      <rect width="120" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
-      <text x="60" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-front</text>
-      <text x="60" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Vue 3 · Next.js</text>
-      <text x="60" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">Vite · Vitest</text>
+    <g transform="translate(692,60)">
+      <rect width="148" height="68" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="74" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">harness-front</text>
+      <text x="74" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Vue 3 · Next.js</text>
+      <text x="74" y="58" text-anchor="middle" fill="#94a3b8" font-size="9">Vite · Vitest</text>
     </g>
   </g>
 

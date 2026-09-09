@@ -52,11 +52,13 @@ PRD 上传 → LLM 解析 → 提取实体 → 生成 draft 文档 → 人工校
 
 ## 开发
 
+前后端一起起的完整步骤见仓库文档：[docs/prd-local-start.md](../docs/prd-local-start.md)。
+
 ```bash
 # 安装依赖
 npm install
 
-# 启动开发服务器（默认端口 5174）
+# 启动开发服务器（默认端口 5174，/api 代理到 localhost:8080）
 npm run dev
 
 # 类型检查
@@ -71,9 +73,9 @@ npm test
 
 ## Mock 模式
 
-项目默认使用内置 Mock 数据（`src/constants/mock.ts`），无需后端即可演示完整流程。
+`src/config/index.ts` 中 **`useMock` 当前为 `false`**，开发时需同时启动 `prd-ingestion-server`。
 
-如需对接真实后端，将 `src/config/index.ts` 中的 `useMock` 设为 `false`，并确保后端服务运行在 `localhost:8080`（或修改 Vite proxy 配置）。
+若改为 `true`，则走 `src/constants/mock.ts`，无需后端即可点页面演示。
 
 ## 前后端交互
 

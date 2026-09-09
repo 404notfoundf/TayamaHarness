@@ -1,7 +1,7 @@
 # 吸收清单：《AI 驱动研发体系的实践和思考》→ 脚手架
 
 > 来源文档：`C:\Users\meng_\Desktop\AI 驱动研发体系的实践和思考.docx`（作者默达，淘天集团-营销&交易技术团队，Price360-KB 实践总结）
-> 目标项目：huazai-harness-skills（开箱即用的 Harness Engineering 跨语言开发流水线技能包）
+> 目标项目：tayama-harness-skills（开箱即用的 Harness Engineering 跨语言开发流水线技能包）
 > 落盘日期：2026-09-03（本清单已全部落地执行，配套落地说明见 [吸收落地使用指南](absorb-usage-guide.md)）
 
 ## 总体判断

@@ -8,9 +8,9 @@
 
 ## 一、从"硬编码"到"参数化"：一个痛苦的故事
 
-### 1.1 huazai-trip-plan 的"复制粘贴之痛"
+### 1.1 tayama-trip-plan 的"复制粘贴之痛"
 
-huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化系统之前，每一个新项目都要经历这样的过程：
+tayama-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化系统之前，每一个新项目都要经历这样的过程：
 
 1. **复制**上一个项目完整的 `.harness/` 目录
 2. **搜索**所有 pom.xml、application.yml、Dockerfile 中的项目名并替换
@@ -54,7 +54,7 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 
 ### 1.2 从"一个项目"到"六个项目"的临界点
 
-在 huazai-trip-plan 中，脚手架最初只服务于 Java + Spring Boot 项目。当团队开始接手 Python（FastAPI）和 Go（Gin）项目时，问题爆发了：
+在 tayama-trip-plan 中，脚手架最初只服务于 Java + Spring Boot 项目。当团队开始接手 Python（FastAPI）和 Go（Gin）项目时，问题爆发了：
 
 - **Java 的 Lint 命令**是 `mvn checkstyle:check`，Python 的是 `ruff check`，Go 的是 `go vet`
 - **测试框架**不同：JUnit 5 vs pytest vs go test
@@ -77,7 +77,7 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 
 ### 1.4 硬编码的三种"死法"
 
-在 huazai-trip-plan 的实践中，硬编码的"坑"可以归纳为三种死法：
+在 tayama-trip-plan 的实践中，硬编码的"坑"可以归纳为三种死法：
 
 **死法一：死得不明不白**
 
@@ -98,7 +98,7 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 
 ### 2.1 为什么是 52 而不是更多？
 
-52 不是一次设计出来的。在重构过程中，我们从 huazai-trip-plan 的 78 个硬编码值出发，经过三轮收敛得到 38 个核心占位符，随后在框架扩展与语言包扩充中新增了 14 个（38 → 52）：
+52 不是一次设计出来的。在重构过程中，我们从 tayama-trip-plan 的 78 个硬编码值出发，经过三轮收敛得到 38 个核心占位符，随后在框架扩展与语言包扩充中新增了 14 个（38 → 52）：
 
 - **第一轮（78 → 52）**：合并同类项。`mvn test`、`pytest`、`go test` 合并为 `{{TEST_CMD}}`
 - **第二轮（52 → 42）**：移除冗余。参数表中不包含"常识性"值
@@ -273,9 +273,9 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 **模式三：语言差异，完全不同的参数**
 
 这是最"极端"的模式——不同语言有完全不同的参数：
-- `{{HTTP_MOCK_UTIL}}`：Java 用 WireMock，Python 用 httpx-mock，Go 用 httptest，Rust 用 httpmock/wiremock，PHP 用 Guzzle MockHandler/phpunit mock
-- `{{ORM_TOOL}}`：Java 用 JPA/MyBatis，Python 用 SQLAlchemy，Go 用 GORM，Rust 用 SQLx/Diesel/SeaORM，PHP 用 Doctrine ORM/Eloquent
-- `{{RACE_DETECT_ARG}}`：Java 不需要，Go 需要 `-race`，Rust 所有权/借用保证线程安全，PHP 请求隔离（无共享状态）
+- `{{HTTP_MOCK_UTIL}}`：Java 用 WireMock，Python 用 httpx-mock，Go 用 httptest，Rust 用 httpmock/wiremock
+- `{{ORM_TOOL}}`：Java 用 JPA/MyBatis，Python 用 SQLAlchemy，Go 用 GORM，Rust 用 SQLx/Diesel/SeaORM
+- `{{RACE_DETECT_ARG}}`：Java 不需要，Go 需要 `-race`，Rust 所有权/借用保证线程安全
 
 ### 3.3 ML/AI 框架的特殊处理
 
@@ -318,13 +318,13 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
   <text x="400" y="210" text-anchor="middle" fill="#94a3b8" font-size="10">1. 基础参数定义"通用值"，差异块只写"不同值"</text>
   <text x="400" y="226" text-anchor="middle" fill="#94a3b8" font-size="10">2. ML/AI 框架的 {{ARCH_LAYER}} 切换为"数据管道/模型/推理"</text>
   <text x="400" y="242" text-anchor="middle" fill="#94a3b8" font-size="10">3. 差异块继承基础参数，未覆盖的自动使用基础值</text>
-  <text x="400" y="265" text-anchor="middle" fill="#64748b" font-size="9">这样 111 个框架差异块只需要 111 个差异块 + 6 个基础块，而不是 111*52 个参数行</text>
+  <text x="400" y="265" text-anchor="middle" fill="#64748b" font-size="9">这样 80+ 个框架差异块只需要对应差异块 + 5 个基础块，而不是全部参数行都写一遍</text>
 </svg>
 ```
 
 ## 四、从"一次"到"70+"：框架扩展的工程实践
 
-### 4.1 第一轮：6 种语言 x 基础框架
+### 4.1 第一轮：5 种语言 x 基础框架
 
 第一轮参数化扩展覆盖了最常用的框架：
 
@@ -332,7 +332,6 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 - **Python**：FastAPI、Flask、Django
 - **Go**：Gin、go-zero、Echo、Fiber、Chi
 - **Rust**：Axum、Actix Web、Rocket、Warp、Poem、Loco、Salvo
-- **PHP**：Laravel、ThinkPHP、Hyperf、Yii / Yii 3、Workerman、webman、CodeIgniter (CI) / Slim、WordPress、WooCommerce
 - **Frontend**：Vue 3 (Vite/CLI)、React (Vite/CRA)、Next.js、Angular、Svelte、Nuxt
 
 这一轮定义了完整的参数化骨架——52 个占位符、6 大分类、差异化参数块。
@@ -345,7 +344,6 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 - **Python 新增**：TensorFlow、PyTorch、Keras、scikit-learn、XGBoost、LangChain、LangGraph、CrewAI、PydanticAI、SmolAgents、OpenAI Agents SDK、Hugging Face Transformers、Tornado
 - **Go 新增**：LangChainGo、Google ADK-Go、cloudwego/eino、tRPC-Agent-Go、Firebase Genkit、Anyi、Beego、Go-Kit、Go-Kratos、Gorilla Mux、Kitex、Hertz、Iris、Macaron、Tango、goframe
 - **Rust 新增**：Candle、Burn、tch-rs、ort、rlx-models、ADK-Rust、Blockcell、vLLM、Tauri、Iced、egui、Dioxus
-- **PHP 新增**：Laravel AI SDK、Neuron AI、LLPhant、Prism、PocketFlow PHP、Cognesy Instructor PHP、Papiai、Phalcon、CakePHP、Symfony2、Yaf、Swoole、phpcms、dedecms、discuz、Craft CMS、October CMS、OpenCart、GravCMS、Drupal、Joomla
 - **Frontend 新增**：无（第一轮已覆盖主流）
 
 ### 4.3 框架检测的"指纹"识别
@@ -451,9 +449,9 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 ```
 
 这些检测规则覆盖了包管理器文件、配置文件、源码特征等多种模式，确保无论项目使用什么框架，都能被准确识别。
-### 4.4 同一个占位符，六种语言的映射
+### 4.4 同一个占位符，五种语言的映射
 
-理解参数化的最佳方式，是看同一个占位符在六种语言中的不同值。以 `{{TEST_CMD}}` 和 `{{LINT_CMD}}` 为例：
+理解参数化的最佳方式，是看同一个占位符在五种语言中的不同值。以 `{{TEST_CMD}}` 和 `{{LINT_CMD}}` 为例：
 
 | 语言 | {{TEST_CMD}} | {{LINT_CMD}} | {{COV_CMD}} |
 |------|-------------|-------------|-------------|
@@ -461,7 +459,6 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 | Python | pytest | ruff check | pytest --cov |
 | Go | go test ./... | go vet | go test -cover ./... |
 | Rust | cargo test | cargo clippy -- -D warnings | cargo llvm-cov --workspace --summary-only |
-| PHP | vendor/bin/phpunit | vendor/bin/phpstan analyse + php-cs-fixer | vendor/bin/phpunit --coverage-text |
 | Frontend | npm test | eslint . | vitest run --coverage |
 
 这个表格揭示了参数化的核心洞察：**语义相同，语法不同。** AI 不需要知道"如何测试 Java"和"如何测试 Python"——它只需要知道"{{TEST_CMD}} 会执行测试"，然后从参数表中读取具体的命令。
@@ -497,7 +494,7 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
     <filter id="sh_p11"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity="0.4"/></filter>
   </defs>
   <rect width="800" height="260" fill="url(#bg_p11)" rx="10"/>
-  <text x="400" y="25" text-anchor="middle" fill="#e2e8f0" font-size="28" font-weight="700">同一个占位符，六种语言的映射</text>
+  <text x="400" y="25" text-anchor="middle" fill="#e2e8f0" font-size="28" font-weight="700">同一个占位符，五种语言的映射</text>
   <rect x="20" y="45" width="115" height="55" rx="8" fill="#3b82f6" opacity="0.12" stroke="#3b82f6" stroke-width="1.5" filter="url(#sh_p11)"/>
   <text x="77" y="65" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">Java</text>
   <text x="77" y="84" text-anchor="middle" fill="#94a3b8" font-size="10">mvn test</text>
@@ -510,18 +507,14 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
   <rect x="389" y="45" width="115" height="55" rx="8" fill="#ec4899" opacity="0.12" stroke="#ec4899" stroke-width="1.5" filter="url(#sh_p11)"/>
   <text x="446" y="65" text-anchor="middle" fill="#f9a8d4" font-size="12" font-weight="700">Rust</text>
   <text x="446" y="84" text-anchor="middle" fill="#94a3b8" font-size="10">cargo test</text>
-  <rect x="512" y="45" width="115" height="55" rx="8" fill="#6366f1" opacity="0.12" stroke="#6366f1" stroke-width="1.5" filter="url(#sh_p11)"/>
-  <text x="569" y="65" text-anchor="middle" fill="#a5b4fc" font-size="12" font-weight="700">PHP</text>
-  <text x="569" y="84" text-anchor="middle" fill="#94a3b8" font-size="10">phpunit</text>
-  <rect x="635" y="45" width="145" height="55" rx="8" fill="#a855f7" opacity="0.12" stroke="#a855f7" stroke-width="1.5" filter="url(#sh_p11)"/>
-  <text x="707" y="65" text-anchor="middle" fill="#d8b4fe" font-size="12" font-weight="700">Frontend</text>
-  <text x="707" y="84" text-anchor="middle" fill="#94a3b8" font-size="10">npm test</text>
+  <rect x="512" y="45" width="145" height="55" rx="8" fill="#a855f7" opacity="0.12" stroke="#a855f7" stroke-width="1.5" filter="url(#sh_p11)"/>
+  <text x="584" y="65" text-anchor="middle" fill="#d8b4fe" font-size="12" font-weight="700">Frontend</text>
+  <text x="584" y="84" text-anchor="middle" fill="#94a3b8" font-size="10">npm test</text>
   <line x1="77" y1="100" x2="77" y2="130" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
   <line x1="200" y1="100" x2="200" y2="130" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
   <line x1="323" y1="100" x2="323" y2="130" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
   <line x1="446" y1="100" x2="446" y2="130" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <line x1="569" y1="100" x2="569" y2="130" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <line x1="707" y1="100" x2="707" y2="130" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="584" y1="100" x2="584" y2="130" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
   <rect x="60" y="135" width="680" height="50" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1" filter="url(#sh_p11)"/>
   <text x="400" y="155" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="700">{{TEST_CMD}}：语义相同，语法不同</text>
   <text x="400" y="174" text-anchor="middle" fill="#94a3b8" font-size="10">AI 不需要知道"如何测试 Java"，它只需要知道"{{TEST_CMD}} 会执行测试"</text>
@@ -671,7 +664,6 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 - **Python**：pytest-cov（pytest 插件，一行命令搞定）
 - **Go**：go test -cover（内置覆盖率，不需要外部工具）
 - **Rust**：cargo llvm-cov（LLVM 覆盖率，支持分支覆盖）
-- **PHP**：phpunit --coverage-text（PHPUnit 内置）
 - **Frontend**：Vitest/Istanbul（通过 vite/nyc 运行）
 
 `{{COV_CMD}}` 和 `{{COV_TOOL}}` 的分离是一个有意的设计选择。`{{COV_TOOL}}` 告诉 AI"用什么工具"，`{{COV_CMD}}` 告诉 AI"怎么运行"。这样即使工具相同，命令也可以不同（比如 JaCoCo 可以通过 `mvn jacoco:report` 或 `mvn verify` 两种方式运行覆盖率）。
@@ -686,7 +678,6 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 | Python | unittest.mock | httpx-mock / responses |
 | Go | go-sqlmock / testify | httptest |
 | Rust | mockall / wiremock | httpmock |
-| PHP | Mockery / PHPUnit mock | Guzzle MockHandler |
 | Frontend | Vitest mock / Sinon | msw (Mock Service Worker) |
 
 这个差异说明了一个重要问题：**Mock 不是"技术问题"，而是"生态问题"**。Java 的 Mockito 是"你用我也用"的生态选择，没有"更好"的替代品。参数化系统不试图评判哪种 Mock 更好，而是**记录"这个生态默认用什么"**。
@@ -757,7 +748,6 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 | Python | mypy / pyright | 需要额外的类型检查工具 |
 | Go | go vet | 编译期类型检查 |
 | Rust | cargo check（编译时） | 编译期强类型 + 所有权检查 |
-| PHP | phpstan（level 8 + strict_types） | 需要额外的静态分析工具 |
 | Frontend | tsc（TypeScript） | 编译期类型检查 |
 
 这个表格揭示了"隐形假设"：Java、Go、Frontend 的类型检查是编译的一部分，而 Python 需要额外的工具。`{{TYPE_CHECK_CMD}}` 在 Java 中可能为空（因为编译就包含了类型检查），但在 Python 中必须是 `mypy .`。
@@ -1041,7 +1031,7 @@ huazai-trip-plan 是 Harness 脚手架的"原型"。在它被重构为参数化�
 
 参数化的核心思想是：**让"多样性"消失在参数表中，让"规律性"显现在技能模板中。** 当 AI 面对一个新项目时，它不需要知道这个项目是 Java 还是 Python——它只需要读取 `{{TEST_CMD}}`，然后执行它。
 
-从 huazai-trip-plan 的 78 个硬编码值，到 52 个占位符 + 111 个差异块，参数化系统经历了一次"从手艺到工程"的质变。原来的几十个技能文件是"手工作坊"，每个文件都要单独维护；现在的技能文件是"流水线工厂"，通过参数表统一驱动。
+从 tayama-trip-plan 的 78 个硬编码值，到 52 个占位符 + 111 个差异块，参数化系统经历了一次"从手艺到工程"的质变。原来的几十个技能文件是"手工作坊"，每个文件都要单独维护；现在的技能文件是"流水线工厂"，通过参数表统一驱动。
 
 这就是参数化的力量：**一次抽象，处处使用。** 不是让 AI 适应每一种语言，而是让每一种语言向 AI 提供统一的接口。
 
@@ -1153,13 +1143,13 @@ AI 不需要"死记硬背"这些知识——它只需要读取参数表。参数
 
 
 
-回顾整个参数化系统的设计历程，从 huazai-trip-plan 中 78 个硬编码值的痛苦，到 52 个占位符的优雅，再到 111 个框架差异块的全面覆盖，我们用抽象的力量解决了多样性的问题。参数化不是终点，它是 Harness 从一个人的工具走向所有人的平台的必经之路。在下一篇中，我们将进入自动检测的领域——AI 如何一眼认出你的技术栈。
+回顾整个参数化系统的设计历程，从 tayama-trip-plan 中 78 个硬编码值的痛苦，到 52 个占位符的优雅，再到 111 个框架差异块的全面覆盖，我们用抽象的力量解决了多样性的问题。参数化不是终点，它是 Harness 从一个人的工具走向所有人的平台的必经之路。在下一篇中，我们将进入自动检测的领域——AI 如何一眼认出你的技术栈。
 
 参数化系统让 Harness 不再是一个固定模板的脚手架，而是一个可配置的工程平台。
 
 这 52 个占位符，正是这次从手艺到工程质变的最小单位。
 
-从 78 个硬编码值到 52 个占位符，从 6 种语言到 111 个框架差异块，参数化让 Harness 真正做到了一套模板，适配万物。
+从 78 个硬编码值到 52 个占位符，从 5 种语言到 80+ 个框架差异块，参数化让 Harness 真正做到了一套模板，适配万物。
 
 这就是参数化的力量：让每一个技能文件都成为工程纪律的载体，而不是项目细节的容器。
 

@@ -8,6 +8,8 @@ Harness Flow 是一套 PRD（产品需求文档）智能解析与变更管理平
 
 ## 〇、环境准备与启动
 
+> **最短步骤（PowerShell、端口、`$env`）见 [本地启动](prd-local-start.md)。** 下文为完整环境变量表与可选组件说明。
+
 ### 0.1 依赖软件
 
 | 软件 | 版本要求 | 说明 |
@@ -75,23 +77,21 @@ Harness Flow 是一套 PRD（产品需求文档）智能解析与变更管理平
 
 ### 0.3 启动后端
 
-```bash
-# 1. 创建数据库（MySQL 8.0）
+PowerShell 示例（与 `mvn` 同一窗口；Spring **不会**自动读 `.env` 文件）：
+
+```powershell
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS harness_prd_ingestion DEFAULT CHARSET utf8mb4;"
 
-# 2. 设置环境变量（以 Windows 为例）
-set DB_PASSWORD=your_password
-set MINIO_ACCESS_KEY=your_minio_access_key
-set MINIO_SECRET_KEY=your_minio_secret_key
-
-# 3. 编译并启动
 cd prd-ingestion-server
-mvn clean package -DskipTests
-java -jar target/prd-ingestion-server-*.jar
+$env:DB_PASSWORD = "你的MySQL密码"
+$env:MINIO_ENABLED = "false"
+$env:AI_ENABLED = "false"
+mvn spring-boot:run
 ```
 
-> 首次启动时，系统会自动执行 `schema.sql` 创建所有数据表（幂等：已存在则跳过）。
-> 启动成功后访问 `http://localhost:8080/api/v1/actuator/health` 确认服务状态。
+或：`mvn clean package -DskipTests` 后 `java -jar target/prd-ingestion-server-*.jar`。
+
+> 首次启动会执行 `schema.sql` 建表（幂等）。健康检查：`http://localhost:8080/api/v1/actuator/health`。
 
 ### 0.4 启动 MinIO（可选）
 
@@ -115,17 +115,17 @@ cd prd-ingestion-front
 # 安装依赖
 npm install
 
-# 开发模式启动（默认端口 5173，自动代理后端请求）
+# 开发模式启动（端口 5174，自动代理后端 /api → 8080）
 npm run dev
 ```
 
-> 前端默认通过 Vite 代理将 `/api` 请求转发到后端 `http://localhost:8080`。
-> 开发模式访问 `http://localhost:5173` 即可。
+> 当前 `useMock` 为 `false`，必须同时启动后端。
+> 浏览器打开 `http://localhost:5174`。
 
 ### 0.6 验证启动
 
 1. 后端健康检查：`http://localhost:8080/api/v1/actuator/health` → 返回 `{"status":"UP"}`
-2. 前端页面：`http://localhost:5173` → 显示登录页面
+2. 前端页面：`http://localhost:5174` → 显示登录页面
 3. 默认注册第一个用户即为系统管理员
 
 ---

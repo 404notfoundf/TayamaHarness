@@ -1,13 +1,13 @@
 {
-  "name": "huazai-harness",
+  "name": "tayama-harness",
   "owner": {
-    "name": "Huazai Team",
-    "url": "https://gitcode.com/huazaiteam"
+    "name": "404notfoundf",
+    "url": "https://github.com/404notfoundf"
   },
-  "description": "Harness Engineering 跨语言开发流水线技能包 — 开箱即用的 Java / Python / Go / Rust / PHP / Frontend 规范体系",
+  "description": "Harness Engineering 跨语言开发流水线技能包 — 开箱即用的 Java / Python / Go / Rust / Frontend 规范体系",
   "plugins": [
     {
-      "name": "huazai-harness-skills",
+      "name": "tayama-harness-skills",
       "source": "./",
       "description": "Harness Engineering 跨语言开发流水线技能包 — 人类设计约束、AI 写代码、机器验证",
       "category": "engineering",
@@ -21,7 +21,6 @@
         "python",
         "golang",
         "rust",
-        "php",
         "frontend"
       ]
     }

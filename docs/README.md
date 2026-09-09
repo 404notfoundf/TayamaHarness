@@ -115,7 +115,6 @@ Harness 方法论与技术实践的深度拆解系列（共 51 篇，图文并�
 | Python | PEP 8 + Google Style + Flask/FastAPI | [文档](languages/python.md) |
 | Go | Go Code Review + Uber Style + go-zero/Gin | [文档](languages/golang.md) |
 | Rust | Rustfmt + Clippy 严格模式 + Axum/Actix Web | [文档](languages/rust.md) |
-| PHP | PSR-12 + PHPStan level 8 + Laravel/ThinkPHP | [文档](languages/php.md) |
 | Frontend | Vue 3 + TypeScript 严格模式 + Vite | [文档](languages/frontend.md) |
 
 ---
@@ -139,6 +138,7 @@ Harness 方法论与技术实践的深度拆解系列（共 51 篇，图文并�
 
 | 文档 | 说明 |
 |------|------|
+| [本地启动](prd-local-start.md) | front + server 如何起、环境变量、验证 |
 | [使用教程](prd-usage-tutorial.md) | 图文并茂的完整使用教程（2000+ 字） |
 | [API 接口文档](prd-platform-api.md) | 后端 REST API 完整参考 |
 | [变更管理（PRD 平台）](change-management-prd.md) | PRD 平台的变更管理、流水线、看板机制 |

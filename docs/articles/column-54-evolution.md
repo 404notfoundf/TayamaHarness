@@ -34,7 +34,7 @@ AI 驱动的研发体系，要在通用 Coding Agent 之上增加**项目 Harnes
 
 ## 与脚手架的关系
 
-`huazai-harness-skills` 生成的 `.harness/` 就是「项目 Harness」的具体实例：
+`tayama-harness-skills` 生成的 `.harness/` 就是「项目 Harness」的具体实例：
 
 | 文档概念 | 脚手架对应 |
 |---------|-----------|

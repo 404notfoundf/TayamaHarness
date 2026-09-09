@@ -1,11 +1,11 @@
 {
-  "name": "huazai-harness-skills",
+  "name": "tayama-harness-skills",
   "version": "1.0.0",
   "private": true,
-  "description": "Harness Engineering 跨语言开发流水线技能包 — Java / Python / Go / Rust / PHP / Frontend",
+  "description": "Harness Engineering 跨语言开发流水线技能包 — Java / Python / Go / Rust / Frontend",
   "repository": {
     "type": "git",
-    "url": "https://gitcode.com/huazaiteam/huazai-harness-skills"
+    "url": "https://github.com/404notfoundf/TayamaHarness.git"
   },
   "license": "MIT",
   "keywords": ["harness", "sdd", "tdd", "coding-standards", "engineering", "skills"],

@@ -15,7 +15,6 @@
 | Python | Django / FastAPI / Flask / Tornado / TensorFlow / PyTorch / LangChain / LangGraph / CrewAI / PydanticAI / SmolAgents / OpenAI Agents SDK | pip / poetry / uv |
 | Go | Gin / go-zero / Echo / Fiber / Chi / Beego / Go-Kit / Go-Kratos / Kitex / Hertz / Iris / GoFrame / LangChainGo / eino / ADK-Go / Genkit / Anyi | go mod |
 | Rust | Axum / Actix Web / Rocket / Warp / Poem / Loco / Salvo / Tauri / Iced / egui / Dioxus / Candle / Burn / tch-rs / ort / ADK-Rust / vLLM | cargo |
-| PHP | Laravel / Laravel AI SDK / Neuron AI / LLPhant / Prism / ThinkPHP / Hyperf / Yii / Workerman / webman / CodeIgniter / Slim / WordPress / WooCommerce / Drupal / Joomla / phpcms / discuz / Phalcon / CakePHP / Symfony2 / Swoole | composer |
 | Frontend | Vue 3 / React / Angular / Svelte / Next.js / Nuxt | npm / pnpm / yarn |
 
 ## 工作流程
@@ -26,7 +25,7 @@
 
 ### Step 2: 读取项目名称
 
-从 `pom.xml` / `go.mod` / `Cargo.toml` / `package.json` / `composer.json` / `pyproject.toml` 等文件读取项目名称。
+从 `pom.xml` / `go.mod` / `Cargo.toml` / `package.json` / `pyproject.toml` 等文件读取项目名称。
 
 ### Step 3: 渲染 Owner Agent
 

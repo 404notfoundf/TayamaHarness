@@ -284,8 +284,6 @@ Reasonix 原生支持 `.reasonix/skills/`，Claude Code 扫描 `.claude/skills/`
 |   +-- ...
 +-- rust/
 |   +-- ...
-+-- php/
-|   +-- ...
 +-- front/
 |   +-- ...
 +-- common/
@@ -415,7 +413,7 @@ Reasonix 原生支持 `.reasonix/skills/`，Claude Code 扫描 `.claude/skills/`
 
 需要澄清一个容易混淆的职责边界：**语言包的筛选不在 install-skill 阶段进行，而是在上游的 apply-harness 阶段完成。**
 
-apply-harness 会检测项目构建文件（`pom.xml`→Java、`go.mod`→Go、`package.json`→Front、`Cargo.toml`→Rust、`pyproject.toml`→Python、`composer.json`→PHP），只把当前语言包对应的技能渲染进 `.harness/skills/{lang}/`，加上 `common/` 下的通用技能。也就是说，等到 install-skill 执行时，`.harness/skills/` 里已经只剩当前语言的技能了——install-skill 不再做二次过滤。
+apply-harness 会检测项目构建文件（`pom.xml`→Java、`go.mod`→Go、`package.json`→Front、`Cargo.toml`→Rust、`pyproject.toml`→Python），只把当前语言包对应的技能渲染进 `.harness/skills/{lang}/`，加上 `common/` 下的通用技能。也就是说，等到 install-skill 执行时，`.harness/skills/` 里已经只剩当前语言的技能了——install-skill 不再做二次过滤。
 
 这个分工的依据是职责分离：apply-harness 负责"渲染哪些技能"（项目级、与语言相关），install-skill 负责"装到哪个工具"（工具级、与语言无关）。如果用户切换语言，需要重新运行 apply-harness 重新生成 `.harness/skills/`，再运行 install-skill 重新注册。
 
@@ -1009,7 +1007,7 @@ SKILL.md 格式正在被越来越多的 AI 工具原生支持，这是一个好�
 
 ### 20.2 为什么"只安装当前语言"的职责不在 install-skill
 
-如 4.3 节所述，"只保留当前语言包"这件事是 apply-harness 在渲染阶段完成的：它检测 `pom.xml`/`go.mod`/`package.json`/`Cargo.toml`/`pyproject.toml`/`composer.json` 等构建文件，只把当前语言包的技能写进 `.harness/skills/`。install-skill 拿到的是已经筛过的产物，不再二次过滤。
+如 4.3 节所述，"只保留当前语言包"这件事是 apply-harness 在渲染阶段完成的：它检测 `pom.xml`/`go.mod`/`package.json`/`Cargo.toml`/`pyproject.toml` 等构建文件，只把当前语言包的技能写进 `.harness/skills/`。install-skill 拿到的是已经筛过的产物，不再二次过滤。
 
 这个分工的依据是：用户不需要看到与自己项目无关的技能；而"判断项目是什么语言"属于项目级决策，归 apply-harness。如果用户切换语言，重新运行 apply-harness 重新生成 `.harness/skills/` 即可。
 
@@ -1030,7 +1028,7 @@ SKILL.md 格式正在被越来越多的 AI 工具原生支持，这是一个好�
 
 - **工程纪律即架构（01）**：讨论 Harness 项目的核心设计哲学
 - **参数化：52 个占位符的设计取舍（02）**：讨论技能模板的参数化设计
-- **自动检测：从 6 种语言到 19 个工具（03）**：讨论自动检测策略
+- **自动检测：从 5 种语言到 19 个工具（03）**：讨论自动检测策略
 - **apply-harness：安装引擎的设计哲学（04）**：讨论安装引擎的整体设计
 
 ### 21.2 相关代码文件

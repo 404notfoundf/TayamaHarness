@@ -84,7 +84,4 @@ description: 项目变更状态总览——扫描 .harness/changes/*/change.md�
 - 未修改任何 change 文件
 ---
 
-> **来源 & 作者**
-> - 公众号：华仔聊技术
-> - 知识星球：华仔·AI高并发全栈训练营
-> - 作者：王江华@huazai
+

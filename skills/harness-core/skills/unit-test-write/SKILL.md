@@ -91,7 +91,4 @@ description: 为实现代码编写 {{LANGUAGE}} 单元测试，核心逻辑覆�
 `{{TEST_CMD}} {{RACE_DETECT_ARG}}` + `{{COV_CMD}}` 全绿 + 覆盖率达标 → 更新 `change.md` 状态 `testing → reviewing`，进入 ④ 专家评审。
 ---
 
-> **来源 & 作者**
-> - 公众号：华仔聊技术
-> - 知识星球：华仔·AI高并发全栈训练营
-> - 作者：王江华@huazai
+
