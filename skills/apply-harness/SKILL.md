@@ -250,8 +250,8 @@ disable-model-invocation: true
 | 参数 | 说明                                                                                       |
 |------|------------------------------------------------------------------------------------------|
 | `{{LANG_TAG}}` | 技能名称后缀，如 `-python`、`-java`、`-golang`、`-rust`、`-front` |                                            |
-| `{{HARNESS_ME_NAME}}` | harness-me 技能名（`/harness-me`/`harness-me-python`/`harness-me-golang`/`harness-me-rust`/`harness-me-front`） |
-| `{{HARNESSING_CMD}}` | harnessing 命令，如 `/harnessing`、`/harnessing-python`                                       |
+| `{{HARNESS_ME_NAME}}` | harness-me 的 `name`（不含 `/`：`harness-me` / `harness-me-python` / `harness-me-golang` / `harness-me-rust` / `harness-me-front`） |
+| `{{HARNESSING_CMD}}` | harnessing 的 `name`（不含 `/`：`harnessing`、`harnessing-python`） |
 | `{{BUILD_CMD}}` | 编译命令，如 `mvn compile`、`go build ./...`                                                    |
 | `{{TEST_CMD}}` | 测试命令                                                                                     |
 | `{{LINT_CMD}}` | 代码规范检查命令                                                                                 |
@@ -263,7 +263,7 @@ disable-model-invocation: true
 | `{{MOCK_LIB}}` | Mock 库                                                                                   |
 | `{{COV_CMD}}` | 覆盖率检查命令                                                                                  |
 | `{{DEBUG_TOOL}}` | 调试工具                                                                                     |
-| `{{ARCH_REVIEW_CMD}}` | 架构审查命令，如 `/arch-review`、`/arch-review-python`                                            |
+| `{{ARCH_REVIEW_CMD}}` | 架构审查技能 `name`（不含 `/`：`arch-review`、`arch-review-python`） |
 | `{{LANGUAGE}}` | 语言名，如 `Java`、`Python`、`Go`、`Rust`、`Frontend`                                  |
 | `{{TEST_FRAMEWORK}}` | 测试框架，如 `JUnit 5 + Mockito`                                                          |
 | `{{LINT_TOOL}}` | 代码规范检查工具，如 `Checkstyle + PMD`                                                      |
@@ -526,8 +526,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ArchUnit                                    |
 | `{{DB_ACCESS}}` | MyBatis-Plus / JPA + Flyway                 |
 | `{{LANG_TAG}}` | `-java`                                     |
-| `{{HARNESS_ME_NAME}}` | `/harness-me`                               |
-| `{{HARNESSING_CMD}}` | `/harnessing`                               |
+| `{{HARNESS_ME_NAME}}` | `harness-me`                               |
+| `{{HARNESSING_CMD}}` | `harnessing`                               |
 | `{{BUILD_CMD}}` | `mvn compile`                               |
 | `{{TEST_CMD}}` | `mvn test`                                  |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                      |
@@ -539,7 +539,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `Mockito`                                   |
 | `{{COV_CMD}}` | `mvn jacoco:report`                         |
 | `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                 |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                              |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                              |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                    |
 | `{{SECURITY_CMD}}` | 安全扫描命令                                      |
 | `{{INTEGRATION_CMD}}` | 集成测试命令                                      |
@@ -584,8 +584,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ArchUnit                                           |
 | `{{DB_ACCESS}}` | Hibernate Panache / JPA + Flyway                   |
 | `{{LANG_TAG}}` | `-java`                                            |
-| `{{HARNESS_ME_NAME}}` | `/harness-me`                                      |
-| `{{HARNESSING_CMD}}` | `/harnessing`                                      |
+| `{{HARNESS_ME_NAME}}` | `harness-me`                                      |
+| `{{HARNESSING_CMD}}` | `harnessing`                                      |
 | `{{BUILD_CMD}}` | `mvn compile`                                      |
 | `{{TEST_CMD}}` | `mvn test`                                         |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                             |
@@ -597,7 +597,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `Mockito`                                          |
 | `{{COV_CMD}}` | `mvn jacoco:report`                                |
 | `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                        |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                                     |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                                     |
 
 ### Java — Quarkus + Gradle
 
@@ -626,8 +626,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ArchUnit                                |
 | `{{DB_ACCESS}}` | Micronaut Data + Flyway                 |
 | `{{LANG_TAG}}` | `-java`                                 |
-| `{{HARNESS_ME_NAME}}` | `/harness-me`                           |
-| `{{HARNESSING_CMD}}` | `/harnessing`                           |
+| `{{HARNESS_ME_NAME}}` | `harness-me`                           |
+| `{{HARNESSING_CMD}}` | `harnessing`                           |
 | `{{BUILD_CMD}}` | `mvn compile`                           |
 | `{{TEST_CMD}}` | `mvn test`                              |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                  |
@@ -639,7 +639,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `Mockito`                               |
 | `{{COV_CMD}}` | `mvn jacoco:report`                     |
 | `{{DEBUG_TOOL}}` | 调试器 / `jdb`                             |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                          |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                          |
 
 ### Java — Vert.x + Maven
 
@@ -656,8 +656,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ArchUnit                        |
 | `{{DB_ACCESS}}` | Vert.x JDBC/MySQL 客户端           |
 | `{{LANG_TAG}}` | `-java`                         |
-| `{{HARNESS_ME_NAME}}` | `/harness-me`                   |
-| `{{HARNESSING_CMD}}` | `/harnessing`                   |
+| `{{HARNESS_ME_NAME}}` | `harness-me`                   |
+| `{{HARNESSING_CMD}}` | `harnessing`                   |
 | `{{BUILD_CMD}}` | `mvn compile`                   |
 | `{{TEST_CMD}}` | `mvn test`                      |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`          |
@@ -669,7 +669,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `Mockito`                       |
 | `{{COV_CMD}}` | `mvn jacoco:report`             |
 | `{{DEBUG_TOOL}}` | 调试器 / `jdb`                     |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                  |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                  |
 
 ### Java — Dropwizard + Maven
 
@@ -686,8 +686,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ArchUnit                                   |
 | `{{DB_ACCESS}}` | JDBI / Hibernate + Flyway                  |
 | `{{LANG_TAG}}` | `-java`                                    |
-| `{{HARNESS_ME_NAME}}` | `/harness-me`                              |
-| `{{HARNESSING_CMD}}` | `/harnessing`                              |
+| `{{HARNESS_ME_NAME}}` | `harness-me`                              |
+| `{{HARNESSING_CMD}}` | `harnessing`                              |
 | `{{BUILD_CMD}}` | `mvn compile`                              |
 | `{{TEST_CMD}}` | `mvn test`                                 |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                     |
@@ -699,7 +699,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `Mockito`                                  |
 | `{{COV_CMD}}` | `mvn jacoco:report`                        |
 | `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                             |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                             |
 
 ### Java — Spring MVC + Maven（经典 Servlet 架构）
 
@@ -716,8 +716,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ArchUnit                                           |
 | `{{DB_ACCESS}}` | MyBatis-Plus / JPA + Flyway                        |
 | `{{LANG_TAG}}` | `-java`                                            |
-| `{{HARNESS_ME_NAME}}` | `/harness-me`                                      |
-| `{{HARNESSING_CMD}}` | `/harnessing`                                      |
+| `{{HARNESS_ME_NAME}}` | `harness-me`                                      |
+| `{{HARNESSING_CMD}}` | `harnessing`                                      |
 | `{{BUILD_CMD}}` | `mvn compile`                                      |
 | `{{TEST_CMD}}` | `mvn test`                                         |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                             |
@@ -729,7 +729,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `Mockito`                                          |
 | `{{COV_CMD}}` | `mvn jacoco:report`                                |
 | `{{DEBUG_TOOL}}` | 调试器 / `jdb`                                        |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                                     |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                                     |
 
 ---
 
@@ -748,8 +748,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查                        |
 | `{{DB_ACCESS}}` | SQLAlchemy + Alembic                      |
 | `{{LANG_TAG}}` | `-python`                                 |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                      |
-| `{{HARNESSING_CMD}}` | `/harnessing-python`                      |
+| `{{HARNESS_ME_NAME}}` | `harness-me-python`                      |
+| `{{HARNESSING_CMD}}` | `harnessing-python`                      |
 | `{{BUILD_CMD}}` | `python -m compileall .`                  |
 | `{{TEST_CMD}}` | `python -m pytest`                        |
 | `{{LINT_CMD}}` | `flake8 .`                                |
@@ -761,7 +761,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `pytest-mock`                             |
 | `{{COV_CMD}}` | `pytest --cov`                            |
 | `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb`           |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`                     |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-python`                     |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                  |
 | `{{SECURITY_CMD}}` | 安全扫描命令                                    |
 | `{{INTEGRATION_CMD}}` | 集成测试命令                                    |
@@ -794,8 +794,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查                                  |
 | `{{DB_ACCESS}}` | SQLAlchemy + Flask-Migrate（Alembic）                 |
 | `{{LANG_TAG}}` | `-python`                                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                                |
-| `{{HARNESSING_CMD}}` | `/harnessing-python`                                |
+| `{{HARNESS_ME_NAME}}` | `harness-me-python`                                |
+| `{{HARNESSING_CMD}}` | `harnessing-python`                                |
 | `{{BUILD_CMD}}` | `python -m compileall .`                            |
 | `{{TEST_CMD}}` | `python -m pytest`                                  |
 | `{{LINT_CMD}}` | `flake8 .`                                          |
@@ -807,7 +807,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `pytest-mock`                                       |
 | `{{COV_CMD}}` | `pytest --cov`                                      |
 | `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb`                     |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`                               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-python`                               |
 
 ### Python — Django
 
@@ -824,8 +824,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | 自定义 import-lint 检查                          |
 | `{{DB_ACCESS}}` | Django ORM + 内置迁移（makemigrations）           |
 | `{{LANG_TAG}}` | `-python`                                   |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                        |
-| `{{HARNESSING_CMD}}` | `/harnessing-python`                        |
+| `{{HARNESS_ME_NAME}}` | `harness-me-python`                        |
+| `{{HARNESSING_CMD}}` | `harnessing-python`                        |
 | `{{BUILD_CMD}}` | `python -m compileall .`                    |
 | `{{TEST_CMD}}` | `python manage.py test`                     |
 | `{{LINT_CMD}}` | `flake8 .`                                  |
@@ -837,7 +837,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `pytest-mock` / `unittest.mock`             |
 | `{{COV_CMD}}` | `pytest --cov`                              |
 | `{{DEBUG_TOOL}}` | `pdb` / `django-debug-toolbar`              |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`                       |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-python`                       |
 
 ---
 
@@ -856,8 +856,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                     |
 | `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate            |
 | `{{LANG_TAG}}` | `-golang`                               |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                    |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang`                    |
+| `{{HARNESS_ME_NAME}}` | `harness-me-golang`                    |
+| `{{HARNESSING_CMD}}` | `harnessing-golang`                    |
 | `{{BUILD_CMD}}` | `go build ./...`                        |
 | `{{TEST_CMD}}` | `go test ./...`                         |
 | `{{LINT_CMD}}` | `golangci-lint run`                     |
@@ -869,7 +869,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `gomock` / `testify`                    |
 | `{{COV_CMD}}` | `go test -cover`                        |
 | `{{DEBUG_TOOL}}` | `delve`                                 |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                          |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                          |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                |
 | `{{SECURITY_CMD}}` | 安全扫描命令                                  |
 | `{{INTEGRATION_CMD}}` | 集成测试命令                                  |
@@ -901,8 +901,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                              |
 | `{{DB_ACCESS}}` | GORM + goctl model                               |
 | `{{LANG_TAG}}` | `-golang`                                        |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                             |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang`                             |
+| `{{HARNESS_ME_NAME}}` | `harness-me-golang`                             |
+| `{{HARNESSING_CMD}}` | `harnessing-golang`                             |
 | `{{BUILD_CMD}}` | `goctl api go` + `go build ./...`                |
 | `{{TEST_CMD}}` | `go test ./...`                                  |
 | `{{LINT_CMD}}` | `golangci-lint run`                              |
@@ -914,7 +914,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `gomock` / `testify` / `goctl`                   |
 | `{{COV_CMD}}` | `go test -cover`                                 |
 | `{{DEBUG_TOOL}}` | `delve`                                          |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                                   |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                                   |
 
 ### Go — Echo
 
@@ -930,8 +930,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                      |
 | `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate             |
 | `{{LANG_TAG}}` | `-golang`                                |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                     |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang`                     |
+| `{{HARNESS_ME_NAME}}` | `harness-me-golang`                     |
+| `{{HARNESSING_CMD}}` | `harnessing-golang`                     |
 | `{{BUILD_CMD}}` | `go build ./...`                         |
 | `{{TEST_CMD}}` | `go test ./...`                          |
 | `{{LINT_CMD}}` | `golangci-lint run`                      |
@@ -943,7 +943,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `gomock` / `testify`                     |
 | `{{COV_CMD}}` | `go test -cover`                         |
 | `{{DEBUG_TOOL}}` | `delve`                                  |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                           |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                           |
 
 ### Go — Fiber
 
@@ -959,8 +959,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                      |
 | `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate             |
 | `{{LANG_TAG}}` | `-golang`                                |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                     |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang`                     |
+| `{{HARNESS_ME_NAME}}` | `harness-me-golang`                     |
+| `{{HARNESSING_CMD}}` | `harnessing-golang`                     |
 | `{{BUILD_CMD}}` | `go build ./...`                         |
 | `{{TEST_CMD}}` | `go test ./...`                          |
 | `{{LINT_CMD}}` | `golangci-lint run`                      |
@@ -972,7 +972,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `gomock` / `testify`                     |
 | `{{COV_CMD}}` | `go test -cover`                         |
 | `{{DEBUG_TOOL}}` | `delve`                                  |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                           |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                           |
 
 ### Go — Chi
 
@@ -988,8 +988,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                      |
 | `{{DB_ACCESS}}` | GORM / sqlx + golang-migrate             |
 | `{{LANG_TAG}}` | `-golang`                                |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                     |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang`                     |
+| `{{HARNESS_ME_NAME}}` | `harness-me-golang`                     |
+| `{{HARNESSING_CMD}}` | `harnessing-golang`                     |
 | `{{BUILD_CMD}}` | `go build ./...`                         |
 | `{{TEST_CMD}}` | `go test ./...`                          |
 | `{{LINT_CMD}}` | `golangci-lint run`                      |
@@ -1001,7 +1001,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `gomock` / `testify`                     |
 | `{{COV_CMD}}` | `go test -cover`                         |
 | `{{DEBUG_TOOL}}` | `delve`                                  |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                           |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                           |
 
 ---
 
@@ -1011,9 +1011,9 @@ mkdir -p .claude/skills/
 |------|--------------------------------------------------------------------|
 | `{{LANGUAGE}}` | `Frontend`                                                         |
 | `{{LANG_TAG}}` | `-front`                                                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                                |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                               |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
 | `{{FILE_LIMIT}}` | `400`                                                              |
 | `{{TEST_NAMING}}` | component/function 描述名                                             |
@@ -1043,8 +1043,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
 | `{{DB_ACCESS}}` | Pinia store + Axios 封装                                             |
 | `{{LANG_TAG}}` | `-front`                                                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                                |
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
@@ -1056,7 +1056,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `vitest` mock / msw                                                |
 | `{{COV_CMD}}` | `npx vitest --coverage`                                            |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools                                        |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                               |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                                                           |
 | `{{SECURITY_CMD}}` | 安全扫描命令                                                             |
 | `{{INTEGRATION_CMD}}` | 集成测试命令                                                             |
@@ -1094,8 +1094,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
 | `{{DB_ACCESS}}` | Redux / Zustand + Axios 封装                                         |
 | `{{LANG_TAG}}` | `-front`                                                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                                |
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
@@ -1107,7 +1107,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `vitest` mock / msw                                                |
 | `{{COV_CMD}}` | `npx vitest --coverage`                                            |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools                                      |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                               |
 
 ### Frontend — Next.js
 
@@ -1123,8 +1123,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                       |
 | `{{DB_ACCESS}}` | Server Actions / Prisma + Axios 封装                             |
 | `{{LANG_TAG}}` | `-front`                                                       |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                            |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                            |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                            |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                            |
 | `{{BUILD_CMD}}` | `npm run build`                                                |
 | `{{TEST_CMD}}` | `npm run test`                                                 |
 | `{{LINT_CMD}}` | `npm run lint`                                                 |
@@ -1136,7 +1136,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `vitest` mock / msw                                            |
 | `{{COV_CMD}}` | `npx vitest --coverage`                                        |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools                                  |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                           |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                           |
 
 ### Frontend — Vue 3 + Vue CLI（Webpack）
 
@@ -1152,8 +1152,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
 | `{{DB_ACCESS}}` | Pinia store + Axios 封装                                             |
 | `{{LANG_TAG}}` | `-front`                                                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                                |
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
@@ -1165,7 +1165,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | Jest mock / msw                                                    |
 | `{{COV_CMD}}` | `npx jest --coverage`                                              |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools                                        |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                               |
 
 ### Frontend — Angular
 
@@ -1181,8 +1181,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                            |
 | `{{DB_ACCESS}}` | NgRx / Signal + Axios 封装                            |
 | `{{LANG_TAG}}` | `-front`                                            |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                 |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                 |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                 |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                 |
 | `{{BUILD_CMD}}` | `npm run build`                                     |
 | `{{TEST_CMD}}` | `npm run test`                                      |
 | `{{LINT_CMD}}` | `npm run lint`                                      |
@@ -1194,7 +1194,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | Jasmine spies / Jest mock                           |
 | `{{COV_CMD}}` | `npx ng test --code-coverage`                       |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / Angular DevTools                     |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                |
 
 ### Frontend — Svelte + Vite
 
@@ -1210,8 +1210,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
 | `{{DB_ACCESS}}` | Svelte stores + Axios 封装                                           |
 | `{{LANG_TAG}}` | `-front`                                                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                                |
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
@@ -1223,7 +1223,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `vitest` mock / msw                                                |
 | `{{COV_CMD}}` | `npx vitest --coverage`                                            |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / Svelte DevTools                                     |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                               |
 
 ### Frontend — Nuxt
 
@@ -1239,8 +1239,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                     |
 | `{{DB_ACCESS}}` | Pinia store + Nitro API + Axios 封装                           |
 | `{{LANG_TAG}}` | `-front`                                                     |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                          |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                          |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                          |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                          |
 | `{{BUILD_CMD}}` | `npm run build`                                              |
 | `{{TEST_CMD}}` | `npm run test`                                               |
 | `{{LINT_CMD}}` | `npm run lint`                                               |
@@ -1252,7 +1252,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `vitest` mock / msw                                          |
 | `{{COV_CMD}}` | `npx vitest --coverage`                                      |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / vue-devtools                                  |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                         |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                         |
 
 ### Frontend — React + CRA（Webpack）
 
@@ -1268,8 +1268,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查                                           |
 | `{{DB_ACCESS}}` | Redux / Zustand + Axios 封装                                         |
 | `{{LANG_TAG}}` | `-front`                                                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`                                                |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`                                                |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`                                                |
+| `{{HARNESSING_CMD}}` | `harnessing-front`                                                |
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
@@ -1281,7 +1281,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | Jest mock / msw                                                    |
 | `{{COV_CMD}}` | `npx react-scripts test --coverage`                                |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools / react-devtools                                      |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`                                               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                               |
 
 ### Frontend — 纯 Vite（无前端框架）
 
@@ -1297,8 +1297,8 @@ mkdir -p .claude/skills/
 | `{{ARCH_TEST_TOOL}}` | ESLint import 规则 + 自定义检查        |
 | `{{DB_ACCESS}}` | 无特定状态管理                         |
 | `{{LANG_TAG}}` | `-front`                        |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-front`             |
-| `{{HARNESSING_CMD}}` | `/harnessing-front`             |
+| `{{HARNESS_ME_NAME}}` | `harness-me-front`             |
+| `{{HARNESSING_CMD}}` | `harnessing-front`             |
 | `{{BUILD_CMD}}` | `npm run build`                 |
 | `{{TEST_CMD}}` | `npm run test`                  |
 | `{{LINT_CMD}}` | `npm run lint`                  |
@@ -1310,7 +1310,7 @@ mkdir -p .claude/skills/
 | `{{MOCK_LIB}}` | `vitest` mock                   |
 | `{{COV_CMD}}` | `npx vitest --coverage`         |
 | `{{DEBUG_TOOL}}` | 浏览器 DevTools                    |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-front`            |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-front`            |
 
 ### 参数块使用说明（差异化）
 
@@ -1327,8 +1327,8 @@ mkdir -p .claude/skills/
 | `{{LINT_TOOL}}` | Checkstyle + PMD + SpotBugs  |
 | `{{ARCH_TEST_TOOL}}` | ArchUnit                     |
 | `{{LANG_TAG}}` | `-java`                      |
-| `{{HARNESS_ME_NAME}}` | `/harness-me`                |
-| `{{HARNESSING_CMD}}` | `/harnessing`                |
+| `{{HARNESS_ME_NAME}}` | `harness-me`                |
+| `{{HARNESSING_CMD}}` | `harnessing`                |
 | `{{BUILD_CMD}}` | `mvn compile`                |
 | `{{TEST_CMD}}` | `mvn test`                   |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`       |
@@ -1338,7 +1338,7 @@ mkdir -p .claude/skills/
 | `{{TEST_NAMING}}` | `method_should_x_when_y`     |
 | `{{MOCK_LIB}}` | `Mockito`                    |
 | `{{DEBUG_TOOL}}` | 调试器 / `jdb`                  |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`               |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                     |
 | `{{SECURITY_CMD}}` | 安全扫描命令                       |
 | `{{INTEGRATION_CMD}}` | 集成测试命令                       |
@@ -1446,8 +1446,8 @@ mkdir -p .claude/skills/
 | `{{COV_TOOL}}` | pytest-cov (核心逻辑 ≥80%)              |
 | `{{LINT_TOOL}}` | flake8 + mypy + black + isort       |
 | `{{LANG_TAG}}` | `-python`                           |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-python`                |
-| `{{HARNESSING_CMD}}` | `/harnessing-python`                |
+| `{{HARNESS_ME_NAME}}` | `harness-me-python`                |
+| `{{HARNESSING_CMD}}` | `harnessing-python`                |
 | `{{BUILD_CMD}}` | `python -m compileall .`            |
 | `{{TEST_CMD}}` | `python -m pytest`                  |
 | `{{LINT_CMD}}` | `flake8 .`                          |
@@ -1456,7 +1456,7 @@ mkdir -p .claude/skills/
 | `{{FILE_LIMIT}}` | `800`                               |
 | `{{TEST_NAMING}}` | `test_x_when_y`                     |
 | `{{DEBUG_TOOL}}` | `pdb` / `breakpoint()` / `ipdb`     |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-python`               |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-python`               |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                            |
 | `{{SECURITY_CMD}}` | 安全扫描命令                              |
 | `{{INTEGRATION_CMD}}` | 集成测试命令                              |
@@ -1659,8 +1659,8 @@ mkdir -p .claude/skills/
 | `{{LINT_TOOL}}` | golangci-lint (go vet + staticcheck) |
 | `{{ARCH_TEST_TOOL}}` | goimports + 自定义架构检查                  |
 | `{{LANG_TAG}}` | `-golang`                            |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-golang`                 |
-| `{{HARNESSING_CMD}}` | `/harnessing-golang`                 |
+| `{{HARNESS_ME_NAME}}` | `harness-me-golang`                 |
+| `{{HARNESSING_CMD}}` | `harnessing-golang`                 |
 | `{{BUILD_CMD}}` | `go build ./...`                     |
 | `{{TEST_CMD}}` | `go test ./...`                      |
 | `{{LINT_CMD}}` | `golangci-lint run`                  |
@@ -1669,7 +1669,7 @@ mkdir -p .claude/skills/
 | `{{FILE_LIMIT}}` | `800`                                |
 | `{{TEST_NAMING}}` | `TestX_WhenY`                        |
 | `{{DEBUG_TOOL}}` | `delve`                              |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review`                       |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review`                       |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                             |
 | `{{SECURITY_CMD}}` | 安全扫描命令                               |
 | `{{INTEGRATION_CMD}}` | 集成测试命令                               |
@@ -1860,8 +1860,8 @@ mkdir -p .claude/skills/
 | `{{LINT_TOOL}}` | cargo clippy + rustfmt                 |
 | `{{ARCH_TEST_TOOL}}` | cargo clippy 架构检查 + 自定义模块检查          |
 | `{{LANG_TAG}}` | `-rust`                                |
-| `{{HARNESS_ME_NAME}}` | `/harness-me-rust`                     |
-| `{{HARNESSING_CMD}}` | `/harnessing-rust`                     |
+| `{{HARNESS_ME_NAME}}` | `harness-me-rust`                     |
+| `{{HARNESSING_CMD}}` | `harnessing-rust`                     |
 | `{{BUILD_CMD}}` | `cargo build`                          |
 | `{{TEST_CMD}}` | `cargo test`                           |
 | `{{TEST_FRAMEWORK}}` | cargo test + rstest + mockall        |
@@ -1871,7 +1871,7 @@ mkdir -p .claude/skills/
 | `{{FILE_LIMIT}}` | `600`                                  |
 | `{{TEST_NAMING}}` | `fn test_x_when_y()`                   |
 | `{{DEBUG_TOOL}}` | `rust-gdb` / `lldb`                    |
-| `{{ARCH_REVIEW_CMD}}` | `/arch-review-rust`                     |
+| `{{ARCH_REVIEW_CMD}}` | `arch-review-rust`                     |
 | `{{ARCH_TEST_CMD}}` | 架构约束测试命令                               |
 | `{{SECURITY_CMD}}` | 安全扫描命令：`cargo audit`                    |
 | `{{INTEGRATION_CMD}}` | 集成测试命令：`cargo test --test`（tests/ 下集成） |
@@ -2088,6 +2088,9 @@ mkdir -p .claude/skills/
 - ❌ 禁止修改已存在的 `.harness/` 内容（除非用户明确要求覆盖）
 - ❌ 禁止在检测到多语言时擅自选择
 - ❌ 禁止跳过 Step 1 直接使用默认语言
+- ❌ 禁止把 `HARNESSING_CMD` / `HARNESS_ME_NAME` / `ARCH_REVIEW_CMD` 写成带前导 `/` 的值（YAML `name:` 必须是字符串；工具会再加 `/`，写成 `/harnessing` 会变成 `//harnessing`）
+- ❌ 禁止未加引号地把 `{{PLACEHOLDER}}` 写进 `name:`（`{{` 会被 YAML 解析成 map）
+- ✅ 渲染 `name` 时保持 `"{{HARNESSING_CMD}}"` 这种引号形式，替换后仍是带引号的字符串
 - ✅ 如果 `.harness/` 已存在，输出提示并询问是否覆盖
 - ✅ 每个步骤完成后输出简要状态
 ---

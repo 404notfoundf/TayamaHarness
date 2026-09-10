@@ -48,7 +48,7 @@ disable-model-invocation: true
 
 ### Step 3: 打磨循环
 
-用户选择后，运行 `{{HARNESSING_CMD}}` 技能，沿决策树推进。
+用户选择后，运行 `/{{HARNESSING_CMD}}` 技能，沿决策树推进。
 
 ---
 

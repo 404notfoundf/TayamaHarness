@@ -1,6 +1,6 @@
 ---
-name: {{HARNESSING_CMD}}
-description: 需求拷问引擎。使用场景：当用户要求"帮我理清需求"、"分析这个方案"、"这个设计有没有漏洞"、"帮我打磨一下"，或者 {{HARNESS_ME_NAME}} 被调用时。
+name: "{{HARNESSING_CMD}}"
+description: 需求拷问引擎。使用场景：当用户要求"帮我理清需求"、"分析这个方案"、"这个设计有没有漏洞"、"帮我打磨一下"，或者 /{{HARNESS_ME_NAME}} 被调用时。
 ---
 
 # 需求拷问引擎（Harnessing）
