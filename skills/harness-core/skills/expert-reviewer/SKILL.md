@@ -7,13 +7,13 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
 # 专家评审技能（expert-reviewer）— {{LANGUAGE}} 版
 
 > **流水线阶段**: ④ 第四步
-> **输入**: 代码 + 单元测试
+> **输入**: `status: reviewing` 的 change.md + 实现代码 + 单元测试
 > **产出**: `.harness/changes/<id>/review.md`
-> **出口门禁**: 0 个 🔴 严重问题
+> **出口门禁**: 完整报告已落盘，且 0 个 🔴 严重问题
 
 ### 核心规则（一句话摘要）
 
-> **不手下留情。双轴并行审查：Spec 轴查"是否做对了事"，Standards 轴查"是否合规做事"。两轴独立报告，防止一个轴掩盖另一个轴。**
+> **不手下留情。Spec 轴查是否做对了事，Standards 轴查是否合规做事。两轴分开写，禁止合成一句「总体不错」。本技能只评审、不改业务代码。**
 
 ---
 
@@ -25,50 +25,50 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
    - 恰好 1 个 → 自动选中
    - 0 个 → 报错：无处于 `reviewing` 状态的 change，退回 ③ unit-test-write
    - ≥ 2 个 → **列出候选清单（id + 标题 + 摘要），停下请用户选择**，不得擅自默认取第一个
-2. **锁定审查范围**（确保每次审查同一份代码）：
-   - **规则**：使用 `git diff HEAD` 作为审查范围，包含工作区未提交的变更
-   - 如果 `git diff HEAD` 为空，报错：无变更可审查，退回 ③ unit-test-write
-   - 在报告开头明确标注审查范围（文件数、增减行数、分支名）
-3. 验证 `review.md` 不存在或可覆盖
-4. 缺前置 → 退回 ③ unit-test-write
+2. **锁定审查范围**（未提交 + 已提交都要算）：
+   - 工作区：`git diff HEAD`（含未暂存/已暂存相对 HEAD）
+   - 已提交：相对默认基线（`main` / `master` / `develop` 或用户指定）的 `git merge-base ... HEAD` 再 diff；基线不明则问用户，不得假装没提交
+   - **两段都为空** → 报错「无变更可审查」，停下让用户确认范围；**不要默认退回 ③**（也可能是已合入错分支或状态切错）
+   - 报告开头写明范围：基线、分支、文件数、增减行、是否含未提交
+3. `review.md`：不存在则新建；已存在则先复制为 `review.prev.md` 再覆盖，保留上一轮 🔴
+4. 缺前置（无 reviewing 卡）→ 退回 ③ unit-test-write
 
 ---
 
 ## 领域技能加载（混合模式）
 
-expert-reviewer 支持混合加载领域专家技能，自动根据代码特征引入对应的专业知识：
+评审过程中按 **diff 内代码特征** 注入领域检查清单。只读清单，**禁止**在本技能里顺便改业务代码或生成封装实现。
 
-| 检测条件 | 加载技能 | 封装类型 | 存放位置 |
-|---------|---------|---------|---------|
-| RedisTemplate / Jedis / Lettuce / `redis client` 调用 | `redis-cache-wrapper` | 多级缓存封装（穿透/击穿/雪崩防护） | `harness-core/skills/` |
-| `V*__*.sql` / `migrations/*.sql` | `database-migration-toolkit` | 迁移工具（迁移模板/回滚/回填辅助） | `harness-core/skills/` |
-| 消息队列生产者/消费者代码 | `kafka-toolkit` / `rocketmq-toolkit` | 消息工具（消费者封装/DLQ/监控） | `harness-core/skills/` |
-| `*.yaml` / `k8s/` 清单 | `k8s-release-toolkit` | 发布工具（Deployment模板/HPA/探针/灰度） | `harness-core/skills/` |
-| 性能异常/线程 dump/GC 日志 | `performance-toolkit` | 诊断工具（火焰图/GC分析/慢SQL/线程dump） | `harness-core/skills/` |
-| 安全敏感模式（密钥/注入/鉴权/URL） | `security-toolkit` | 安全工具（脱敏/加密/校验/XSS/鉴权） | `harness-core/skills/` |
-| HTTP 客户端调用 | `http-client-toolkit` | HTTP 工具（连接池/超时/重试/熔断/traceId） | `harness-core/skills/` |
-| 日志配置/日志打印代码 | `logging-toolkit` | 日志工具（traceId/MDC/脱敏/动态级别） | `harness-core/skills/` |
-| cron 表达式 / 定时任务 | `scheduler-toolkit` | 调度工具（分布式锁/幂等/重试/补偿） | `harness-core/skills/` |
-| OSS/S3/MinIO/COS 客户端代码 | `oss-toolkit` | 存储工具（统一接口/分片上传/预签名/CDN） | `harness-core/skills/` |
-| Excel 导入导出代码 | `excel-toolkit` | Excel 工具（模板导出/大数据量/导入校验） | `harness-core/skills/` |
-| 事件发布/订阅/EventBus | `eventbus-toolkit` | 事件总线工具（同步/异步/事务事件/追踪） | `harness-core/skills/` |
+| 检测条件（语言中性） | 加载技能 | 补充哪几维 |
+|---------|---------|---------|
+| Redis / 缓存客户端调用 | `redis-cache-wrapper` | 4~6 |
+| 迁移脚本（`migrations/`、`V*__*.sql`、语言包迁移目录） | `database-migration-toolkit` | 4~6 |
+| 消息队列生产/消费 | `kafka-toolkit` / `rocketmq-toolkit`（按依赖出现的那个） | 4~6 |
+| K8s/Helm 清单（`k8s/`、`charts/`、`kind: Deployment` 等），**不是**任意 `*.yaml` | `k8s-release-toolkit` | 4~6 |
+| diff 中出现 dump / 火焰图 / GC 日志，或用户明确要求看性能 | `performance-toolkit` | 5 |
+| 密钥、注入、鉴权、未校验外部输入 | `security-toolkit` | 6 |
+| 出站 HTTP 客户端 | `http-client-toolkit` | 4~6 |
+| 日志配置或日志调用 | `logging-toolkit` | 5~6 |
+| 定时任务 / cron | `scheduler-toolkit` | 4~6 |
+| 对象存储客户端（S3/OSS/MinIO/COS 等） | `oss-toolkit` | 4~6 |
+| Excel 导入导出 | `excel-toolkit` | 4~6 |
+| 事件总线发布/订阅 | `eventbus-toolkit` | 4~6 |
 
-**语言/框架专属技能**（如 `java-code-review`、`spring-api-convention`、`mybatis-toolkit` 等，存放在语言包 `harness-{lang}/skills/` 中，按 `.harness/skills/{lang}/` 部署）同样按检测条件注入。
+语言/框架专属技能（如 `java-code-review`、`mybatis-toolkit`，在 `harness-{lang}/skills/`）同样按检测条件注入，作为维度 4~6 的补充细则，**不替代**下面 10 维。
 
-**加载方式**：检测到匹配条件时，将对应技能的完整检查清单作为"领域知识包"注入 Standards 轴，**不替代既有的 10 维度审查**，而是作为维度 4~6（编码规范/代码质量/安全）的**补充细则**。
-
-**独立命令**：每个技能也可通过 `/skill-name` 直接调用（如 `/redis-cache-wrapper`、`/kafka-toolkit`、`/security-toolkit`、`/http-client-toolkit`、`/logging-toolkit`、`/scheduler-toolkit`、`/oss-toolkit`、`/excel-toolkit`、`/eventbus-toolkit`），绕过 expert-reviewer 主流程，适合专项代码生成或排查场景。
+`/skill-name` 直接调用是另一条路径（专项生成或排查），**不要**在 ④ 评审会话里改走代码生成。
 
 ---
 
 ## 审查设计
 
-本技能采用**双轴并行子智能体**架构：
+两轴必须分开成文：
 
-- **Spec 轴**：对照 `change.md` 检查代码是否实现了该做的，且没做不该做的
-- **Standards 轴**：对照 `.harness/rules/` 和代码质量基线，检查代码是否合规
+- **Spec 轴**（维度 1~2）：对照 change.md / 迭代协议，是否做对、是否多做
+- **Standards 轴**（维度 3~6）：对照 `.harness/rules/` 与代码质量基线，是否合规
+- **公共维度**（维度 7~10）：测试 / TDD / 流程 / 领域语言；其中测试质量 🔴 **单独计入总览**，并决定是否退回 ③
 
-两轴由独立子智能体运行，最终汇总报告。**不合并、不排序**——分离报告就是为了防止一个轴掩盖另一个轴（代码完全合规范但实现了错的东西 → Standards 过 Spec 挂；代码照做了但破坏约定 → Spec 过 Standards 挂）。
+能开独立子任务则两轴并行；不能则**同一会话内先写完 Spec 再写 Standards**，禁止先出一句总评再倒填。任一轮有 🔴，另一轴仍要跑完再落盘。
 
 ---
 
@@ -76,7 +76,8 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 
 ### 维度 1: 功能完整性（对照 change.md / iterations 协议）
 - [ ] 实现了 **所有** AC？
-- [ ] 处理了 **所有** 边界情况？
+- [ ] **性质型/横切 AC**（锁内零网络写、热路径日志、全链路下线、开关双端等）：是否用搜索枚举全部位点，而不是只看影响面文件清单？
+- [ ] 边界在实现上处理了吗？对应测试是否存在（测试深度见维度 7）？
 - [ ] 有 scope creep（未要求的代码/功能）？
 - [ ] 实现与设计约束一致？
 - [ ] （若走 iterations）`prd.md` 每条 REQ 都有 `solution.md` 任务承接、每条 AC 都有 `test/cases.md` 的 TC 覆盖？
@@ -84,29 +85,29 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 ### 维度 2: SDD 合规
 - [ ] `change.md`（或 `prd.md`）是否足够构成规格真相源？
 - [ ] 实现是否严格对齐 change.md / prd.md，而非擅自扩 scope？
-- [ ] （若走 iterations）REQ/AC/TC 编号一致、无孤立 TC（TC 无 AC 归属）、无缺失 AC 的 TC？
+- [ ] （若走 iterations）REQ/AC/TC 编号一致、无孤立 TC、无缺失 AC 的 TC？
 
 ---
 
 ## 2. Standards 轴（规范合规）
 
 ### 维度 3: 架构合规（对照 工程结构.md）
-- [ ] 模块间仅通过接口通信？依赖方向正确（按 `工程结构.md` 的依赖方向约定）？
+- [ ] 模块间仅通过接口通信？依赖方向正确（按 `工程结构.md`）？
 - [ ] 新架构决策是否补了 ADR？
 
 ### 维度 4: 编码规范（对照 编码规范.md）
 - [ ] 命名、{{DOCSTYLE}} 合规？
 - [ ] 无硬编码密钥 / 魔法值？
 - [ ] LLM/外部调用有超时+重试+限频+降级？
-- [ ] 异常/错误处理完整（不吞、不空 catch / `_ = fn()` / unwrap）？
+- [ ] 异常/错误处理完整（不吞、不空 catch、不忽略错误返回）？
 
 ### 维度 5: 代码质量
 - [ ] 函数/方法 ≤50 行 / 文件 ≤{{FILE_LIMIT}} 行 / 圈复杂度 ≤10？
 - [ ] 无未使用 import/变量/方法？
 - [ ] 无重复代码块？
-- [ ] 日志级别合适？
+- [ ] 日志级别合适？热路径无「每条消息一条 Info」、无整对象/隐私明文落日志？
 
-**代码味道基线**（Fowler, _Refactoring_ ch.3）——以下味道是"可能性判断"而非硬违规，且仓库规范优先于基线：
+**代码味道基线**（Fowler, _Refactoring_ ch.3）——可能性判断而非硬违规，仓库规范优先；工具已能查的跳过。
 
 | 味道 | 检查点 | 说明 |
 |------|--------|------|
@@ -123,32 +124,30 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 | Middle Man | 类/函数只是转发 | 砍掉，直接调目标 |
 | Refused Bequest | 子类大部分继承被重写/忽略 | 放弃继承，用组合 |
 
-> **规则**：仓库规范优先于味道基线；味道是标签不是硬违规；工具已能查的跳过。
-
 ### 维度 6: 安全
 - [ ] 外部输入已校验？
 - [ ] 日志无敏感信息（Token/密码/隐私）？
-- [ ] **无危险数据库操作**（DROP / TRUNCATE / ALTER / DELETE 等 DDL/DML 是否经过了审批流程）？
-- [ ] **无破坏性文件操作**（`rm -rf`、`os.RemoveAll`、`File.Delete` 等递归删除是否受控）？
-- [ ] **无硬编码生产环境密钥**（数据库连接串、API Token、Secret 是否通过环境变量/配置中心注入）？
+- [ ] 危险 schema 变更（DROP / TRUNCATE / ALTER 等）及无范围约束的批量删除是否走了审批？业务删除（按 AC 删除指定记录）**不因语句类型打 🔴**；无 WHERE/租户/鉴权、与 AC 软删/硬删不符、或规格外的破坏性删除 → 🔴
+- [ ] 递归删目录等破坏性文件操作是否受控？
+- [ ] 无硬编码生产密钥（连接串、Token、Secret 走环境变量/配置中心）？
 
 ---
 
 ## 3. 公共维度
 
-### 维度 7: 测试质量
+### 维度 7: 测试质量（🔴 计入总览；此类问题退回 ③）
 - [ ] 覆盖所有 AC 与边界？
 - [ ] 测了降级逻辑？
 - [ ] 核心覆盖率 ≥80%？
 - [ ] Mock 合理（不 Mock 自己写的类）？
 
 ### 维度 8: TDD 合规
-- [ ] 核心业务逻辑是否体现测试先行？
+- [ ] 核心业务逻辑是否体现测试先行（② 留下的失败测试或 ③ 独立入口补的 Red）？
 - [ ] 测试是否覆盖 AC / 边界 / 降级路径？
 
 ### 维度 9: 流程合规
-- [ ] 变更范围与 change.md 一致？
-- [ ] 无"偷偷"夹带的额外变更？
+- [ ] 变更范围与 change.md「影响面」一致、无夹带？
+- [ ] 「影响面 / 契约影响 / 设计约束」里写明的交付（wiki/ADR/配置/回滚/文档）是否兑现或标明不适用？（不含「变更关系」边）
 
 ### 维度 10: 领域语言一致性（对照 CONTEXT.md）
 - [ ] 代码中的术语与 `.harness/CONTEXT.md` 一致？
@@ -158,33 +157,37 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 
 ## 4. 输出格式（写入 review.md）
 
-> **⛔ 强制规则：无论审查结果是否有 🔴 严重问题，都必须将完整报告写入 `.harness/changes/<id>/review.md`。**
-> **未写入 review.md 不得进入下一步。**
+> **无论有无 🔴，都必须先把完整报告写入** `.harness/changes/<id>/review.md`。未落盘不得改状态、不得进入 ⑤。
+> 总览 🔴 数 = Spec + Standards + 测试质量（维度 7）三类严重项之和。🟢 通过项必须按维度填写，禁止只写问题。
 
 ```markdown
 # 📋 评审报告: C-NNN
 
 ## 总览
-- 审查范围: `git diff HEAD` — N 个文件，+N/-N 行
+- 审查范围: 基线 <ref> + 工作区；N 个文件，+N/-N 行
 - 分支: <branch-name>
 - 🔴 严重问题: N（必须修复）
 - 🟡 建议改进: N（推荐修复）
 - 🟢 通过项: N
+- 建议退回: 无 / ② coding-skill / ③ unit-test-write
 
-## Spec 轴报告（需求匹配）
+## Spec 轴报告（需求匹配 · 维度 1~2）
 ### 🔴 严重问题
 ### 🟡 建议改进
+### 🟢 通过项
 
-## Standards 轴报告（规范合规）
+## Standards 轴报告（规范合规 · 维度 3~6）
 ### 🔴 严重问题
 ### 🟡 建议改进
+### 🟢 通过项
 
-## 测试质量
+## 测试与流程（维度 7~10）
 ### 🔴 严重问题
 ### 🟡 建议改进
+### 🟢 通过项
 
 ## 结论
-<一句话结论>
+<一句话结论 + 退回目标>
 ```
 
 ---
@@ -193,25 +196,19 @@ expert-reviewer 支持混合加载领域专家技能，自动根据代码特征�
 
 | 级别 | 定义 | 示例 |
 |------|------|------|
-| 🔴 严重 | 功能异常 / 安全漏洞 / 架构腐化 | 模块间直接调用内部方法，Missing AC |
-| 🟡 建议 | 不立即出错但影响可维护/性能 | 方法过长、缺 {{DOCSTYLE}}、TDD 痕迹不足 |
+| 🔴 严重 | 功能缺失或做错 / 安全漏洞 / 架构依赖打穿 / 测试未覆盖必测 AC·边界·降级或覆盖率不达标 | Missing AC；横切 AC 只改了清单内文件；模块穿透调用 |
+| 🟡 建议 | 不立即出错但影响可维护/性能 | 方法过长、缺 {{DOCSTYLE}}、味道基线、TDD 痕迹弱但行为已测 |
 
----
-
-### 架构审查建议
-如果评审发现架构层面的摩擦信号（浅模块、耦合过深、接缝缺失、测试困难），建议运行 `/{{ARCH_REVIEW_CMD}}` 进行深入架构体检。
-如果发现领域语言不一致，建议调用 `domain-modeling` 技能修正术语。
+架构摩擦（浅模块、耦合过深等）本身默认 🟡，建议再跑 `{{ARCH_REVIEW_CMD}}` 做体检，不挡 ④ 除非已构成依赖打穿（那是 🔴）。
+领域语言不一致：调用 `domain-modeling` 修正术语；未定义核心术语且已写入代码 → 🔴。
 
 ---
 
 ## 6. 完成标志
 
-无论审查结果如何，**必须先完成**：
+无论审查结果如何，**必须先**写入 `review.md`（含 🟢），然后：
 
-1. ✅ 将完整报告写入 `.harness/changes/<id>/review.md`
-2. 然后根据检查结果执行分支：
-   - **0 个 🔴** → 更新 `change.md` 状态 `reviewing → ci`，进入 ⑤ CI 门禁
-   - **有 🔴** → 退回 ② 编码实现修复（review.md 作为修复参考依据）
----
-
-
+1. **0 个 🔴** → `change.md` 状态 `reviewing → ci`，进入 ⑤ CI 门禁
+2. **仅维度 7（及纯测试缺口的维度 8）有 🔴** → 状态 `reviewing → testing`，退回 ③；review.md 作补测依据
+3. **Spec / Standards（维度 1~6）或流程交付（维度 9）有 🔴** → 状态 `reviewing → coding`，退回 ②；若测试也有 🔴，在报告里写明 ② 修完后须再经 ③
+4. 未写 review.md → 停留 `reviewing`，不算本阶段完成
