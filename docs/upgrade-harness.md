@@ -1,7 +1,7 @@
 # 技能升级操作手册
 
 > 对象：已经用 `npx skills add` + `/apply-harness` 接入过的业务项目。  
-> 脚本：`skills/apply-harness/scripts/upgrade-harness.mjs`（会随 npx 一起装进项目）。
+> 脚本：`skills/apply-harness/scripts/upgrade-harness.py`（会随 npx 一起装进项目）。
 
 首次接入请走 README 的「快速开始」，**不要**用本手册替代 `/apply-harness`。
 
@@ -32,7 +32,7 @@
 | **Claude Code** | **`.claude/skills/`** | `~/.claude/skills/` |
 | Cline 等 | `.agents/skills/` | `~/.agents/skills/` |
 
-所以 `node .agents/skills/apply-harness/scripts/upgrade-harness.mjs` **只对 Cursor 这类项目级安装成立**；Claude Code 项目里应是 `.claude/skills/…`。装的时候若交互勾选了别的 agent，以磁盘上实际目录为准。
+所以 `python .agents/skills/apply-harness/scripts/upgrade-harness.py` **只对 Cursor 这类项目级安装成立**；Claude Code 项目里应是 `.claude/skills/…`。装的时候若交互勾选了别的 agent，以磁盘上实际目录为准。
 
 先确认脚本在不在：
 
@@ -43,9 +43,9 @@ npx skills list
 ```powershell
 # PowerShell：哪个存在用哪个
 @(
-  '.agents/skills/apply-harness/scripts/upgrade-harness.mjs',
-  '.claude/skills/apply-harness/scripts/upgrade-harness.mjs',
-  '.cursor/skills/apply-harness/scripts/upgrade-harness.mjs'
+  '.agents/skills/apply-harness/scripts/upgrade-harness.py',
+  '.claude/skills/apply-harness/scripts/upgrade-harness.py',
+  '.cursor/skills/apply-harness/scripts/upgrade-harness.py'
 ) | Where-Object { Test-Path $_ }
 ```
 
@@ -66,11 +66,11 @@ npx skills@latest add https://github.com/404notfoundf/TayamaHarness.git
 ### 第 2 步：先看计划（推荐）
 
 ```bash
-node $UP --dry-run
+python $UP --dry-run
 # Cursor 项目级示例：
-# node .agents/skills/apply-harness/scripts/upgrade-harness.mjs --dry-run
+# python .agents/skills/apply-harness/scripts/upgrade-harness.py --dry-run
 # Claude Code 项目级示例：
-# node .claude/skills/apply-harness/scripts/upgrade-harness.mjs --dry-run
+# python .claude/skills/apply-harness/scripts/upgrade-harness.py --dry-run
 ```
 
 终端会打印「源技能包」路径，应指向本项目里刚更新的 `harness-core`。
@@ -78,7 +78,7 @@ node $UP --dry-run
 ### 第 3 步：写盘
 
 ```bash
-node $UP --yes
+python $UP --yes
 ```
 
 不加 `--yes` 会先问一句确认。
@@ -146,10 +146,10 @@ node $UP --yes
 本仓库开发者（克隆了 TayamaHarness 源码）：
 
 ```bash
-node scripts/upgrade-harness.mjs --project <业务项目根> --yes
+python scripts/upgrade-harness.py --project <业务项目根> --yes
 ```
 
-`scripts/upgrade-harness.mjs` 只是转发到 `skills/apply-harness/scripts/upgrade-harness.mjs`。
+`scripts/upgrade-harness.py` 只是转发到 `skills/apply-harness/scripts/upgrade-harness.py`。
 
 ---
 
@@ -161,29 +161,29 @@ node scripts/upgrade-harness.mjs --project <业务项目根> --yes
 
 ```bash
 # PowerShell
-Get-ChildItem -Recurse -Filter upgrade-harness.mjs | Select-Object FullName
+Get-ChildItem -Recurse -Filter upgrade-harness.py | Select-Object FullName
 ```
 
 ```bash
 # bash
-find . -name upgrade-harness.mjs
+find . -name upgrade-harness.py
 ```
 
 常见路径：
 
 | 安装方式 | 脚本路径 |
 |----------|----------|
-| Cursor / Codex 等 **项目级** | `.agents/skills/apply-harness/scripts/upgrade-harness.mjs` |
-| Claude Code **项目级** | `.claude/skills/apply-harness/scripts/upgrade-harness.mjs` |
-| Cursor **全局 `-g`** | `~/.cursor/skills/apply-harness/scripts/upgrade-harness.mjs` |
-| Claude Code **全局 `-g`** | `~/.claude/skills/apply-harness/scripts/upgrade-harness.mjs` |
-| 本仓库源码 | `skills/apply-harness/scripts/upgrade-harness.mjs` |
+| Cursor / Codex 等 **项目级** | `.agents/skills/apply-harness/scripts/upgrade-harness.py` |
+| Claude Code **项目级** | `.claude/skills/apply-harness/scripts/upgrade-harness.py` |
+| Cursor **全局 `-g`** | `~/.cursor/skills/apply-harness/scripts/upgrade-harness.py` |
+| Claude Code **全局 `-g`** | `~/.claude/skills/apply-harness/scripts/upgrade-harness.py` |
+| 本仓库源码 | `skills/apply-harness/scripts/upgrade-harness.py` |
 
 找到后仍报「找不到技能包源」：旁边要有 `harness-core/rules`。把 `--source` 指到**脚本的上两级**（即 `apply-harness` 的父目录，里面应能看到 `harness-core`）：
 
 ```bash
-node <脚本路径> --source .agents/skills --yes    # Cursor 项目级
-node <脚本路径> --source .claude/skills --yes    # Claude Code 项目级
+python <脚本路径> --source .agents/skills --yes    # Cursor 项目级
+python <脚本路径> --source .claude/skills --yes    # Claude Code 项目级
 ```
 
 ---
@@ -208,7 +208,7 @@ node <脚本路径> --source .claude/skills --yes    # Claude Code 项目级
 |-------------|--------|
 | `npx skills add` / `npx skills update` | 拉/更新技能包源 |
 | `/apply-harness` | **第一次**生成 `.harness/` |
-| `upgrade-harness.mjs` | **以后**升级规则和技能，保住知识库 |
+| `upgrade-harness.py` | **以后**升级 `.harness/skills/`（默认不改 rules） |
 | `/install-skill` | 斜杠命令没弹出来时，单独再注册一次 |
 
 相关：[apply-harness](skills/apply-harness.md) · [install-skill](skills/install-skill.md)

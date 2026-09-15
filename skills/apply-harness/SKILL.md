@@ -2092,8 +2092,8 @@ mkdir -p .claude/skills/
 ```bash
 npx skills update
 # Cursor 项目级：
-node .agents/skills/apply-harness/scripts/upgrade-harness.mjs --yes
-# Claude Code 项目级：.claude/skills/apply-harness/scripts/upgrade-harness.mjs
+python .agents/skills/apply-harness/scripts/upgrade-harness.py --yes
+# Claude Code 项目级：.claude/skills/apply-harness/scripts/upgrade-harness.py
 ```
 
 脚本随本技能一起被 npx 拷进项目。**默认只更新 `.harness/skills/`**，不改你已确认的 rules。需要连规则一起升时加 `--with-rules`，见 [docs/upgrade-harness.md](../../docs/upgrade-harness.md)。

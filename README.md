@@ -35,9 +35,9 @@ npx skills@latest add https://github.com/404notfoundf/TayamaHarness.git
 npx skills update
 # 先确认脚本在哪：npx skills list
 # Cursor 项目级：
-node .agents/skills/apply-harness/scripts/upgrade-harness.mjs --yes
+python .agents/skills/apply-harness/scripts/upgrade-harness.py --yes
 # Claude Code 项目级：
-# node .claude/skills/apply-harness/scripts/upgrade-harness.mjs --yes
+# python .claude/skills/apply-harness/scripts/upgrade-harness.py --yes
 ```
 
 完整步骤、会覆盖什么、找不到脚本怎么办：见 **[技能升级操作手册](docs/upgrade-harness.md)**。
@@ -154,10 +154,10 @@ tayama-harness-skills/
 ├── scripts/
 │   ├── list-skills.sh             # 列出所有技能
 │   ├── sync-version.mjs           # 同步版本号
-│   └── upgrade-harness.mjs        # 转发到 apply-harness/scripts（本仓库开发用）
+│   └── upgrade-harness.py         # 转发到 apply-harness/scripts（本仓库开发用）
 ├── skills/
 │   ├── apply-harness/             # ★ 入口技能（/apply-harness）
-│   │   └── scripts/upgrade-harness.mjs  # 已有项目的保守升级（随 npx 分发）
+│   │   └── scripts/upgrade-harness.py   # 已有项目的保守升级（随 npx 分发）
 │   ├── install-skill/             # ★ 技能注册（/install-skill）
 │   ├── harness-core/              # 核心骨架模板 + 通用技能
 │   │   ├── templates/

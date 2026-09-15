@@ -58,7 +58,7 @@
 ```bash
 npx skills update
 # Cursor 项目级才是 .agents/skills；Claude Code 用 .claude/skills
-node .agents/skills/apply-harness/scripts/upgrade-harness.mjs --yes
+python .agents/skills/apply-harness/scripts/upgrade-harness.py --yes
 ```
 
 ## 相关文档
