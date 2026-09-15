@@ -51,6 +51,17 @@
 - ❌ 禁止在检测到多语言时擅自选择
 - ✅ 如果 `.harness/` 已存在，输出提示并询问是否覆盖
 
+## 技能升级
+
+已有 `.harness/` **不要**整目录盲覆盖。操作手册：[技能升级](../upgrade-harness.md)。
+
+```bash
+npx skills update
+# Cursor 项目级才是 .agents/skills；Claude Code 用 .claude/skills
+node .agents/skills/apply-harness/scripts/upgrade-harness.mjs --yes
+```
+
 ## 相关文档
 
-- [安装技能](install-skill.md) — 执行 `/apply-harness` 后运行 `/install-skill` 注册斜杠命令
+- [安装技能](install-skill.md) — `/apply-harness` 后注册斜杠命令
+- [技能升级操作手册](../upgrade-harness.md) — npx 用户日常升级

@@ -27,6 +27,21 @@ npx skills@latest add https://github.com/404notfoundf/TayamaHarness.git
 /apply-harness
 ```
 
+### 技能升级（已有 `.harness/` 的项目）
+
+`npx skills` 只更新技能包源，不会改已经渲染好的 `.harness/`。路径随工具而变（Cursor 项目级才是 `.agents/skills/`）：
+
+```bash
+npx skills update
+# 先确认脚本在哪：npx skills list
+# Cursor 项目级：
+node .agents/skills/apply-harness/scripts/upgrade-harness.mjs --yes
+# Claude Code 项目级：
+# node .claude/skills/apply-harness/scripts/upgrade-harness.mjs --yes
+```
+
+完整步骤、会覆盖什么、找不到脚本怎么办：见 **[技能升级操作手册](docs/upgrade-harness.md)**。
+
 安装完成后，在 `.harness/` 目录下已注册 30+ 个技能，通过斜杠命令驱动 6 阶段流水线：
 
 ```bash
@@ -129,6 +144,7 @@ tayama-harness-skills/
 ├── docs/                          # 文档中心（📖 从这里开始学习）
 │   ├── README.md                  # 文档索引
 │   ├── harness-overview.md        # Harness Engineering 总览
+│   ├── upgrade-harness.md         # 技能升级操作手册
 │   ├── owner-agent.md             # Owner Agent 概念
 │   ├── sdd-tdd.md                 # SDD-TDD 方法论
 │   ├── 6-stage-pipeline.md        # 6 阶段流水线
@@ -137,9 +153,11 @@ tayama-harness-skills/
 │   └── languages/                 # 各语言规范文档
 ├── scripts/
 │   ├── list-skills.sh             # 列出所有技能
-│   └── sync-version.mjs           # 同步版本号
+│   ├── sync-version.mjs           # 同步版本号
+│   └── upgrade-harness.mjs        # 转发到 apply-harness/scripts（本仓库开发用）
 ├── skills/
 │   ├── apply-harness/             # ★ 入口技能（/apply-harness）
+│   │   └── scripts/upgrade-harness.mjs  # 已有项目的保守升级（随 npx 分发）
 │   ├── install-skill/             # ★ 技能注册（/install-skill）
 │   ├── harness-core/              # 核心骨架模板 + 通用技能
 │   │   ├── templates/
@@ -198,8 +216,9 @@ tayama-harness-skills/
 3. **[SDD-TDD 方法论](docs/sdd-tdd.md)** — 了解规格驱动 + 测试驱动开发
 4. **[6 阶段流水线](docs/6-stage-pipeline.md)** — 了解完整流水线
 5. **[变更管理](docs/change-management.md)** — 了解变更状态机
-6. **语言规范** — 选择你的语言：[Java](docs/languages/java.md) / [Python](docs/languages/python.md) / [Go](docs/languages/golang.md) / [Rust](docs/languages/rust.md) / [Frontend](docs/languages/frontend.md)
-7. **各技能文档** — 在 `docs/skills/` 目录下
+6. **[技能升级操作手册](docs/upgrade-harness.md)** — 已有项目如何更新技能包
+7. **语言规范** — 选择你的语言：[Java](docs/languages/java.md) / [Python](docs/languages/python.md) / [Go](docs/languages/golang.md) / [Rust](docs/languages/rust.md) / [Frontend](docs/languages/frontend.md)
+8. **各技能文档** — 在 `docs/skills/` 目录下
 
 > 📖 **完整文档中心**: [docs/README.md](docs/README.md)
 >

@@ -54,3 +54,4 @@
 ## 相关文档
 
 - [应用 Harness 规范](apply-harness.md) — 先执行 `/apply-harness` 生成 `.harness/`
+- [技能升级操作手册](../upgrade-harness.md) — 更新源之后灌进 `.harness/`，脚本默认会再注册一次

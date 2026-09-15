@@ -11,6 +11,7 @@
 - [SDD-TDD 方法论](sdd-tdd.md) — 规格驱动 + 测试驱动
 - [6 阶段流水线](6-stage-pipeline.md) — 从需求到交付
 - [变更管理](change-management.md) — 状态机与文档模板
+- [技能升级操作手册](upgrade-harness.md) — npx 更新源 + 脚本灌进 `.harness/`
 - [语言规范](languages/) — 各语言编码标准
 - [学习路径](learning-path.md) — 学习目标与方法（知识星球专栏版）
 - [吸收清单](absorb-list.md) — 《AI 驱动研发体系的实践和思考》→ 脚手架的吸收规划与实施清单
@@ -36,6 +37,7 @@ Harness 方法论与技术实践的深度拆解系列（共 51 篇，图文并�
 | [SDD-TDD 方法论](sdd-tdd.md) | 规格驱动 + 测试驱动——三层关系与工作模式 |
 | [6 阶段流水线](6-stage-pipeline.md) | 从需求到交付的完整流水线，阶段门禁与状态机 |
 | [变更管理](change-management.md) | 变更状态机、文档模板、追踪机制 |
+| [技能升级操作手册](upgrade-harness.md) | 已有项目如何 `npx skills update` 后再灌 `.harness/` |
 
 ## 流水线技能
 
@@ -86,6 +88,7 @@ Harness 方法论与技术实践的深度拆解系列（共 51 篇，图文并�
 |------|------|------|
 | `apply-harness` | 一键应用 Harness 开发规范 | [文档](skills/apply-harness.md) |
 | `install-skill` | 注册技能到当前 AI 工具 | [文档](skills/install-skill.md) |
+| （脚本）升级 | 已有 `.harness/` 的保守升级 | [操作手册](upgrade-harness.md) |
 
 ## 工具包技能（自动注入）
 

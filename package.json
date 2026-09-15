@@ -12,7 +12,8 @@
   "scripts": {
     "version": "node scripts/sync-version.mjs",
     "check-plugin-version": "node scripts/sync-version.mjs --check",
-    "list-skills": "bash scripts/list-skills.sh"
+    "list-skills": "bash scripts/list-skills.sh",
+    "upgrade-harness": "node scripts/upgrade-harness.mjs"
   },
   "packageManager": "npm@10.9.4"
 }
