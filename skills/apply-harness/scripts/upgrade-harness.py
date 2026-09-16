@@ -331,17 +331,44 @@ def collect_params(harness_dir: Path, lang: str, pack_root: Path) -> dict[str, s
             harvest_name_field(r, params, {"arch-review": "ARCH_REVIEW_CMD"})
 
     lang_defaults = {
-        "java": {"LANGUAGE": "Java", "LANG_TAG": "-java", "SRC_EXT": "java"},
-        "python": {"LANGUAGE": "Python", "LANG_TAG": "-python", "SRC_EXT": "py"},
-        "golang": {"LANGUAGE": "Go", "LANG_TAG": "-golang", "SRC_EXT": "go"},
-        "rust": {"LANGUAGE": "Rust", "LANG_TAG": "-rust", "SRC_EXT": "rs"},
-        "front": {"LANGUAGE": "Frontend", "LANG_TAG": "-front", "SRC_EXT": "ts"},
+        "java": {
+            "LANGUAGE": "Java",
+            "LANG_TAG": "-java",
+            "SRC_EXT": "java",
+            "FORMAT_CHECK_CMD": "mvn spotless:check",
+        },
+        "python": {
+            "LANGUAGE": "Python",
+            "LANG_TAG": "-python",
+            "SRC_EXT": "py",
+            "FORMAT_CHECK_CMD": "black --check .",
+        },
+        "golang": {
+            "LANGUAGE": "Go",
+            "LANG_TAG": "-golang",
+            "SRC_EXT": "go",
+            "FORMAT_CHECK_CMD": "gofmt -l .",
+        },
+        "rust": {
+            "LANGUAGE": "Rust",
+            "LANG_TAG": "-rust",
+            "SRC_EXT": "rs",
+            "FORMAT_CHECK_CMD": "cargo fmt -- --check",
+        },
+        "front": {
+            "LANGUAGE": "Frontend",
+            "LANG_TAG": "-front",
+            "SRC_EXT": "ts",
+            "FORMAT_CHECK_CMD": "npx prettier --check .",
+        },
     }
     for k, v in lang_defaults.get(lang, {}).items():
         params.setdefault(k, v)
     params.setdefault("HARNESSING_CMD", "harnessing")
     params.setdefault("HARNESS_ME_NAME", "harness-me")
     params.setdefault("ARCH_REVIEW_CMD", f"arch-review{params.get('LANG_TAG', '')}")
+    params.setdefault("FORMAT_CHECK_CMD", "")
+    params.setdefault("SRC_EXT", "")
     return params
 
 

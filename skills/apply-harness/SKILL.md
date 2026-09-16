@@ -255,6 +255,8 @@ disable-model-invocation: true
 | `{{BUILD_CMD}}` | 编译命令，如 `mvn compile`、`go build ./...`                                                    |
 | `{{TEST_CMD}}` | 测试命令                                                                                     |
 | `{{LINT_CMD}}` | 代码规范检查命令                                                                                 |
+| `{{FORMAT_CHECK_CMD}}` | 格式检查命令（只检查不改写，如 `black --check .`、`mvn spotless:check`）；空则跳过 |
+| `{{SRC_EXT}}` | 源文件扩展名（不含点），供 `unit-test-ci` 扫描 `*.{{SRC_EXT}}`：`java` / `py` / `go` / `rs` / `ts` |
 | `{{DEV_CMD}}` | 开发服务器启动命令                                                                                |
 | `{{DOCSTYLE}}` | 文档注释风格，如 `Javadoc`、`docstring`、`JSDoc`                                                   |
 | `{{FILE_LIMIT}}` | 单文件行数上限                                                                                  |
@@ -509,7 +511,7 @@ mkdir -p .claude/skills/
 
 > 按 Step 1 检测到的（语言、框架、构建工具）三元组，选择对应的框架参数块。未在此列出的框架（用户手动指定）询问用户确认参数。
 
-> **命令真跑验证纪律（test-setup）**：参数表中的 `{{BUILD_CMD}}` / `{{TEST_CMD}}` / `{{COV_CMD}}` / `{{LINT_CMD}}` / `{{ARCH_TEST_CMD}}` / `{{SECURITY_CMD}}` / `{{INTEGRATION_CMD}}` 等命令，渲染前必须**逐条真跑一次，看到真实退出码**才可落盘到渲染后的技能中；跑不通的命令**如实留空或标注"未验证"**，不得猜命令、不得把猜测当事实。若目标项目尚无代码可跑（全新项目），则命令先以参数表默认值落盘，但必须在首个 change 进入 ② 编码 / ⑤ CI 门禁时由 `coding-skill` / `unit-test-ci` **真跑验证一次**，验证不通过即退回修正命令——这正是 `harness-quality` 的「量不到就写未测量」同一条纪律：**命令真跑过才算数，没跑过就不算**。
+> **命令真跑验证纪律（test-setup）**：参数表中的 `{{BUILD_CMD}}` / `{{TEST_CMD}}` / `{{COV_CMD}}` / `{{LINT_CMD}}` / `{{FORMAT_CHECK_CMD}}` / `{{ARCH_TEST_CMD}}` / `{{SECURITY_CMD}}` / `{{INTEGRATION_CMD}}` 等命令，渲染前必须**逐条真跑一次，看到真实退出码**才可落盘到渲染后的技能中；跑不通的命令**如实留空或标注"未验证"**，不得猜命令、不得把猜测当事实。若目标项目尚无代码可跑（全新项目），则命令先以参数表默认值落盘，但必须在首个 change 进入 ② 编码 / ⑤ CI 门禁时由 `coding-skill` / `unit-test-ci` **真跑验证一次**，验证不通过即退回修正命令——这正是 `harness-quality` 的「量不到就写未测量」同一条纪律：**命令真跑过才算数，没跑过就不算**。
 
 ### Java — Spring Boot + Maven（默认）
 
@@ -531,6 +533,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `mvn compile`                               |
 | `{{TEST_CMD}}` | `mvn test`                                  |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                      |
+| `{{FORMAT_CHECK_CMD}}` | `mvn spotless:check` |
+| `{{SRC_EXT}}` | `java` |
 | `{{DEV_CMD}}` | `mvn spring-boot:run`                       |
 | `{{DOCSTYLE}}` | `Javadoc`                                   |
 | `{{FILE_LIMIT}}` | `500`                                       |
@@ -557,7 +561,7 @@ mkdir -p .claude/skills/
 
 ### Java — Spring Boot + Gradle
 
-仅 `{{BUILD_TOOL}}`、`{{BUILD_CMD}}`、`{{TEST_CMD}}`、`{{LINT_CMD}}`、`{{DEV_CMD}}`、`{{COV_CMD}}` 与 Maven 版不同：
+仅 `{{BUILD_TOOL}}`、`{{BUILD_CMD}}`、`{{TEST_CMD}}`、`{{LINT_CMD}}`、`{{FORMAT_CHECK_CMD}}`、`{{DEV_CMD}}`、`{{COV_CMD}}` 与 Maven 版不同：
 
 | 参数 | 值 |
 |------|-----|
@@ -566,6 +570,7 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `./gradlew build` |
 | `{{TEST_CMD}}` | `./gradlew test` |
 | `{{LINT_CMD}}` | `./gradlew checkstyleMain` |
+| `{{FORMAT_CHECK_CMD}}` | `./gradlew spotlessCheck` |
 | `{{DEV_CMD}}` | `./gradlew bootRun` |
 | `{{COV_CMD}}` | `./gradlew jacocoTestReport` |
 
@@ -589,6 +594,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `mvn compile`                                      |
 | `{{TEST_CMD}}` | `mvn test`                                         |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                             |
+| `{{FORMAT_CHECK_CMD}}` | `mvn spotless:check` |
+| `{{SRC_EXT}}` | `java` |
 | `{{DEV_CMD}}` | `mvn quarkus:dev`                                  |
 | `{{DOCSTYLE}}` | `Javadoc`                                          |
 | `{{FILE_LIMIT}}` | `500`                                              |
@@ -608,6 +615,7 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `./gradlew build` |
 | `{{TEST_CMD}}` | `./gradlew test` |
 | `{{LINT_CMD}}` | `./gradlew checkstyleMain` |
+| `{{FORMAT_CHECK_CMD}}` | `./gradlew spotlessCheck` |
 | `{{DEV_CMD}}` | `./gradlew quarkusDev` |
 | `{{COV_CMD}}` | `./gradlew jacocoTestReport` |
 
@@ -631,6 +639,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `mvn compile`                           |
 | `{{TEST_CMD}}` | `mvn test`                              |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                  |
+| `{{FORMAT_CHECK_CMD}}` | `mvn spotless:check` |
+| `{{SRC_EXT}}` | `java` |
 | `{{DEV_CMD}}` | `mvn mn:run`                            |
 | `{{DOCSTYLE}}` | `Javadoc`                               |
 | `{{FILE_LIMIT}}` | `500`                                   |
@@ -661,6 +671,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `mvn compile`                   |
 | `{{TEST_CMD}}` | `mvn test`                      |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`          |
+| `{{FORMAT_CHECK_CMD}}` | `mvn spotless:check` |
+| `{{SRC_EXT}}` | `java` |
 | `{{DEV_CMD}}` | `mvn vertx:run`                 |
 | `{{DOCSTYLE}}` | `Javadoc`                       |
 | `{{FILE_LIMIT}}` | `500`                           |
@@ -691,6 +703,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `mvn compile`                              |
 | `{{TEST_CMD}}` | `mvn test`                                 |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                     |
+| `{{FORMAT_CHECK_CMD}}` | `mvn spotless:check` |
+| `{{SRC_EXT}}` | `java` |
 | `{{DEV_CMD}}` | `java -jar target/*.jar server config.yml` |
 | `{{DOCSTYLE}}` | `Javadoc`                                  |
 | `{{FILE_LIMIT}}` | `500`                                      |
@@ -721,6 +735,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `mvn compile`                                      |
 | `{{TEST_CMD}}` | `mvn test`                                         |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`                             |
+| `{{FORMAT_CHECK_CMD}}` | `mvn spotless:check` |
+| `{{SRC_EXT}}` | `java` |
 | `{{DEV_CMD}}` | `mvn tomcat7:run` / 部署到外部 Servlet 容器               |
 | `{{DOCSTYLE}}` | `Javadoc`                                          |
 | `{{FILE_LIMIT}}` | `500`                                              |
@@ -753,6 +769,7 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `python -m compileall .`                  |
 | `{{TEST_CMD}}` | `python -m pytest`                        |
 | `{{LINT_CMD}}` | `flake8 .`                                |
+| `{{SRC_EXT}}` | `py` |
 | `{{DEV_CMD}}` | `uvicorn main:app --reload`               |
 | `{{DOCSTYLE}}` | `docstring`                               |
 | `{{FILE_LIMIT}}` | `800`                                     |
@@ -799,6 +816,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `python -m compileall .`                            |
 | `{{TEST_CMD}}` | `python -m pytest`                                  |
 | `{{LINT_CMD}}` | `flake8 .`                                          |
+| `{{FORMAT_CHECK_CMD}}` | `black --check .` |
+| `{{SRC_EXT}}` | `py` |
 | `{{DEV_CMD}}` | `flask --app <app> run --debug`                     |
 | `{{DOCSTYLE}}` | `docstring`                                         |
 | `{{FILE_LIMIT}}` | `800`                                               |
@@ -829,6 +848,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `python -m compileall .`                    |
 | `{{TEST_CMD}}` | `python manage.py test`                     |
 | `{{LINT_CMD}}` | `flake8 .`                                  |
+| `{{FORMAT_CHECK_CMD}}` | `black --check .` |
+| `{{SRC_EXT}}` | `py` |
 | `{{DEV_CMD}}` | `python manage.py runserver`                |
 | `{{DOCSTYLE}}` | `docstring`                                 |
 | `{{FILE_LIMIT}}` | `800`                                       |
@@ -861,6 +882,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `go build ./...`                        |
 | `{{TEST_CMD}}` | `go test ./...`                         |
 | `{{LINT_CMD}}` | `golangci-lint run`                     |
+| `{{FORMAT_CHECK_CMD}}` | `gofmt -l .` |
+| `{{SRC_EXT}}` | `go` |
 | `{{DEV_CMD}}` | `go run ./cmd/server`                   |
 | `{{DOCSTYLE}}` | Go 注释                                   |
 | `{{FILE_LIMIT}}` | `800`                                   |
@@ -906,6 +929,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `goctl api go` + `go build ./...`                |
 | `{{TEST_CMD}}` | `go test ./...`                                  |
 | `{{LINT_CMD}}` | `golangci-lint run`                              |
+| `{{FORMAT_CHECK_CMD}}` | `gofmt -l .` |
+| `{{SRC_EXT}}` | `go` |
 | `{{DEV_CMD}}` | `go run <service>.go`                            |
 | `{{DOCSTYLE}}` | Go 注释                                            |
 | `{{FILE_LIMIT}}` | `800`                                            |
@@ -935,6 +960,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `go build ./...`                         |
 | `{{TEST_CMD}}` | `go test ./...`                          |
 | `{{LINT_CMD}}` | `golangci-lint run`                      |
+| `{{FORMAT_CHECK_CMD}}` | `gofmt -l .` |
+| `{{SRC_EXT}}` | `go` |
 | `{{DEV_CMD}}` | `go run ./cmd/server`                    |
 | `{{DOCSTYLE}}` | Go 注释                                    |
 | `{{FILE_LIMIT}}` | `800`                                    |
@@ -964,6 +991,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `go build ./...`                         |
 | `{{TEST_CMD}}` | `go test ./...`                          |
 | `{{LINT_CMD}}` | `golangci-lint run`                      |
+| `{{FORMAT_CHECK_CMD}}` | `gofmt -l .` |
+| `{{SRC_EXT}}` | `go` |
 | `{{DEV_CMD}}` | `go run ./cmd/server`                    |
 | `{{DOCSTYLE}}` | Go 注释                                    |
 | `{{FILE_LIMIT}}` | `800`                                    |
@@ -993,6 +1022,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `go build ./...`                         |
 | `{{TEST_CMD}}` | `go test ./...`                          |
 | `{{LINT_CMD}}` | `golangci-lint run`                      |
+| `{{FORMAT_CHECK_CMD}}` | `gofmt -l .` |
+| `{{SRC_EXT}}` | `go` |
 | `{{DEV_CMD}}` | `go run ./cmd/server`                    |
 | `{{DOCSTYLE}}` | Go 注释                                    |
 | `{{FILE_LIMIT}}` | `800`                                    |
@@ -1011,6 +1042,8 @@ mkdir -p .claude/skills/
 |------|--------------------------------------------------------------------|
 | `{{LANGUAGE}}` | `Frontend`                                                         |
 | `{{LANG_TAG}}` | `-front`                                                           |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{HARNESS_ME_NAME}}` | `harness-me-front`                                                |
 | `{{HARNESSING_CMD}}` | `harnessing-front`                                                |
 | `{{ARCH_REVIEW_CMD}}` | `arch-review-front`                                               |
@@ -1048,6 +1081,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run dev`                                                      |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
 | `{{FILE_LIMIT}}` | `400`                                                              |
@@ -1099,6 +1134,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run dev`                                                      |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
 | `{{FILE_LIMIT}}` | `400`                                                              |
@@ -1128,6 +1165,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                                |
 | `{{TEST_CMD}}` | `npm run test`                                                 |
 | `{{LINT_CMD}}` | `npm run lint`                                                 |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run dev`                                                  |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                  |
 | `{{FILE_LIMIT}}` | `400`                                                          |
@@ -1157,6 +1196,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run serve`                                                    |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
 | `{{FILE_LIMIT}}` | `400`                                                              |
@@ -1186,6 +1227,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                     |
 | `{{TEST_CMD}}` | `npm run test`                                      |
 | `{{LINT_CMD}}` | `npm run lint`                                      |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run start`                                     |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                       |
 | `{{FILE_LIMIT}}` | `400`                                               |
@@ -1215,6 +1258,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run dev`                                                      |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
 | `{{FILE_LIMIT}}` | `400`                                                              |
@@ -1244,6 +1289,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                              |
 | `{{TEST_CMD}}` | `npm run test`                                               |
 | `{{LINT_CMD}}` | `npm run lint`                                               |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run dev`                                                |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                |
 | `{{FILE_LIMIT}}` | `400`                                                        |
@@ -1273,6 +1320,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                                                    |
 | `{{TEST_CMD}}` | `npm run test`                                                     |
 | `{{LINT_CMD}}` | `npm run lint`                                                     |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run start`                                                    |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                                                      |
 | `{{FILE_LIMIT}}` | `400`                                                              |
@@ -1302,6 +1351,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `npm run build`                 |
 | `{{TEST_CMD}}` | `npm run test`                  |
 | `{{LINT_CMD}}` | `npm run lint`                  |
+| `{{FORMAT_CHECK_CMD}}` | `npx prettier --check .` |
+| `{{SRC_EXT}}` | `ts` |
 | `{{DEV_CMD}}` | `npm run dev`                   |
 | `{{DOCSTYLE}}` | JSDoc / TSDoc                   |
 | `{{FILE_LIMIT}}` | `400`                           |
@@ -1332,6 +1383,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `mvn compile`                |
 | `{{TEST_CMD}}` | `mvn test`                   |
 | `{{LINT_CMD}}` | `mvn checkstyle:check`       |
+| `{{FORMAT_CHECK_CMD}}` | `mvn spotless:check` |
+| `{{SRC_EXT}}` | `java` |
 | `{{COV_CMD}}` | `mvn jacoco:report`          |
 | `{{DOCSTYLE}}` | `Javadoc`                    |
 | `{{FILE_LIMIT}}` | `500`                        |
@@ -1451,6 +1504,7 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `python -m compileall .`            |
 | `{{TEST_CMD}}` | `python -m pytest`                  |
 | `{{LINT_CMD}}` | `flake8 .`                          |
+| `{{SRC_EXT}}` | `py` |
 | `{{COV_CMD}}` | `pytest --cov`                      |
 | `{{DOCSTYLE}}` | `docstring`                         |
 | `{{FILE_LIMIT}}` | `800`                               |
@@ -1664,6 +1718,8 @@ mkdir -p .claude/skills/
 | `{{BUILD_CMD}}` | `go build ./...`                     |
 | `{{TEST_CMD}}` | `go test ./...`                      |
 | `{{LINT_CMD}}` | `golangci-lint run`                  |
+| `{{FORMAT_CHECK_CMD}}` | `gofmt -l .` |
+| `{{SRC_EXT}}` | `go` |
 | `{{COV_CMD}}` | `go test -cover`                     |
 | `{{DOCSTYLE}}` | Go 注释                                |
 | `{{FILE_LIMIT}}` | `800`                                |
@@ -1866,6 +1922,8 @@ mkdir -p .claude/skills/
 | `{{TEST_CMD}}` | `cargo test`                           |
 | `{{TEST_FRAMEWORK}}` | cargo test + rstest + mockall        |
 | `{{LINT_CMD}}` | `cargo clippy -- -D warnings`          |
+| `{{FORMAT_CHECK_CMD}}` | `cargo fmt -- --check` |
+| `{{SRC_EXT}}` | `rs` |
 | `{{COV_CMD}}` | `cargo llvm-cov --workspace --summary-only` |
 | `{{DOCSTYLE}}` | Rustdoc 注释                             |
 | `{{FILE_LIMIT}}` | `600`                                  |
