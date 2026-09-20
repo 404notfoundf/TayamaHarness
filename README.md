@@ -68,7 +68,7 @@ python .agents/skills/apply-harness/scripts/upgrade-harness.py --yes
 
 AI 自动检测项目语言与框架（Java / Python / Go / Rust / Frontend，支持 Spring Boot / Spring Cloud Alibaba / Dubbo / Quarkus / Django / FastAPI / TensorFlow / PyTorch / LangChain / Gin / Beego / GoFrame / Kitex / Axum / Actix Web / React / Vue / Angular / Next.js 等 80+ 主流框架和构建工具），生成 `.harness/` 目录：
 - **Owner Agent** — 应用负责人智能体（灵魂，定义你是谁、怎么工作）
-- **Rules** — 5 条规则（SDD-TDD / 编码规范 / 工程结构 / 开发流程 / 运行时可靠性）
+- **Rules** — 通用规则（SDD-TDD / 开发流程 / 变更定位 / 知识库治理 / 数据库命名 / 运行时可靠性）+ 语言 **编码规范** / **工程结构**
 - **Skills** — 30+ 个技能（6 流水线 + 3 通用辅助 + 3 场景辅助 + 17 封装组件 + 2 领域专家）
 - **Changes** — 变更追踪模板
 - **Wiki** — 领域知识库模板
@@ -194,7 +194,7 @@ tayama-harness-skills/
 │   │       ├── excel-toolkit/             # Excel 工具
 │   │       └── eventbus-toolkit/          # 事件总线工具
 │   ├── harness-java/              # Java 语言规范包（流水线技能由 core 渲染，仅保留专属技能）
-│   │   ├── rules/                 # 5 条规则
+│   │   ├── rules/                 # 通用 + 语言规则（含数据库命名规范）
 │   │   └── skills/                # 4 个框架专属技能（java-code-review、spring-api-convention、mybatis-toolkit、openfeign-toolkit）
 │   ├── harness-python/            # Python 语言规范包（规则 + 参数，技能由 core 渲染）
 │   ├── harness-golang/            # Golang 语言规范包（同上）

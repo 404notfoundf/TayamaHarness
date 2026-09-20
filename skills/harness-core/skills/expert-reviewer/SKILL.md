@@ -43,6 +43,7 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
 |---------|---------|---------|
 | Redis / 缓存客户端调用 | `redis-cache-wrapper` | 4~6 |
 | 迁移脚本（`migrations/`、`V*__*.sql`、语言包迁移目录） | `database-migration-toolkit` | 4~6 |
+| 库表/SQL/实体持久化字段（`ALTER`、Mapper、`@Table` 等） | 对照规则 `数据库命名规范.md` + wiki `数据模型.md`（及 `ORM与库表映射.md` 若有） | 4 |
 | 消息队列生产/消费 | `kafka-toolkit` / `rocketmq-toolkit`（按依赖出现的那个） | 4~6 |
 | K8s/Helm 清单（`k8s/`、`charts/`、`kind: Deployment` 等），**不是**任意 `*.yaml` | `k8s-release-toolkit` | 4~6 |
 | diff 中出现 dump / 火焰图 / GC 日志，或用户明确要求看性能 | `performance-toolkit` | 5 |
@@ -100,6 +101,7 @@ description: 双轴并行代码审查（Spec 需求匹配 + Standards 规范合�
 - [ ] 无硬编码密钥 / 魔法值？
 - [ ] LLM/外部调用有超时+重试+限频+降级？
 - [ ] 异常/错误处理完整（不吞、不空 catch、不忽略错误返回）？
+- [ ] **若 diff 含 DDL / SQL 列名 / 持久化实体字段**：表名、列名、索引名与 `.harness/wiki/数据模型.md` 逐字一致，且符合 `数据库命名规范.md`；应用层映射符合 `ORM与库表映射.md`（若有）。不一致 → 🔴
 
 ### 维度 5: 代码质量
 - [ ] 函数/方法 ≤50 行 / 文件 ≤{{FILE_LIMIT}} 行 / 圈复杂度 ≤10？

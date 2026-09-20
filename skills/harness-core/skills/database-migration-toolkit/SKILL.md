@@ -22,7 +22,7 @@ description: 数据库迁移工具封装——迁移模板、回滚脚本、数�
 - 用户已描述迁移内容（如"订单表新增 payment_method 字段"）
 - 已确定迁移工具（Flyway / Liquibase / 原生 SQL）
 - 已确定目标数据库类型（MySQL / PostgreSQL 等）
-- 已确认涉及的表名、列名、索引名
+- 已确认涉及的表名、列名、索引名（与 `.harness/wiki/数据模型.md` 及 `.harness/rules/数据库命名规范.md` 一致；若不一致须先 `/harness-db-design` 定稿）
 
 ## 4. 工作流程
 

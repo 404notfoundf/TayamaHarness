@@ -52,7 +52,7 @@ description: MyBatis 工具封装——通用分页（PageHelper 封装）、乐
 ├── plugin/
 │   ├── OptimisticLockPlugin.java       — 乐观锁拦截器（version 字段自动+1）
 │   ├── LogicDeletePlugin.java          — 逻辑删除拦截器（自动追加 WHERE deleted=0）
-│   ├── AutoFillPlugin.java            — 自动填充拦截器（createTime/updateTime/operator）
+│   ├── AutoFillPlugin.java            — 自动填充拦截器（createdAt/updatedAt/operator）
 │   └── DataPermissionPlugin.java       — 数据权限拦截器（多租户/部门过滤）
 ├── batch/
 │   ├── BatchExecutor.java              — 批量执行器（批量 INSERT/UPDATE 合并提交）
@@ -70,7 +70,7 @@ description: MyBatis 工具封装——通用分页（PageHelper 封装）、乐
 - 分页结果：`PageResult<T>` 包含 total / pages / pageNum / pageSize / list，支持 PageHelper.startPage() 和 MyBatis-Plus Page 两种模式
 - `OptimisticLockPlugin`：拦截 UPDATE 语句，检查实体是否有 @Version 注解的字段，有则自动追加 `SET version = version + 1 WHERE version = #{oldVersion}`，影响行数为 0 则抛出乐观锁异常
 - `LogicDeletePlugin`：拦截 DELETE 语句，改为 `UPDATE SET deleted = 1, deleted_time = NOW()`，拦截 SELECT 语句自动追加 `AND deleted = 0`，支持 `@TableLogic` 注解配置
-- `AutoFillPlugin`：拦截 INSERT 自动填充 createTime/updateTime/operator，拦截 UPDATE 自动填充 updateTime/operator，支持 @TableField(fill=INSERT/UPDATE/INSERT_UPDATE) 注解
+- `AutoFillPlugin`：拦截 INSERT 自动填充 createdAt/updatedAt/operator，拦截 UPDATE 自动填充 updatedAt/operator，字段名须与 `ORM与库表映射.md` 一致，支持 @TableField(fill=INSERT/UPDATE/INSERT_UPDATE) 注解
 - `DataPermissionPlugin`：从安全上下文获取当前用户/租户/部门，拦截 SELECT 自动追加 `AND tenant_id = #{tenantId}` 或 `AND dept_id IN (${deptIds})`，支持 `@DataPermission` 注解配置字段名
 - 批量操作：`BatchExecutor` 使用 MyBatis BATCH 执行器模式，每批 1000 条 flush 一次，减少数据库交互次数，支持批量 INSERT/UPDATE/DELETE
 

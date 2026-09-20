@@ -185,8 +185,10 @@ disable-model-invocation: true
 ├── 开发流程规范.md       ← 来自 harness-core（跨语言通用）
 ├── 变更定位规则.md       ← 来自 harness-core（跨语言通用）
 ├── 知识库治理规则.md     ← 来自 harness-core（跨语言通用）
+├── 数据库命名规范.md     ← 来自 harness-core（跨语言通用）
 ├── 运行时可靠性.md       ← 来自 harness-core（后端）/ 来自 harness-front（前端特有）
 ├── 编码规范.md           ← 来自 harness-{lang}（语言特有）
+├── ORM与库表映射.md       ← 来自 harness-{lang}（若存在；Java/Python/Go/Rust 等）
 └── 工程结构.md           ← 来自 harness-{lang}（语言特有）
 ```
 
