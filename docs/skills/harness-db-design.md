@@ -34,7 +34,7 @@ Step 4: 落盘（更新 数据模型.md + migration-toolkit + 补充 change.md �
 
 - **命名**：见 `数据库命名规范.md`（snake、`{实体}_id`、idx/uk 原样拼接、避开保留字裸名）
 - **主键**：自增/雪花/UUID；禁止业务字段做主键
-- **类型**：金额用定点；JSON 结构写 wiki 说明
+- **类型**：金额用定点；状态机字段未指明时用整数；JSON 结构写 wiki 说明
 - **索引 / 约束**：覆盖查询路径；UNIQUE/CHECK；外键按项目约定
 - **软删除 / 时间**：`deleted`；`created_at` / `updated_at`（实体映射见 `ORM与库表映射.md`）
 
